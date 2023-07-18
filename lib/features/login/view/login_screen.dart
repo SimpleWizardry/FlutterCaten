@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:grpc/grpc.dart';
+// import 'package:myapp/models/account/account.dart';
+import '../../../generated/account.pbgrpc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+// import '../../../../protos/account.proto';
 // import 'package:flutter/widgets.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -8,9 +13,56 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
+
+class AccountTerminalClient {
+  late final ClientChannel channel;
+  late final AccountGRPCServiceClient stub;
+
+
+  AccountTerminalClient() {
+    channel = ClientChannel(
+      '192.168.1.12',
+      port: 32769,
+      options: ChannelOptions(credentials: ChannelCredentials.insecure()),
+      // options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
+    );
+    stub = AccountGRPCServiceClient(channel);
+  }
+  
+  Future<LoginReply> login(LoginRequest req) async {
+    debugPrint('Sending request: $req');
+    final response = await stub.login(req);
+    debugPrint('Received question: $response with token' + response.jwt);
+    return response;
+  }
+}
 class _LoginScreenState extends State<LoginScreen> {
-  String _username = "s";
+  String _username = "";
+  final _storage = const FlutterSecureStorage();
   final _loginController = TextEditingController();
+
+ final clientApp = AccountTerminalClient();
+
+  Future<void> _addToken(String token) async {
+    const String key = "token";
+    final String value = token;
+
+    await _storage.write(
+      key: key,
+      value: value,
+      // iOptions: _getIOSOptions(),
+      aOptions: _getAndroidOptions(),
+    );
+    // _readAll();
+  }
+
+  // IOSOptions _getIOSOptions() => IOSOptions(
+  //   accountName: _getAccountName(),
+  // );
+
+  AndroidOptions _getAndroidOptions() => const AndroidOptions(
+    encryptedSharedPreferences: true,
+  );
 
   @override
   void initState() {
@@ -29,8 +81,17 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _username = _loginController.text);
   }
 
-  _login() {
+  Future<void> _login() async {
     debugPrint(_username.toString());
+    // final request = LoginRequestModel();
+    final request = LoginRequest()
+      ..login = _username.toString()
+      ..password = '12345';
+    final response = await  clientApp.login(request);
+    if (response.succsecced == true) {
+      _addToken(response.jwt);
+      Navigator.of(context).pushNamed('/home');
+    }
   }
 
   @override
