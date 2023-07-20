@@ -10,11 +10,12 @@ class SchetTerminalClient {
   SchetTerminalClient() {
     channel = ClientChannel(
       '0.0.0.0',
-      port: 80,
+      port: 32769,
       options: ChannelOptions(credentials: ChannelCredentials.insecure()),
       // options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
     );
-    stub = SchetGRPCServiceClient(channel);
+    debugPrint('channel $channel');
+    //stub = SchetGRPCServiceClient(channel);
   }
 
   FilterSchet InitFilterSchet() {
@@ -30,7 +31,17 @@ class SchetTerminalClient {
   }
 
   Future<ResultSchetListView> GetSchets(FilterSchet req) async {
-    debugPrint('Received question: $req with token');
+    debugPrint('Received question: $req');
+
+    var channel1 = ClientChannel(
+      '192.168.58.1',
+      port: 32769,
+      options: ChannelOptions(credentials: ChannelCredentials.insecure()),
+      // options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
+    );
+    debugPrint('channel $channel1');
+    stub = SchetGRPCServiceClient(channel1);
+
     final response = await stub.getSchets(req);
     debugPrint('Received question: $response with token');
     return response;

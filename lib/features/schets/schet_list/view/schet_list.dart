@@ -15,7 +15,7 @@ class _SchetListState extends State<SchetList> {
   var _result = ResultSchetListView.create();
   @override
   void initState() {
-    _result = SchetTerminalClient().GetSchets(_filter) as ResultSchetListView;
+    var _result1 = SchetTerminalClient().GetSchets(_filter);
     setState(() => _filter = _filter);
     setState(() => _result = _result);
     super.initState();
