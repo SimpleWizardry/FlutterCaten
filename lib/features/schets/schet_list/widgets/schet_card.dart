@@ -16,18 +16,40 @@ class SchetCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Card(
-        child: Column(
+        child:
+        Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-        Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            const SizedBox(width: 8),
-            Text("Номер: " + this.schet.number),
-            const SizedBox(width: 8),
-            Text("Сумма: " + this.schet.summa.toStringAsFixed(2)),
-          ]
-        ),
+            InkWell(
+              child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          const SizedBox(width: 8),
+                          Text("Номер: " + this.schet.number),
+                          const SizedBox(width: 8),
+                          Text("Сумма: " + this.schet.summa.toStringAsFixed(2)),
+                        ]
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          const SizedBox(width: 8),
+                          Text("Описание: " + this.schet.description),
+                        ]
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          const SizedBox(width: 8),
+                          SchetCardContract(schet: this.schet)
+                        ]
+                    )
+                  ]
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
@@ -56,11 +78,12 @@ class SchetCard extends StatelessWidget {
 }
 
 
-class SchetCardTitle extends StatelessWidget {
+class SchetCardContract extends StatelessWidget {
   final SchetListView schet;
 
-  const SchetCardTitle({super.key, required this.schet});
-  Widget getTitle(){
+  const SchetCardContract({super.key, required this.schet});
+  @override
+  Widget build(BuildContext context) {
     var str = "";
     if(this.schet == null){
       return Text(str);
@@ -70,10 +93,20 @@ class SchetCardTitle extends StatelessWidget {
       str += el.name + "; ";
     });
 
-    return Text(str);
-  }
-  @override
-  Widget build(BuildContext context) {
-    return getTitle();
+    double c_width = MediaQuery.of(context).size.width*0.8;
+
+    return new Container (
+      width: c_width,
+      child: new Column (
+        children: <Widget>[
+          new Text("Договора: ",
+            style: TextStyle(
+              fontWeight: FontWeight.w900
+            ),
+          ),
+          new Text (str)
+        ],
+      ),
+    );
   }
 }
