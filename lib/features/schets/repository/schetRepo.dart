@@ -9,8 +9,8 @@ class SchetTerminalClient {
 
   SchetTerminalClient() {
     channel = ClientChannel(
-      '192.168.1.84',
-      port: 32769,
+      '192.168.50.171',
+      port: 32773,
       options: ChannelOptions(credentials: ChannelCredentials.insecure()),
       // options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
     );
@@ -22,7 +22,7 @@ class SchetTerminalClient {
     var filter = FilterSchet.create();
     filter.allOrders = true;
     filter.skip = 0;
-    filter.take = 10;
+    filter.take = 20;
     filter.showAll = true;
     filter.schet = true;
     filter.withChildDocs = false;
@@ -32,6 +32,7 @@ class SchetTerminalClient {
 
   Future<ResultSchetListView> GetSchets(FilterSchet req) async {
     final response = await stub.getSchets(req);
+    debugPrint('filter: $req');
     debugPrint('Received question: $response with token');
     return response;
   }
