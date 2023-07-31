@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/generated/schet.pb.dart';
+
+import '../../../repositories/schet/schet_repository.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key, required this.title});
@@ -9,12 +12,29 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _counter = 0;
+  // int _counter = 0;
+  final clientApp = SchetTerminalClient();
+  // void _incrementCounter() {
+  //   setState(() {
+  //     _counter += 10;
+  //   });
+  // }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter += 10;
-    });
+  Future<void> _getSchets() async {
+    final filter = FilterSchet();
+    final response = await  clientApp.getSchets(filter);
+    debugPrint(response.toString());
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getSchets();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -29,25 +49,26 @@ class _HomeState extends State<Home> {
           style: theme.textTheme.titleMedium,
           ),
       ),
-      body: Center(
-        child: Column(          
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+      body: ListView.builder(itemBuilder: (context, i) => 
+        ListTile(
+          title: Text('schet')
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ), 
+      // body: Center(
+      //   child: Column(          
+      //     mainAxisAlignment: MainAxisAlignment.center,
+      //     children: <Widget>[
+      //       const Text(
+      //         'You have pushed the button this many times:',
+      //       ),
+      //       Text(
+      //         // '$_counter',
+      //         'dddd',
+      //         style: Theme.of(context).textTheme.headlineMedium,
+      //       ),
+      //     ],
+      //   ),
+      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../services/schet.pb.dart';
@@ -14,65 +13,79 @@ class SchetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Center(    
       child: Card(
-        child:
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            InkWell(
-              child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          const SizedBox(width: 8),
-                          Text("Номер: " + this.schet.number),
-                          const SizedBox(width: 8),
-                          Text("Сумма: " + this.schet.summa.toStringAsFixed(2)),
-                        ]
-                    ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          const SizedBox(width: 8),
-                          Text("Описание: " + this.schet.description),
-                        ]
-                    ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          const SizedBox(width: 8),
-                          SchetCardContract(schet: this.schet)
-                        ]
-                    )
-                  ]
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            // direction: Axis.horizontal,
+            children: <Widget>[
+              InkWell(
+                child: 
+                Wrap(
+                    direction: Axis.vertical,
+                    // mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      // Flexible(
+                        // child: 
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            const SizedBox(width: 8),
+                            Text("Номер: " + this.schet.number),
+                            const SizedBox(width: 8),
+                            Text("Сумма: " + this.schet.summa.toStringAsFixed(2)),
+                          ]
+                        // )
+                      ),
+                      // Flexible(
+                        // child: 
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            const SizedBox(width: 8),
+                            Text("Описание: " + this.schet.description),
+                          ]
+                        // )
+                      ),
+                      // Flexible(
+                      //   child: 
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            const SizedBox(width: 8),
+                            SchetCardContract(schet: this.schet)
+                          ]
+                        )
+                      // )
+                    ]
+                ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                TextButton(
-                  child: const Text('Скачать файл'),
-                  onPressed: () {/* ... */},
+              Flexible(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    TextButton(
+                      child: const Text('Скачать файл'),
+                      onPressed: () {/* ... */},
+                    ),
+                    const SizedBox(width: 8),
+                    TextButton(
+                      child: const Text('Отклонить'),
+                      onPressed: () {/* ... */},
+                    ),
+                    const SizedBox(width: 8),
+                    TextButton(
+                      child: const Text('Утвердить'),
+                      onPressed: () {/* ... */},
+                    ),
+                    const SizedBox(width: 8),
+                  ],
                 ),
-                const SizedBox(width: 8),
-                TextButton(
-                  child: const Text('Отклонить'),
-                  onPressed: () {/* ... */},
-                ),
-                const SizedBox(width: 8),
-                TextButton(
-                  child: const Text('Утвердить'),
-                  onPressed: () {/* ... */},
-                ),
-                const SizedBox(width: 8),
-              ],
-            ),
-          ],
+              )
+
+            ],
+          ),
         ),
-      ),
     );
   }
 }

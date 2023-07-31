@@ -1,23 +1,53 @@
-import 'package:dio/dio.dart';
+
 import 'package:flutter/material.dart';
+import 'package:grpc/grpc.dart';
 
-class LoginBody {
-  String Password = "12345";
-  bool RememberMe = false;
-  String Username = "pomogalov";
-  bool isViaDomain = false;
-}
+import '../../generated/account.pbgrpc.dart';
 
-class AuthRepository {
-  final data = LoginBody();
-  // {
-  //   password: "12345",
-  //   RememberMe: false,
-  //   Username: "pomogalov",
-  //   isViaDomain: false
-  // }
-  Future<void> login() async {
-    final response = await Dio().post('https://work.caten-company.ru/api/account/login', data: data);
-    debugPrint(response.toString());
+class AccountTerminalClient {
+  late final ClientChannel channel;
+  late final AccountGRPCServiceClient stub;
+
+
+  AccountTerminalClient() {
+    channel = ClientChannel(
+      '192.168.1.12',
+      port: 32769,
+      options: ChannelOptions(credentials: ChannelCredentials.insecure()),
+      // options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
+    );
+    stub = AccountGRPCServiceClient(channel);
+  }
+  
+  Future<LoginReply> login(LoginRequest req) async {
+    // debugPrint('Sending request: $req');
+    final response = await stub.login(req);
+    // debugPrint('Received question: $response with token' + response.jwt);
+    return response;
   }
 }
+
+
+// import 'package:dio/dio.dart';
+// import 'package:flutter/material.dart';
+
+// class LoginBody {
+//   String Password = "12345";
+//   bool RememberMe = false;
+//   String Username = "pomogalov";
+//   bool isViaDomain = false;
+// }
+
+// class AuthRepository {
+//   final data = LoginBody();
+//   // {
+//   //   password: "12345",
+//   //   RememberMe: false,
+//   //   Username: "pomogalov",
+//   //   isViaDomain: false
+//   // }
+//   Future<void> login() async {
+//     final response = await Dio().post('https://work.caten-company.ru/api/account/login', data: data);
+//     debugPrint(response.toString());
+//   }
+// }
