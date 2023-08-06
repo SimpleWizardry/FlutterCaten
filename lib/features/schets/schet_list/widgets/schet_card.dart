@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/features/schets/schet_list/widgets/schet_card_contract.dart';
+import 'package:myapp/features/schets/schet_list/widgets/schet_card_description.dart';
+import 'package:myapp/features/schets/schet_list/widgets/schet_sum_space.dart';
 
 import '../../services/schet.pb.dart';
+import 'button_schet_card.dart';
 
 
 
@@ -11,115 +15,158 @@ class SchetCard extends StatelessWidget {
   
   const SchetCard({super.key, required this.schet});
 
+
+
   @override
   Widget build(BuildContext context) {
-    return Center(    
+    return Center(
       child: Card(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            // direction: Axis.horizontal,
-            children: <Widget>[
-              InkWell(
-                child: 
-                Wrap(
-                    direction: Axis.vertical,
-                    // mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      // Flexible(
-                        // child: 
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            const SizedBox(width: 8),
-                            Text("Номер: " + this.schet.number),
-                            const SizedBox(width: 8),
-                            Text("Сумма: " + this.schet.summa.toStringAsFixed(2)),
-                          ]
-                        // )
-                      ),
-                      // Flexible(
-                        // child: 
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            const SizedBox(width: 8),
-                            Text("Описание: " + this.schet.description),
-                          ]
-                        // )
-                      ),
-                      // Flexible(
-                      //   child: 
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            const SizedBox(width: 8),
-                            SchetCardContract(schet: this.schet)
-                          ]
-                        )
-                      // )
-                    ]
-                ),
-              ),
-              Flexible(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+        child:
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Stack(
+            children: [ InkWell(
+              child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                   mainAxisAlignment: MainAxisAlignment.start,
+
                   children: <Widget>[
-                    TextButton(
-                      child: const Text('Скачать файл'),
-                      onPressed: () {/* ... */},
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          const SizedBox(width: 8),
+                          SchetSumSpace(schet: schet)
+                        ]
                     ),
-                    const SizedBox(width: 8),
-                    TextButton(
-                      child: const Text('Отклонить'),
-                      onPressed: () {/* ... */},
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          const SizedBox(width: 8),
+                          RichText(
+                            text:  TextSpan(
+                                text: "Номер: ",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 16,
+                                    color: Colors.black
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                      text: schet.number.trimLeft().trimRight(),
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.normal
+                                      )
+                                  )
+                                ]
+                            ),
+                          )
+                        ]
                     ),
-                    const SizedBox(width: 8),
-                    TextButton(
-                      child: const Text('Утвердить'),
-                      onPressed: () {/* ... */},
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          const SizedBox(width: 8),
+                          RichText(
+                            text:  TextSpan(
+                                text: "Дата: ",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 16,
+                                    color: Colors.black
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                      text: schet.date,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.normal
+                                      )
+                                  )
+                                ]
+                            ),
+                          )
+                        ]
                     ),
-                    const SizedBox(width: 8),
-                  ],
-                ),
-              )
-
-            ],
-          ),
-        ),
-    );
-  }
-}
-
-
-class SchetCardContract extends StatelessWidget {
-  final SchetListView schet;
-
-  const SchetCardContract({super.key, required this.schet});
-  @override
-  Widget build(BuildContext context) {
-    var str = "";
-    if(this.schet == null){
-      return Text(str);
-    }
-
-    this.schet.objectsAccountSchets.forEach((el) {
-      str += el.name + "; ";
-    });
-
-    double c_width = MediaQuery.of(context).size.width*0.8;
-
-    return new Container (
-      width: c_width,
-      child: new Column (
-        children: <Widget>[
-          new Text("Договора: ",
-            style: TextStyle(
-              fontWeight: FontWeight.w900
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          const SizedBox(width: 8),
+                          RichText(
+                            text:  TextSpan(
+                                text: "Статус: ",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 16,
+                                    color: Colors.black
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                      text: schet.status.name,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.normal
+                                      )
+                                  )
+                                ]
+                            ),
+                          ),
+                        ]
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          const SizedBox(width: 8),
+                          SchetCardDescription(schet: schet)
+                        ]
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          const SizedBox(width: 8),
+                          SchetCardContract(schet: schet)
+                        ]
+                    )
+                  ]
+              ),
             ),
-          ),
-          new Text (str)
-        ],
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                children:  [
+                  Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            width: 1,
+                            color: Colors.orangeAccent
+                        ),
+                        color: Colors.orangeAccent,
+                        borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))
+                    ),
+                    width: 40,
+                    height: 40,
+                    child: const Center(
+                    child: Icon(
+                      Icons.arrow_forward,
+                      size: 30.0,),
+                ),
+              )]
+              )]),
+            const Row(
+              children: [
+                SizedBox(
+                  height: 6,
+                )
+              ],
+            ),
+            ButtonSchetCard(schet: schet),
+          ],
+        ),
       ),
     );
   }
 }
+
+
+
+
+
+
+

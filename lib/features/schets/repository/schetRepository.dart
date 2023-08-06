@@ -2,16 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:grpc/grpc.dart';
 
 import '../services/schet.pbgrpc.dart';
+import 'abstractSchetRepository.dart';
 
-class SchetTerminalClient {
+class SchetRepository implements AbstractSchetRepository {
   late final ClientChannel channel;
   late final SchetGRPCServiceClient stub;
 
-  SchetTerminalClient() {
+  SchetRepository() {
     channel = ClientChannel(
       '192.168.1.12',
       port: 32769,
-      options: ChannelOptions(credentials: ChannelCredentials.insecure()),
+      options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
       // options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
     );
     debugPrint('channel $channel');
@@ -22,7 +23,7 @@ class SchetTerminalClient {
     var filter = FilterSchet.create();
     filter.allOrders = true;
     filter.skip = 0;
-    filter.take = 10;
+    filter.take = 20;
     filter.showAll = true;
     filter.schet = true;
     filter.withChildDocs = false;
@@ -32,7 +33,6 @@ class SchetTerminalClient {
 
   Future<ResultSchetListView> GetSchets(FilterSchet req) async {
     final response = await stub.getSchets(req);
-    debugPrint('Received question: $response with token');
     return response;
   }
 }
