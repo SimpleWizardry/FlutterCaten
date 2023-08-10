@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/features/schets/schet_list/widgets/schet_card_contract.dart';
 import 'package:myapp/features/schets/schet_list/widgets/schet_card_description.dart';

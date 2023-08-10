@@ -11,6 +11,7 @@ part 'schet_list_event.dart';
 class SchetListBloc extends Bloc<SchetListEvent, SchetListState> {
   SchetListBloc(this.schetRepository, this.filterSchet)
       : super(SchetListInitial()) {
+    
     on<LoadSchetList>((event, emit) async {
       try{
       if (event.init) {
@@ -18,7 +19,13 @@ class SchetListBloc extends Bloc<SchetListEvent, SchetListState> {
       } else {
         emit(SchetListLoading());
       }
+<<<<<<< HEAD
 
+=======
+      
+      filterSchet = event.filterSchet;
+      debugPrint(event.toString() + filterSchet.toString());
+>>>>>>> 331dc9018ed5e844625d7c37304d353922bd7b1e
       var _result =
           await GetIt.I<AbstractSchetRepository>().GetSchets(filterSchet);
       if (_result.succssed) {
@@ -38,5 +45,5 @@ class SchetListBloc extends Bloc<SchetListEvent, SchetListState> {
     });
   }
   final AbstractSchetRepository schetRepository;
-  final FilterSchet filterSchet;
+  FilterSchet filterSchet;
 }

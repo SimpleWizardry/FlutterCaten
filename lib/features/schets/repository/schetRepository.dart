@@ -10,9 +10,13 @@ class SchetRepository implements AbstractSchetRepository {
 
   SchetRepository() {
     channel = ClientChannel(
+<<<<<<< HEAD
       '192.168.136.31',
+=======
+      '192.168.1.12',
+>>>>>>> 331dc9018ed5e844625d7c37304d353922bd7b1e
       port: 32769,
-      options: ChannelOptions(credentials: ChannelCredentials.insecure()),
+      options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
       // options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
     );
     debugPrint('channel $channel');

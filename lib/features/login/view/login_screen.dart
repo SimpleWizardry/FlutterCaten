@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:grpc/grpc.dart';
-// import 'package:myapp/models/account/account.dart';
-import '../../../generated/account.pbgrpc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-// import '../../../../protos/account.proto';
-// import 'package:flutter/widgets.dart';
+
+import '../../../generated/account.pb.dart';
+import '../../../repositories/auth/auth_repository.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,51 +11,40 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-
-class AccountTerminalClient {
-  late final ClientChannel channel;
-  late final AccountGRPCServiceClient stub;
-
-
-  AccountTerminalClient() {
-    channel = ClientChannel(
-      '192.168.1.12',
-      port: 32769,
-      options: ChannelOptions(credentials: ChannelCredentials.insecure()),
-      // options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
-    );
-    stub = AccountGRPCServiceClient(channel);
-  }
-  
-  Future<LoginReply> login(LoginRequest req) async {
-    debugPrint('Sending request: $req');
-    final response = await stub.login(req);
-    debugPrint('Received question: $response with token' + response.jwt);
-    return response;
-  }
-}
 class _LoginScreenState extends State<LoginScreen> {
   String _username = "";
+  String _password = "";
+  bool _isLoading = false;
   final _storage = const FlutterSecureStorage();
   final _loginController = TextEditingController();
+  final _passwordController = TextEditingController();
 
- final clientApp = AccountTerminalClient();
+  final clientApp = AccountTerminalClient();
 
   Future<void> _addToken(String token) async {
     const String key = "token";
     final String value = token;
 
-    await _storage.write(
-      key: key,
-      value: value,
-      // iOptions: _getIOSOptions(),
-      aOptions: _getAndroidOptions(),
-    );
-    // _readAll();
+    debugPrint(token);
+    try {
+      await _storage.write(
+        key: key,
+        value: value,
+        // iOptions: _getIOSOptions(),
+        aOptions: _getAndroidOptions(),
+      );
+    }
+    catch(e) {
+      debugPrint(e.toString());
+    }
   }
 
   // IOSOptions _getIOSOptions() => IOSOptions(
   //   accountName: _getAccountName(),
+  // );
+
+  // IOSOptions _getIOSOptions() => IOSOptions(
+  //   accessibility: IOSAccessibility.first_unlock,
   // );
 
   AndroidOptions _getAndroidOptions() => const AndroidOptions(
@@ -69,11 +56,15 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     _loginController.text = _username;
     _loginController.addListener(_changeName);
+
+    _passwordController.text = _username;
+    _passwordController.addListener(_changePassword);
   }
 
   @override
   void dispose() {
     _loginController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -81,17 +72,33 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _username = _loginController.text);
   }
 
+  _changePassword(){
+    setState(() => _password = _passwordController.text);
+  }
+
   Future<void> _login() async {
-    debugPrint(_username.toString());
-    // final request = LoginRequestModel();
+    // _isLoading = true;
+    setState(() => _isLoading = true);
     final request = LoginRequest()
       ..login = _username.toString()
-      ..password = '12345';
+      ..password = _password.toString();
     final response = await  clientApp.login(request);
+    // _isLoading = false;
+    setState(() => _isLoading = false);
     if (response.succsecced == true) {
-      _addToken(response.jwt);
-      Navigator.of(context).pushNamed('/home');
+      await _addToken(response.jwt);
+      Navigator.of(context).pushNamed('/');
+      // Navigator.of(context).pushNamed('/schet-list');
     }
+    else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red[500],
+          content: const Text('Неверный логин или пароль')
+        )
+      );
+    }
+    // Navigator.of(context).pushNamed('/home');
   }
 
   @override
@@ -125,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             Padding(
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 controller: _loginController,
                 decoration: const InputDecoration(
@@ -134,13 +141,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     hintText: 'Ваш логин от портала катэн'),
               ),
             ),
-            const Padding(
-              padding:
-                  EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 15),
+            Padding(
+              padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 15),
               //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 obscureText: true,
-                decoration: InputDecoration(
+                controller: _passwordController,
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Пароль',
                     hintText: 'Пароль'),
@@ -155,27 +162,68 @@ class _LoginScreenState extends State<LoginScreen> {
             //     style: TextStyle(color: Colors.blue, fontSize: 15),
             //   ),
             // ),
-            Container(
-              height: 50,
-              width: 250,
-              decoration: BoxDecoration(
-                  color: Colors.blue[900],
-                  borderRadius: BorderRadius.circular(20)),
-              child: TextButton(
-                onPressed: () {
-                  // Navigator.of(context).pushNamed('/home');
-                  _login();
-                },
-                child: const Text(
-                  'Войти',
-                  style: TextStyle(color: Colors.white, fontSize: 25),
-                ),
-              ),
-            ),
+            _isLoading
+                ? const SizedBox(
+                    height: 25,
+                    width: 25,
+                    child: CircularProgressIndicator(),
+                  )
+                : 
+                Container(
+                  height: 50,
+                  width: 250,
+                  decoration: BoxDecoration(
+                    color: Colors.blue[900],
+                    borderRadius: BorderRadius.circular(20)),
+                    child: TextButton(
+                      onPressed: () {
+                      // Navigator.of(context).pushNamed('/home');
+                        _login();
+                      },
+                      child: const Text(
+                        'Войти',
+                        style: TextStyle(color: Colors.white, fontSize: 25),
+                      ),
+                    ),
+                  ),
+
+            // Container(
+            //   height: 50,
+            //   width: 250,
+            //   decoration: BoxDecoration(
+            //       color: Colors.blue[900],
+            //       borderRadius: BorderRadius.circular(20)),
+            //   // child: TextButton(
+            //   //   onPressed: () {
+            //   //     // Navigator.of(context).pushNamed('/home');
+            //   //     _login();
+            //   //   },
+            //   //   child: const Text(
+            //   //     'Войти',
+            //   //     style: TextStyle(color: Colors.white, fontSize: 25),
+            //   //   ),
+            //   // ),
+            //   child: _isLoading
+            //     ? const SizedBox(
+            //         height: 25,
+            //         width: 25,
+            //         child: CircularProgressIndicator(),
+            //       )
+            //     : TextButton(
+            //     onPressed: () {
+            //       // Navigator.of(context).pushNamed('/home');
+            //       _login();
+            //     },
+            //     child: const Text(
+            //       'Войти',
+            //       style: TextStyle(color: Colors.white, fontSize: 25),
+            //     ),
+            //   ),
+            // ),
             const SizedBox(
               height: 130,
             ),
-            const Text('New User? Create Account')
+            // const Text('New User? Create Account')
           ],
         ),
       ),

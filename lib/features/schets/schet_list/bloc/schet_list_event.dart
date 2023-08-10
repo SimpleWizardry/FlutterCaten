@@ -4,6 +4,7 @@ class SchetListEvent {}
 
 class LoadSchetList extends SchetListEvent {
   final bool init;
+  final FilterSchet filterSchet;
 
-  LoadSchetList(this.init);
+  LoadSchetList(this.init, this.filterSchet);
 }

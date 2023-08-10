@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/router/router.dart';
 import 'package:myapp/theme/theme.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -13,6 +14,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: commonTheme,
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate
+      ],
+      supportedLocales: [
+        const Locale('ru'),
+      ],
       // home: const Home(title: 'КАЛЮР mobile'),
       // routes: {
       //   '/': (context) => const LoginScreen(),
