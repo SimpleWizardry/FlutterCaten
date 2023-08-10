@@ -101,7 +101,7 @@ class _SchetListState extends State<SchetList> {
                             fontWeight: FontWeight.w900)),
                   );
                 },
-                itemCount:  list.length < _totalCount ?  list.length + 1 : list.length
+                itemCount:  state is SchetListSuccessed ?  list.length + 1 : list.length
               );
             }
           },

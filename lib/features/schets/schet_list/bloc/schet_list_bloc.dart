@@ -12,11 +12,13 @@ class SchetListBloc extends Bloc<SchetListEvent, SchetListState> {
   SchetListBloc(this.schetRepository, this.filterSchet)
       : super(SchetListInitial()) {
     on<LoadSchetList>((event, emit) async {
+      try{
       if (event.init) {
         emit(SchetListInitial());
       } else {
         emit(SchetListLoading());
       }
+
       var _result =
           await GetIt.I<AbstractSchetRepository>().GetSchets(filterSchet);
       if (_result.succssed) {
@@ -28,6 +30,10 @@ class SchetListBloc extends Bloc<SchetListEvent, SchetListState> {
       } else {
         emit(SchetListFailure(
             errorMessage: 'Не удалось получить данные с сервера'));
+      }
+    } catch(e){
+      emit(SchetListFailure(
+      errorMessage: 'Не удалось получить данные с сервера'));
       }
     });
   }

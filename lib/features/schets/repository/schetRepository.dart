@@ -10,7 +10,7 @@ class SchetRepository implements AbstractSchetRepository {
 
   SchetRepository() {
     channel = ClientChannel(
-      '192.168.250.1',
+      '192.168.136.31',
       port: 32769,
       options: ChannelOptions(credentials: ChannelCredentials.insecure()),
       // options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
@@ -19,7 +19,7 @@ class SchetRepository implements AbstractSchetRepository {
     stub = SchetGRPCServiceClient(channel);
   }
 
-  FilterSchet InitFilterSchet() {
+  FilterSchet InitFilterSchet([Object? filterSchet]) {
     var filter = FilterSchet.create();
     filter.allOrders = true;
     filter.skip = 0;
@@ -31,8 +31,46 @@ class SchetRepository implements AbstractSchetRepository {
     return filter;
   }
 
+  FilterResourceSchet initFilterResourceSchet() {
+    var filter = FilterResourceSchet.create();
+    filter.skip = 0;
+    filter.take = 20;
+    return filter;
+  }
+
+  FilterPaymentScheduleSchet initFilterPaymentScheduleSchet() {
+    var filter = FilterPaymentScheduleSchet.create();
+    filter.skip = 0;
+    filter.take = 20;
+    return filter;
+  }
+
   Future<ResultSchetListView> GetSchets(FilterSchet req) async {
     final response = await stub.getSchets(req);
+    return response;
+  }
+
+  Future<ResultSchetView> GetSchet(FilterSchet req) async {
+    final response = await stub.getSchet(req);
+    debugPrint('res ${response}');
+    return response;
+  }
+
+  Future<ResultResourceSchet> getResourcesSchet(FilterResourceSchet req) async {
+    final response = await stub.getResourcesSchet(req);
+    return response;
+  }
+
+  Future<ResultPaymentScheduleSchet> getPaymentSchedulesSchet(
+      FilterPaymentScheduleSchet req) async {
+    final response = await stub.getPaymentSchedulesSchet(req);
+    return response;
+  }
+
+  Future<ResultDownloadFile> DownloadFile(FileDTO req) async {
+    final response = await stub.downloadFile(req);
+    debugPrint('File: ${response}');
+
     return response;
   }
 }

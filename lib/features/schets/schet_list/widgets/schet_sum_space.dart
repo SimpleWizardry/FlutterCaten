@@ -4,63 +4,79 @@ import 'package:flutter/material.dart';
 import '../../services/schet.pb.dart';
 
 class SchetSumSpace extends StatelessWidget {
-  final SchetListView schet;
+  final double schetSum;
   final TextStyle? textStyle;
-  const SchetSumSpace({super.key, required this.schet, this.textStyle});
+  final String? currency;
+  final String? fieldName;
+  const SchetSumSpace(
+      {super.key,
+      required this.schetSum,
+      this.textStyle,
+      this.currency,
+      this.fieldName});
 
-  TextStyle getTextStyle(){
-    if(textStyle == null){
+  TextStyle getTextStyle() {
+    if (textStyle == null) {
       return const TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.normal,
-          fontSize: 18
-      );
+          color: Colors.black, fontWeight: FontWeight.normal, fontSize: 16);
     } else {
       return textStyle as TextStyle;
-    }}
+    }
+  }
 
-
+  getFieldName() {
+    if (fieldName == null) {
+      return 'Сумма: ';
+    } else {
+      return fieldName! + ': ';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     var summaSpace = "";
-    if(schet == null){
-      return  Text(summaSpace, style: getTextStyle());
+    if (schetSum == null) {
+      return Text(summaSpace, style: getTextStyle());
     }
 
-    if(schet.summa == null){
-      return  Text(summaSpace, style: getTextStyle());
-    }
-    var summArray = schet.summa.toStringAsFixed(2).split('.');
+    var summArray = schetSum.toStringAsFixed(2).split('.');
     var wholePart = summArray[0].split('').reversed.join();
     var i = 0;
     for (var index = 0; index < wholePart.length; index++) {
       i++;
       summaSpace += wholePart[index];
-      if(i== 3 && index != wholePart.length - 1){
+      if (i == 3 && index != wholePart.length - 1) {
         summaSpace += " ";
       }
     }
     summaSpace = summaSpace.split('').reversed.join();
-    if (summArray[1] == 2){
+    if (summArray[1] == 2) {
       summaSpace += ".${summArray[1]}";
     }
 
+    if (currency != null) {
+      if (currency == 'RUB') {
+        summaSpace += ' руб.';
+      }
+      if (currency == 'USD') {
+        summaSpace += ' дол.';
+      }
+      if (currency == 'EUR') {
+        summaSpace += ' евро';
+      }
+    }
+
     return RichText(
-      text:  TextSpan(
-          text: "Сумма: ",
+      text: TextSpan(
+          text: getFieldName(),
           style: const TextStyle(
-              fontWeight: FontWeight.w900,
-              fontSize: 18,
-              color: Colors.black
-          ),
+              fontWeight: FontWeight.w900, fontSize: 18, color: Colors.black),
           children: <TextSpan>[
             TextSpan(
-                text: summaSpace,
-                style: getTextStyle(),
+              text: summaSpace,
+              style: getTextStyle(),
             )
-          ]
-      ),
+          ]),
     );
   }
 }
