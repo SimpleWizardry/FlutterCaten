@@ -8,7 +8,7 @@ import '../../services/schet.pb.dart';
 import 'button_schet_card.dart';
 
 class SchetCard extends StatelessWidget {
-  final SchetListView schet;
+  final SchetView schet;
 
   const SchetCard({super.key, required this.schet});
 
@@ -135,7 +135,7 @@ class SchetCard extends StatelessWidget {
                 )
               ],
             ),
-            ButtonSchetCard(schet: schet as SchetView),
+            ButtonSchetCard(schet: schet),
           ],
         ),
       ),

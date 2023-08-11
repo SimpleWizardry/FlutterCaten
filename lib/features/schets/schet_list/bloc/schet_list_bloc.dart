@@ -11,36 +11,30 @@ part 'schet_list_event.dart';
 class SchetListBloc extends Bloc<SchetListEvent, SchetListState> {
   SchetListBloc(this.schetRepository, this.filterSchet)
       : super(SchetListInitial()) {
-    
     on<LoadSchetList>((event, emit) async {
-      try{
-      if (event.init) {
-        emit(SchetListInitial());
-      } else {
-        emit(SchetListLoading());
-      }
-<<<<<<< HEAD
+      try {
+        if (event.init) {
+          emit(SchetListInitial());
+        } else {
+          emit(SchetListLoading());
+        }
 
-=======
-      
-      filterSchet = event.filterSchet;
-      debugPrint(event.toString() + filterSchet.toString());
->>>>>>> 331dc9018ed5e844625d7c37304d353922bd7b1e
-      var _result =
-          await GetIt.I<AbstractSchetRepository>().GetSchets(filterSchet);
-      if (_result.succssed) {
-        debugPrint('dddd');
-        filterSchet.skip += 20;
-        emit(SchetListSuccessed(
-            listSchets: _result.list ,
-            totalCount: _result.count));
-      } else {
+        filterSchet = event.filterSchet;
+        debugPrint(event.toString() + filterSchet.toString());
+        var _result =
+            await GetIt.I<AbstractSchetRepository>().GetSchets(filterSchet);
+        if (_result.succssed) {
+          debugPrint('dddd');
+          filterSchet.skip += 20;
+          emit(SchetListSuccessed(
+              listSchets: _result.list, totalCount: _result.count));
+        } else {
+          emit(SchetListFailure(
+              errorMessage: 'Не удалось получить данные с сервера'));
+        }
+      } catch (e) {
         emit(SchetListFailure(
             errorMessage: 'Не удалось получить данные с сервера'));
-      }
-    } catch(e){
-      emit(SchetListFailure(
-      errorMessage: 'Не удалось получить данные с сервера'));
       }
     });
   }

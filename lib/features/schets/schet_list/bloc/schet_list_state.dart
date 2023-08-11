@@ -11,7 +11,7 @@ class SchetListSuccessed extends SchetListState {
     required this.totalCount,
     required this.listSchets,
   });
-  final List<SchetListView> listSchets;
+  final List<SchetView> listSchets;
   final int totalCount;
 }
 

@@ -17,7 +17,7 @@ import 'dart:typed_data' as $typed_data;
 const ResultSchetListView$json = {
   '1': 'ResultSchetListView',
   '2': [
-    {'1': 'List', '3': 1, '4': 3, '5': 11, '6': '.schet.SchetListView', '10': 'List'},
+    {'1': 'List', '3': 1, '4': 3, '5': 11, '6': '.schet.SchetView', '10': 'List'},
     {'1': 'Count', '3': 2, '4': 1, '5': 5, '10': 'Count'},
     {'1': 'Succssed', '3': 3, '4': 1, '5': 8, '10': 'Succssed'},
     {'1': 'Message', '3': 4, '4': 1, '5': 9, '10': 'Message'},
@@ -26,9 +26,9 @@ const ResultSchetListView$json = {
 
 /// Descriptor for `ResultSchetListView`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List resultSchetListViewDescriptor = $convert.base64Decode(
-    'ChNSZXN1bHRTY2hldExpc3RWaWV3EigKBExpc3QYASADKAsyFC5zY2hldC5TY2hldExpc3RWaW'
-    'V3UgRMaXN0EhQKBUNvdW50GAIgASgFUgVDb3VudBIaCghTdWNjc3NlZBgDIAEoCFIIU3VjY3Nz'
-    'ZWQSGAoHTWVzc2FnZRgEIAEoCVIHTWVzc2FnZQ==');
+    'ChNSZXN1bHRTY2hldExpc3RWaWV3EiQKBExpc3QYASADKAsyEC5zY2hldC5TY2hldFZpZXdSBE'
+    'xpc3QSFAoFQ291bnQYAiABKAVSBUNvdW50EhoKCFN1Y2Nzc2VkGAMgASgIUghTdWNjc3NlZBIY'
+    'CgdNZXNzYWdlGAQgASgJUgdNZXNzYWdl');
 
 @$core.Deprecated('Use resultSchetViewDescriptor instead')
 const ResultSchetView$json = {
@@ -154,33 +154,6 @@ final $typed_data.Uint8List filterSchetDescriptor = $convert.base64Decode(
     'bnQYGyABKAlSDU51bWJlclBheW1lbnQSIgoMUGF5bWVudENoZWNrGBwgASgFUgxQYXltZW50Q2'
     'hlY2sSIAoLV2FyZWhvdXNlSWQYHSABKAlSC1dhcmVob3VzZUlkEhwKCVNldFVzZXJJZBgeIAEo'
     'CVIJU2V0VXNlcklkEh4KClJlc291cmNlSWQYHyABKAlSClJlc291cmNlSWQ=');
-
-@$core.Deprecated('Use schetListViewDescriptor instead')
-const SchetListView$json = {
-  '1': 'SchetListView',
-  '2': [
-    {'1': 'Id', '3': 1, '4': 1, '5': 9, '10': 'Id'},
-    {'1': 'CounterpartyName', '3': 2, '4': 1, '5': 9, '10': 'CounterpartyName'},
-    {'1': 'ObjectsAccountSchets', '3': 3, '4': 3, '5': 11, '6': '.schet.ObjectAccountSchet', '10': 'ObjectsAccountSchets'},
-    {'1': 'Summa', '3': 4, '4': 1, '5': 1, '10': 'Summa'},
-    {'1': 'Date', '3': 5, '4': 1, '5': 9, '10': 'Date'},
-    {'1': 'Number', '3': 6, '4': 1, '5': 9, '10': 'Number'},
-    {'1': 'Description', '3': 7, '4': 1, '5': 9, '10': 'Description'},
-    {'1': 'Status', '3': 8, '4': 1, '5': 11, '6': '.schet.StatusSchetDTO', '10': 'Status'},
-    {'1': 'Currency', '3': 9, '4': 1, '5': 9, '10': 'Currency'},
-    {'1': 'File', '3': 10, '4': 1, '5': 11, '6': '.schet.FileDTO', '10': 'File'},
-  ],
-};
-
-/// Descriptor for `SchetListView`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List schetListViewDescriptor = $convert.base64Decode(
-    'Cg1TY2hldExpc3RWaWV3Eg4KAklkGAEgASgJUgJJZBIqChBDb3VudGVycGFydHlOYW1lGAIgAS'
-    'gJUhBDb3VudGVycGFydHlOYW1lEk0KFE9iamVjdHNBY2NvdW50U2NoZXRzGAMgAygLMhkuc2No'
-    'ZXQuT2JqZWN0QWNjb3VudFNjaGV0UhRPYmplY3RzQWNjb3VudFNjaGV0cxIUCgVTdW1tYRgEIA'
-    'EoAVIFU3VtbWESEgoERGF0ZRgFIAEoCVIERGF0ZRIWCgZOdW1iZXIYBiABKAlSBk51bWJlchIg'
-    'CgtEZXNjcmlwdGlvbhgHIAEoCVILRGVzY3JpcHRpb24SLQoGU3RhdHVzGAggASgLMhUuc2NoZX'
-    'QuU3RhdHVzU2NoZXREVE9SBlN0YXR1cxIaCghDdXJyZW5jeRgJIAEoCVIIQ3VycmVuY3kSIgoE'
-    'RmlsZRgKIAEoCzIOLnNjaGV0LkZpbGVEVE9SBEZpbGU=');
 
 @$core.Deprecated('Use objectAccountSchetDescriptor instead')
 const ObjectAccountSchet$json = {

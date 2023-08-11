@@ -51,6 +51,9 @@ class _ButtonSchetCardState extends State<ButtonSchetCard> {
                       ),
                     ),
                   ),
+                  onTap: () {
+                    downloadSchetFile();
+                  },
                 ),
                 InkWell(
                     child: Container(

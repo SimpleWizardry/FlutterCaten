@@ -14,7 +14,7 @@ service SchetGRPCService {
 }
 
 message ResultSchetListView {
-	repeated SchetListView List = 1;
+	repeated SchetView List = 1;
 	int32 Count = 2;
 	bool Succssed = 3;
 	string Message = 4;
@@ -87,18 +87,7 @@ message FilterSchet {
 	
 }
 
-message SchetListView {
-	string Id = 1;
-	string CounterpartyName = 2;
-	repeated ObjectAccountSchet ObjectsAccountSchets = 3;
-	double Summa = 4;
-	string Date = 5;
-	string Number = 6;
-	string Description = 7;
-	StatusSchetDTO Status = 8;
-	string Currency = 9;
-	FileDTO File = 10;
-}
+
 
 message ObjectAccountSchet {
 	string Id = 1;

@@ -20,7 +20,7 @@ class ResultSchetListView extends $pb.GeneratedMessage {
   factory ResultSchetListView.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ResultSchetListView', package: const $pb.PackageName(_omitMessageNames ? '' : 'schet'), createEmptyInstance: create)
-    ..pc<SchetListView>(1, _omitFieldNames ? '' : 'List', $pb.PbFieldType.PM, protoName: 'List', subBuilder: SchetListView.create)
+    ..pc<SchetView>(1, _omitFieldNames ? '' : 'List', $pb.PbFieldType.PM, protoName: 'List', subBuilder: SchetView.create)
     ..a<$core.int>(2, _omitFieldNames ? '' : 'Count', $pb.PbFieldType.O3, protoName: 'Count')
     ..aOB(3, _omitFieldNames ? '' : 'Succssed', protoName: 'Succssed')
     ..aOS(4, _omitFieldNames ? '' : 'Message', protoName: 'Message')
@@ -49,7 +49,7 @@ class ResultSchetListView extends $pb.GeneratedMessage {
   static ResultSchetListView? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<SchetListView> get list => $_getList(0);
+  $core.List<SchetView> get list => $_getList(0);
 
   @$pb.TagNumber(2)
   $core.int get count => $_getIZ(1);
@@ -655,136 +655,6 @@ class FilterSchet extends $pb.GeneratedMessage {
   $core.bool hasResourceId() => $_has(30);
   @$pb.TagNumber(31)
   void clearResourceId() => clearField(31);
-}
-
-class SchetListView extends $pb.GeneratedMessage {
-  factory SchetListView() => create();
-  SchetListView._() : super();
-  factory SchetListView.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory SchetListView.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'SchetListView', package: const $pb.PackageName(_omitMessageNames ? '' : 'schet'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'Id', protoName: 'Id')
-    ..aOS(2, _omitFieldNames ? '' : 'CounterpartyName', protoName: 'CounterpartyName')
-    ..pc<ObjectAccountSchet>(3, _omitFieldNames ? '' : 'ObjectsAccountSchets', $pb.PbFieldType.PM, protoName: 'ObjectsAccountSchets', subBuilder: ObjectAccountSchet.create)
-    ..a<$core.double>(4, _omitFieldNames ? '' : 'Summa', $pb.PbFieldType.OD, protoName: 'Summa')
-    ..aOS(5, _omitFieldNames ? '' : 'Date', protoName: 'Date')
-    ..aOS(6, _omitFieldNames ? '' : 'Number', protoName: 'Number')
-    ..aOS(7, _omitFieldNames ? '' : 'Description', protoName: 'Description')
-    ..aOM<StatusSchetDTO>(8, _omitFieldNames ? '' : 'Status', protoName: 'Status', subBuilder: StatusSchetDTO.create)
-    ..aOS(9, _omitFieldNames ? '' : 'Currency', protoName: 'Currency')
-    ..aOM<FileDTO>(10, _omitFieldNames ? '' : 'File', protoName: 'File', subBuilder: FileDTO.create)
-    ..hasRequiredFields = false
-  ;
-
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  SchetListView clone() => SchetListView()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  SchetListView copyWith(void Function(SchetListView) updates) => super.copyWith((message) => updates(message as SchetListView)) as SchetListView;
-
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static SchetListView create() => SchetListView._();
-  SchetListView createEmptyInstance() => create();
-  static $pb.PbList<SchetListView> createRepeated() => $pb.PbList<SchetListView>();
-  @$core.pragma('dart2js:noInline')
-  static SchetListView getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SchetListView>(create);
-  static SchetListView? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get id => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set id($core.String v) { $_setString(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearId() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.String get counterpartyName => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set counterpartyName($core.String v) { $_setString(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasCounterpartyName() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearCounterpartyName() => clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.List<ObjectAccountSchet> get objectsAccountSchets => $_getList(2);
-
-  @$pb.TagNumber(4)
-  $core.double get summa => $_getN(3);
-  @$pb.TagNumber(4)
-  set summa($core.double v) { $_setDouble(3, v); }
-  @$pb.TagNumber(4)
-  $core.bool hasSumma() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearSumma() => clearField(4);
-
-  @$pb.TagNumber(5)
-  $core.String get date => $_getSZ(4);
-  @$pb.TagNumber(5)
-  set date($core.String v) { $_setString(4, v); }
-  @$pb.TagNumber(5)
-  $core.bool hasDate() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearDate() => clearField(5);
-
-  @$pb.TagNumber(6)
-  $core.String get number => $_getSZ(5);
-  @$pb.TagNumber(6)
-  set number($core.String v) { $_setString(5, v); }
-  @$pb.TagNumber(6)
-  $core.bool hasNumber() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearNumber() => clearField(6);
-
-  @$pb.TagNumber(7)
-  $core.String get description => $_getSZ(6);
-  @$pb.TagNumber(7)
-  set description($core.String v) { $_setString(6, v); }
-  @$pb.TagNumber(7)
-  $core.bool hasDescription() => $_has(6);
-  @$pb.TagNumber(7)
-  void clearDescription() => clearField(7);
-
-  @$pb.TagNumber(8)
-  StatusSchetDTO get status => $_getN(7);
-  @$pb.TagNumber(8)
-  set status(StatusSchetDTO v) { setField(8, v); }
-  @$pb.TagNumber(8)
-  $core.bool hasStatus() => $_has(7);
-  @$pb.TagNumber(8)
-  void clearStatus() => clearField(8);
-  @$pb.TagNumber(8)
-  StatusSchetDTO ensureStatus() => $_ensure(7);
-
-  @$pb.TagNumber(9)
-  $core.String get currency => $_getSZ(8);
-  @$pb.TagNumber(9)
-  set currency($core.String v) { $_setString(8, v); }
-  @$pb.TagNumber(9)
-  $core.bool hasCurrency() => $_has(8);
-  @$pb.TagNumber(9)
-  void clearCurrency() => clearField(9);
-
-  @$pb.TagNumber(10)
-  FileDTO get file => $_getN(9);
-  @$pb.TagNumber(10)
-  set file(FileDTO v) { setField(10, v); }
-  @$pb.TagNumber(10)
-  $core.bool hasFile() => $_has(9);
-  @$pb.TagNumber(10)
-  void clearFile() => clearField(10);
-  @$pb.TagNumber(10)
-  FileDTO ensureFile() => $_ensure(9);
 }
 
 class ObjectAccountSchet extends $pb.GeneratedMessage {
