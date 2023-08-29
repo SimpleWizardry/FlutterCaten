@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+option csharp_namespace = "CalurMobileService";
+
+package account;
+
+// The greeting service definition.
+service AccountGRPCService {
+  // Sends a greeting
+  rpc Login (LoginRequest) returns (LoginReply);
+}
+
+// The request message containing the user's name.
+message LoginRequest {
+  string login = 1;
+  string password = 2;
+}
+
+// The response message containing the greetings.
+message LoginReply {
+  bool succsecced = 1;
+  string messageServer = 2;
+  string jwt = 3;
+  User user = 4;
+}
+
+message User {
+    string Id = 1;
+    string LastName = 2;
+    string MiddleName = 3;
+    string FirstName = 4;
+    string UserName = 5;
+    string Email = 6;
+    repeated Role Roles = 7;
+    string User1CId = 8;
+    string FullName = 9;
+    bool Fired = 10;
+
+}
+
+message Role {
+    string Id = 1;
+    string Info = 2;
+    string Name = 3;
+}

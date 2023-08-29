@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:myapp/features/schets/services/schet.pb.dart';
 
+import '../../../../generated/account.pb.dart';
+import '../../../../repositories/auth/user_repository.dart';
 import '../../repository/abstractSchetRepository.dart';
 import '../bloc/schet_list_bloc.dart';
 import '../widgets/schet_card.dart';
@@ -19,6 +23,8 @@ class _SchetListState extends State<SchetList> {
   final ScrollController _scrollController = ScrollController();
   var _filter = GetIt.I<AbstractSchetRepository>().InitFilterSchet();
   var _result = ResultSchetListView.create();
+  List<String> _roles = [];
+  String _userId = "";
   final _schetListBloc = SchetListBloc(GetIt.I<AbstractSchetRepository>(),
       GetIt.I<AbstractSchetRepository>().InitFilterSchet());
   var _totalCount = 0;
@@ -33,9 +39,31 @@ class _SchetListState extends State<SchetList> {
 
   DateTime _dateFrom = DateTime.now();
   DateTime _dateTo = DateTime.now();
+  setRoles() async {
+    final String? userString = await _storage.read(
+      key: "roles",
+      aOptions: _getAndroidOptions(),
+    );
+
+    _roles = List<String>.from(json.decode(userString as String));
+    debugPrint('$_roles');
+  }
+
+  setUserId() async {
+    final String? userString = await _storage.read(
+      key: "userId",
+      aOptions: _getAndroidOptions(),
+    );
+
+    _userId = userString as String;
+    debugPrint('$_userId');
+  }
 
   @override
   void initState() {
+    setUserId();
+    setRoles();
+    _filter.userId = _userId;
     _schetListBloc.add(LoadSchetList(true, _filter));
     setState(() => _filter = _filter);
     setState(() => _result = _result);
@@ -308,7 +336,22 @@ class _SchetListState extends State<SchetList> {
                 itemBuilder: (context, i) {
                   if (state is SchetListSuccessed) {
                     if (i < list.length) {
-                      return SchetCard(schet: list[i]);
+                      return SchetCard(
+                        schet: list[i],
+                        roles: _roles,
+                        userId: _userId,
+                        onUpdate: () {
+                          if (i == 0) {
+                            _filter.skip = 0;
+                            list = [];
+                            _schetListBloc.add(LoadSchetList(true, _filter));
+                          } else {
+                            list = list.skip(0).take(i).toList();
+                            _filter.skip = i;
+                            _schetListBloc.add(LoadSchetList(false, _filter));
+                          }
+                        },
+                      );
                     }
                   }
                   if (state is SchetListLoading) {

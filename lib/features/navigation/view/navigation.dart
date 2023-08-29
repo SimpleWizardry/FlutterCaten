@@ -22,7 +22,7 @@ class _NavigationState extends State<Navigation> {
     );
     debugPrint(token);
     if (token == null) {
-      //Navigator.of(context).pushNamed('/login');
+      Navigator.of(context).pushNamed('/login');
     }
   }
 

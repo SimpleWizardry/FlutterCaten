@@ -10,8 +10,8 @@ class SchetRepository implements AbstractSchetRepository {
 
   SchetRepository() {
     channel = ClientChannel(
-      '0.0.0.0',
-      port: 5000,
+      '192.168.137.142',
+      port: 32771,
       options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
       // options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
     );
@@ -27,7 +27,6 @@ class SchetRepository implements AbstractSchetRepository {
     filter.showAll = true;
     filter.schet = true;
     filter.withChildDocs = false;
-    filter.userId = "c5ad596e-0fc7-4afa-80e0-b3c979a4012c";
     return filter;
   }
 
@@ -47,6 +46,7 @@ class SchetRepository implements AbstractSchetRepository {
 
   Future<ResultSchetListView> GetSchets(FilterSchet req) async {
     final response = await stub.getSchets(req);
+    debugPrint('File: ${response}');
     return response;
   }
 
@@ -72,6 +72,12 @@ class SchetRepository implements AbstractSchetRepository {
     debugPrint('File: ${req}');
     debugPrint('File: ${response}');
 
+    return response;
+  }
+
+  Future<ResultChangeStatusSchet> ChangeStatusSchet(
+      FilterChangeStatus req) async {
+    final response = await stub.changeStatusSchet(req);
     return response;
   }
 }

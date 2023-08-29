@@ -4,7 +4,7 @@
 //
 // @dart = 2.12
 
-// ignore_for_file: annotate_overrides, camel_case_types
+// ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
 // ignore_for_file: non_constant_identifier_names, prefer_final_fields
 // ignore_for_file: unnecessary_import, unnecessary_this, unused_import
@@ -187,6 +187,7 @@ const SchetView$json = {
     {'1': 'File', '3': 10, '4': 1, '5': 11, '6': '.schet.FileDTO', '10': 'File'},
     {'1': 'Status', '3': 11, '4': 1, '5': 11, '6': '.schet.StatusSchetDTO', '10': 'Status'},
     {'1': 'Currency', '3': 12, '4': 1, '5': 9, '10': 'Currency'},
+    {'1': 'CreaterId', '3': 13, '4': 1, '5': 9, '10': 'CreaterId'},
   ],
 };
 
@@ -200,7 +201,7 @@ final $typed_data.Uint8List schetViewDescriptor = $convert.base64Decode(
     'JlYXRlck5hbWUYCCABKAlSC0NyZWF0ZXJOYW1lEiAKC0Rlc2NyaXB0aW9uGAkgASgJUgtEZXNj'
     'cmlwdGlvbhIiCgRGaWxlGAogASgLMg4uc2NoZXQuRmlsZURUT1IERmlsZRItCgZTdGF0dXMYCy'
     'ABKAsyFS5zY2hldC5TdGF0dXNTY2hldERUT1IGU3RhdHVzEhoKCEN1cnJlbmN5GAwgASgJUghD'
-    'dXJyZW5jeQ==');
+    'dXJyZW5jeRIcCglDcmVhdGVySWQYDSABKAlSCUNyZWF0ZXJJZA==');
 
 @$core.Deprecated('Use filterFileDescriptor instead')
 const FilterFile$json = {

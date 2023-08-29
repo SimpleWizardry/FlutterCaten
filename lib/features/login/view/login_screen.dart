@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -33,8 +35,43 @@ class _LoginScreenState extends State<LoginScreen> {
         // iOptions: _getIOSOptions(),
         aOptions: _getAndroidOptions(),
       );
+    } catch (e) {
+      debugPrint(e.toString());
     }
-    catch(e) {
+  }
+
+  Future<void> _addRoles(User user) async {
+    const String key = "roles";
+    List<String> roles = [];
+    for (var i = 0; i < user.roles.length; i++) {
+      roles.add(user.roles[i].name);
+    }
+    debugPrint('$user');
+    final String value = json.encode(roles);
+    debugPrint(value);
+    try {
+      await _storage.write(
+        key: key,
+        value: value,
+        // iOptions: _getIOSOptions(),
+        aOptions: _getAndroidOptions(),
+      );
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  Future<void> _addUserId(String userId) async {
+    const String key = "userId";
+    debugPrint(userId);
+    try {
+      await _storage.write(
+        key: key,
+        value: userId,
+        // iOptions: _getIOSOptions(),
+        aOptions: _getAndroidOptions(),
+      );
+    } catch (e) {
       debugPrint(e.toString());
     }
   }
@@ -48,8 +85,8 @@ class _LoginScreenState extends State<LoginScreen> {
   // );
 
   AndroidOptions _getAndroidOptions() => const AndroidOptions(
-    encryptedSharedPreferences: true,
-  );
+        encryptedSharedPreferences: true,
+      );
 
   @override
   void initState() {
@@ -68,11 +105,11 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  _changeName(){
+  _changeName() {
     setState(() => _username = _loginController.text);
   }
 
-  _changePassword(){
+  _changePassword() {
     setState(() => _password = _passwordController.text);
   }
 
@@ -82,21 +119,19 @@ class _LoginScreenState extends State<LoginScreen> {
     final request = LoginRequest()
       ..login = _username.toString()
       ..password = _password.toString();
-    final response = await  clientApp.login(request);
+    final response = await clientApp.login(request);
     // _isLoading = false;
     setState(() => _isLoading = false);
     if (response.succsecced == true) {
       await _addToken(response.jwt);
+      await _addRoles(response.user);
+      await _addUserId(response.user.id);
       Navigator.of(context).pushNamed('/');
       // Navigator.of(context).pushNamed('/schet-list');
-    }
-    else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: Colors.red[500],
-          content: const Text('Неверный логин или пароль')
-        )
-      );
+          content: const Text('Неверный логин или пароль')));
     }
     // Navigator.of(context).pushNamed('/home');
   }
@@ -142,7 +177,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 15),
+              padding: const EdgeInsets.only(
+                  left: 15.0, right: 15.0, top: 15, bottom: 15),
               //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 obscureText: true,
@@ -168,16 +204,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: 25,
                     child: CircularProgressIndicator(),
                   )
-                : 
-                Container(
-                  height: 50,
-                  width: 250,
-                  decoration: BoxDecoration(
-                    color: Colors.blue[900],
-                    borderRadius: BorderRadius.circular(20)),
+                : Container(
+                    height: 50,
+                    width: 250,
+                    decoration: BoxDecoration(
+                        color: Colors.blue[900],
+                        borderRadius: BorderRadius.circular(20)),
                     child: TextButton(
                       onPressed: () {
-                      // Navigator.of(context).pushNamed('/home');
+                        // Navigator.of(context).pushNamed('/home');
                         _login();
                       },
                       child: const Text(

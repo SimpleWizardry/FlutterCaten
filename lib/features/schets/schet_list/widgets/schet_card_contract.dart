@@ -6,8 +6,11 @@ import '../../services/schet.pb.dart';
 class SchetCardContract extends StatelessWidget {
   final List<ObjectAccountSchet> objectAccountSchets;
   final bool shot;
-  const SchetCardContract(
-      {super.key, required this.objectAccountSchets, required this.shot});
+  const SchetCardContract({
+    super.key,
+    required this.objectAccountSchets,
+    required this.shot,
+  });
   @override
   Widget build(BuildContext context) {
     var str = "";

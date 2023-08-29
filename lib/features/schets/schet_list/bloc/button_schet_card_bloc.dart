@@ -34,6 +34,27 @@ class ButtonSchetCardBloc
         emit(BSCDownlodFuile(errorMessage: 'Не удалось скачать файл'));
       }
     });
+
+    on<BSCChangeStatusInitEvent>((event, emit) async {
+      emit(BSCChangeStatusInit());
+    });
+
+    on<BSCChangeStatus>((event, emit) async {
+      try {
+        emit(BSCChangeStatusLoading());
+        var _result = await GetIt.I<AbstractSchetRepository>()
+            .ChangeStatusSchet(event.filter);
+        if (_result.succssed) {
+          debugPrint('Status!: ${_result.status}');
+          emit(BSCChangeStatusSuccessed(status: _result.status));
+        } else {
+          emit(
+              BSCChangeStatusFuile(errorMessage: 'Не удалось изменить статус'));
+        }
+      } catch (e) {
+        emit(BSCChangeStatusFuile(errorMessage: 'Не удалось изменить статус'));
+      }
+    });
   }
   final AbstractSchetRepository schetRepository;
 }

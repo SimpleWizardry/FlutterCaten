@@ -4,7 +4,7 @@
 //
 // @dart = 2.12
 
-// ignore_for_file: annotate_overrides, camel_case_types
+// ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
 // ignore_for_file: non_constant_identifier_names, prefer_final_fields
 // ignore_for_file: unnecessary_import, unnecessary_this, unused_import
@@ -14,7 +14,27 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 class ResultSchetListView extends $pb.GeneratedMessage {
-  factory ResultSchetListView() => create();
+  factory ResultSchetListView({
+    $core.Iterable<SchetView>? list,
+    $core.int? count,
+    $core.bool? succssed,
+    $core.String? message,
+  }) {
+    final $result = create();
+    if (list != null) {
+      $result.list.addAll(list);
+    }
+    if (count != null) {
+      $result.count = count;
+    }
+    if (succssed != null) {
+      $result.succssed = succssed;
+    }
+    if (message != null) {
+      $result.message = message;
+    }
+    return $result;
+  }
   ResultSchetListView._() : super();
   factory ResultSchetListView.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory ResultSchetListView.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
@@ -80,7 +100,23 @@ class ResultSchetListView extends $pb.GeneratedMessage {
 }
 
 class ResultSchetView extends $pb.GeneratedMessage {
-  factory ResultSchetView() => create();
+  factory ResultSchetView({
+    SchetView? schet,
+    $core.bool? succssed,
+    $core.String? message,
+  }) {
+    final $result = create();
+    if (schet != null) {
+      $result.schet = schet;
+    }
+    if (succssed != null) {
+      $result.succssed = succssed;
+    }
+    if (message != null) {
+      $result.message = message;
+    }
+    return $result;
+  }
   ResultSchetView._() : super();
   factory ResultSchetView.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory ResultSchetView.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
@@ -144,7 +180,27 @@ class ResultSchetView extends $pb.GeneratedMessage {
 }
 
 class ResultResourceSchet extends $pb.GeneratedMessage {
-  factory ResultResourceSchet() => create();
+  factory ResultResourceSchet({
+    $core.Iterable<ResourceSchet>? resources,
+    $core.bool? succssed,
+    $core.String? message,
+    $core.int? count,
+  }) {
+    final $result = create();
+    if (resources != null) {
+      $result.resources.addAll(resources);
+    }
+    if (succssed != null) {
+      $result.succssed = succssed;
+    }
+    if (message != null) {
+      $result.message = message;
+    }
+    if (count != null) {
+      $result.count = count;
+    }
+    return $result;
+  }
   ResultResourceSchet._() : super();
   factory ResultResourceSchet.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory ResultResourceSchet.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
@@ -210,7 +266,27 @@ class ResultResourceSchet extends $pb.GeneratedMessage {
 }
 
 class ResultPaymentScheduleSchet extends $pb.GeneratedMessage {
-  factory ResultPaymentScheduleSchet() => create();
+  factory ResultPaymentScheduleSchet({
+    $core.Iterable<PaymentScheduleSchetDTO>? paymentSchedules,
+    $core.bool? succssed,
+    $core.String? message,
+    $core.int? count,
+  }) {
+    final $result = create();
+    if (paymentSchedules != null) {
+      $result.paymentSchedules.addAll(paymentSchedules);
+    }
+    if (succssed != null) {
+      $result.succssed = succssed;
+    }
+    if (message != null) {
+      $result.message = message;
+    }
+    if (count != null) {
+      $result.count = count;
+    }
+    return $result;
+  }
   ResultPaymentScheduleSchet._() : super();
   factory ResultPaymentScheduleSchet.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory ResultPaymentScheduleSchet.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
@@ -276,7 +352,23 @@ class ResultPaymentScheduleSchet extends $pb.GeneratedMessage {
 }
 
 class ResultDownloadFile extends $pb.GeneratedMessage {
-  factory ResultDownloadFile() => create();
+  factory ResultDownloadFile({
+    FileDTO? file,
+    $core.bool? succssed,
+    $core.String? message,
+  }) {
+    final $result = create();
+    if (file != null) {
+      $result.file = file;
+    }
+    if (succssed != null) {
+      $result.succssed = succssed;
+    }
+    if (message != null) {
+      $result.message = message;
+    }
+    return $result;
+  }
   ResultDownloadFile._() : super();
   factory ResultDownloadFile.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory ResultDownloadFile.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
@@ -340,7 +432,135 @@ class ResultDownloadFile extends $pb.GeneratedMessage {
 }
 
 class FilterSchet extends $pb.GeneratedMessage {
-  factory FilterSchet() => create();
+  factory FilterSchet({
+    $core.bool? allOrders,
+    $core.Iterable<$core.String>? budgetIds,
+    $core.Iterable<$core.String>? documentId,
+    $core.String? matchingStatus,
+    $core.Iterable<$core.String>? messages,
+    $core.bool? schet,
+    $core.Iterable<$core.String>? schetStatus,
+    $core.bool? showAll,
+    $core.bool? showFromContract,
+    $core.int? skip,
+    $core.int? take,
+    $core.String? userId,
+    $core.bool? withChildDocs,
+    $core.String? id,
+    $core.String? nomenclatureName,
+    $core.String? contractId,
+    $core.String? dateFrom,
+    $core.String? dateTo,
+    $core.String? payingOrganizationId,
+    $core.String? applicationUserId,
+    $core.String? directoryCounterpartiesId,
+    $core.String? numberSchet,
+    $core.String? description,
+    $core.String? numberTTNOrOrder,
+    $core.double? summaMin,
+    $core.double? summaMax,
+    $core.String? numberPayment,
+    $core.int? paymentCheck,
+    $core.String? warehouseId,
+    $core.String? setUserId,
+    $core.String? resourceId,
+  }) {
+    final $result = create();
+    if (allOrders != null) {
+      $result.allOrders = allOrders;
+    }
+    if (budgetIds != null) {
+      $result.budgetIds.addAll(budgetIds);
+    }
+    if (documentId != null) {
+      $result.documentId.addAll(documentId);
+    }
+    if (matchingStatus != null) {
+      $result.matchingStatus = matchingStatus;
+    }
+    if (messages != null) {
+      $result.messages.addAll(messages);
+    }
+    if (schet != null) {
+      $result.schet = schet;
+    }
+    if (schetStatus != null) {
+      $result.schetStatus.addAll(schetStatus);
+    }
+    if (showAll != null) {
+      $result.showAll = showAll;
+    }
+    if (showFromContract != null) {
+      $result.showFromContract = showFromContract;
+    }
+    if (skip != null) {
+      $result.skip = skip;
+    }
+    if (take != null) {
+      $result.take = take;
+    }
+    if (userId != null) {
+      $result.userId = userId;
+    }
+    if (withChildDocs != null) {
+      $result.withChildDocs = withChildDocs;
+    }
+    if (id != null) {
+      $result.id = id;
+    }
+    if (nomenclatureName != null) {
+      $result.nomenclatureName = nomenclatureName;
+    }
+    if (contractId != null) {
+      $result.contractId = contractId;
+    }
+    if (dateFrom != null) {
+      $result.dateFrom = dateFrom;
+    }
+    if (dateTo != null) {
+      $result.dateTo = dateTo;
+    }
+    if (payingOrganizationId != null) {
+      $result.payingOrganizationId = payingOrganizationId;
+    }
+    if (applicationUserId != null) {
+      $result.applicationUserId = applicationUserId;
+    }
+    if (directoryCounterpartiesId != null) {
+      $result.directoryCounterpartiesId = directoryCounterpartiesId;
+    }
+    if (numberSchet != null) {
+      $result.numberSchet = numberSchet;
+    }
+    if (description != null) {
+      $result.description = description;
+    }
+    if (numberTTNOrOrder != null) {
+      $result.numberTTNOrOrder = numberTTNOrOrder;
+    }
+    if (summaMin != null) {
+      $result.summaMin = summaMin;
+    }
+    if (summaMax != null) {
+      $result.summaMax = summaMax;
+    }
+    if (numberPayment != null) {
+      $result.numberPayment = numberPayment;
+    }
+    if (paymentCheck != null) {
+      $result.paymentCheck = paymentCheck;
+    }
+    if (warehouseId != null) {
+      $result.warehouseId = warehouseId;
+    }
+    if (setUserId != null) {
+      $result.setUserId = setUserId;
+    }
+    if (resourceId != null) {
+      $result.resourceId = resourceId;
+    }
+    return $result;
+  }
   FilterSchet._() : super();
   factory FilterSchet.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory FilterSchet.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
@@ -658,7 +878,27 @@ class FilterSchet extends $pb.GeneratedMessage {
 }
 
 class ObjectAccountSchet extends $pb.GeneratedMessage {
-  factory ObjectAccountSchet() => create();
+  factory ObjectAccountSchet({
+    $core.String? id,
+    $core.String? name,
+    $core.String? type,
+    $core.String? userId,
+  }) {
+    final $result = create();
+    if (id != null) {
+      $result.id = id;
+    }
+    if (name != null) {
+      $result.name = name;
+    }
+    if (type != null) {
+      $result.type = type;
+    }
+    if (userId != null) {
+      $result.userId = userId;
+    }
+    return $result;
+  }
   ObjectAccountSchet._() : super();
   factory ObjectAccountSchet.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory ObjectAccountSchet.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
@@ -730,7 +970,63 @@ class ObjectAccountSchet extends $pb.GeneratedMessage {
 }
 
 class SchetView extends $pb.GeneratedMessage {
-  factory SchetView() => create();
+  factory SchetView({
+    $core.String? id,
+    $core.String? counterpartyName,
+    $core.Iterable<ObjectAccountSchet>? objectsAccountSchets,
+    $core.double? summa,
+    $core.String? date,
+    $core.String? number,
+    $core.String? payingOrganizationName,
+    $core.String? createrName,
+    $core.String? description,
+    FileDTO? file,
+    StatusSchetDTO? status,
+    $core.String? currency,
+    $core.String? createrId,
+  }) {
+    final $result = create();
+    if (id != null) {
+      $result.id = id;
+    }
+    if (counterpartyName != null) {
+      $result.counterpartyName = counterpartyName;
+    }
+    if (objectsAccountSchets != null) {
+      $result.objectsAccountSchets.addAll(objectsAccountSchets);
+    }
+    if (summa != null) {
+      $result.summa = summa;
+    }
+    if (date != null) {
+      $result.date = date;
+    }
+    if (number != null) {
+      $result.number = number;
+    }
+    if (payingOrganizationName != null) {
+      $result.payingOrganizationName = payingOrganizationName;
+    }
+    if (createrName != null) {
+      $result.createrName = createrName;
+    }
+    if (description != null) {
+      $result.description = description;
+    }
+    if (file != null) {
+      $result.file = file;
+    }
+    if (status != null) {
+      $result.status = status;
+    }
+    if (currency != null) {
+      $result.currency = currency;
+    }
+    if (createrId != null) {
+      $result.createrId = createrId;
+    }
+    return $result;
+  }
   SchetView._() : super();
   factory SchetView.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory SchetView.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
@@ -748,6 +1044,7 @@ class SchetView extends $pb.GeneratedMessage {
     ..aOM<FileDTO>(10, _omitFieldNames ? '' : 'File', protoName: 'File', subBuilder: FileDTO.create)
     ..aOM<StatusSchetDTO>(11, _omitFieldNames ? '' : 'Status', protoName: 'Status', subBuilder: StatusSchetDTO.create)
     ..aOS(12, _omitFieldNames ? '' : 'Currency', protoName: 'Currency')
+    ..aOS(13, _omitFieldNames ? '' : 'CreaterId', protoName: 'CreaterId')
     ..hasRequiredFields = false
   ;
 
@@ -877,10 +1174,27 @@ class SchetView extends $pb.GeneratedMessage {
   $core.bool hasCurrency() => $_has(11);
   @$pb.TagNumber(12)
   void clearCurrency() => clearField(12);
+
+  @$pb.TagNumber(13)
+  $core.String get createrId => $_getSZ(12);
+  @$pb.TagNumber(13)
+  set createrId($core.String v) { $_setString(12, v); }
+  @$pb.TagNumber(13)
+  $core.bool hasCreaterId() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearCreaterId() => clearField(13);
 }
 
 class FilterFile extends $pb.GeneratedMessage {
-  factory FilterFile() => create();
+  factory FilterFile({
+    $core.String? path,
+  }) {
+    final $result = create();
+    if (path != null) {
+      $result.path = path;
+    }
+    return $result;
+  }
   FilterFile._() : super();
   factory FilterFile.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory FilterFile.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
@@ -922,7 +1236,27 @@ class FilterFile extends $pb.GeneratedMessage {
 }
 
 class FileDTO extends $pb.GeneratedMessage {
-  factory FileDTO() => create();
+  factory FileDTO({
+    $core.String? id,
+    $core.String? path,
+    $core.String? name,
+    $core.List<$core.int>? body,
+  }) {
+    final $result = create();
+    if (id != null) {
+      $result.id = id;
+    }
+    if (path != null) {
+      $result.path = path;
+    }
+    if (name != null) {
+      $result.name = name;
+    }
+    if (body != null) {
+      $result.body = body;
+    }
+    return $result;
+  }
   FileDTO._() : super();
   factory FileDTO.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory FileDTO.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
@@ -994,7 +1328,19 @@ class FileDTO extends $pb.GeneratedMessage {
 }
 
 class StatusSchetDTO extends $pb.GeneratedMessage {
-  factory StatusSchetDTO() => create();
+  factory StatusSchetDTO({
+    $core.String? name,
+    $core.int? number,
+  }) {
+    final $result = create();
+    if (name != null) {
+      $result.name = name;
+    }
+    if (number != null) {
+      $result.number = number;
+    }
+    return $result;
+  }
   StatusSchetDTO._() : super();
   factory StatusSchetDTO.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory StatusSchetDTO.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
@@ -1046,7 +1392,19 @@ class StatusSchetDTO extends $pb.GeneratedMessage {
 }
 
 class FilterChangeStatus extends $pb.GeneratedMessage {
-  factory FilterChangeStatus() => create();
+  factory FilterChangeStatus({
+    $core.String? schetId,
+    $core.int? number,
+  }) {
+    final $result = create();
+    if (schetId != null) {
+      $result.schetId = schetId;
+    }
+    if (number != null) {
+      $result.number = number;
+    }
+    return $result;
+  }
   FilterChangeStatus._() : super();
   factory FilterChangeStatus.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory FilterChangeStatus.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
@@ -1098,7 +1456,23 @@ class FilterChangeStatus extends $pb.GeneratedMessage {
 }
 
 class ResultChangeStatusSchet extends $pb.GeneratedMessage {
-  factory ResultChangeStatusSchet() => create();
+  factory ResultChangeStatusSchet({
+    $core.bool? succssed,
+    StatusSchetDTO? status,
+    $core.String? messageServer,
+  }) {
+    final $result = create();
+    if (succssed != null) {
+      $result.succssed = succssed;
+    }
+    if (status != null) {
+      $result.status = status;
+    }
+    if (messageServer != null) {
+      $result.messageServer = messageServer;
+    }
+    return $result;
+  }
   ResultChangeStatusSchet._() : super();
   factory ResultChangeStatusSchet.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory ResultChangeStatusSchet.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
@@ -1162,7 +1536,23 @@ class ResultChangeStatusSchet extends $pb.GeneratedMessage {
 }
 
 class FilterResourceSchet extends $pb.GeneratedMessage {
-  factory FilterResourceSchet() => create();
+  factory FilterResourceSchet({
+    $core.String? schetId,
+    $core.int? skip,
+    $core.int? take,
+  }) {
+    final $result = create();
+    if (schetId != null) {
+      $result.schetId = schetId;
+    }
+    if (skip != null) {
+      $result.skip = skip;
+    }
+    if (take != null) {
+      $result.take = take;
+    }
+    return $result;
+  }
   FilterResourceSchet._() : super();
   factory FilterResourceSchet.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory FilterResourceSchet.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
@@ -1224,7 +1614,35 @@ class FilterResourceSchet extends $pb.GeneratedMessage {
 }
 
 class ResourceSchet extends $pb.GeneratedMessage {
-  factory ResourceSchet() => create();
+  factory ResourceSchet({
+    $core.String? name,
+    $core.String? unit,
+    $core.double? count,
+    $core.String? currency,
+    $core.double? price,
+    $core.double? priceWithVAT,
+  }) {
+    final $result = create();
+    if (name != null) {
+      $result.name = name;
+    }
+    if (unit != null) {
+      $result.unit = unit;
+    }
+    if (count != null) {
+      $result.count = count;
+    }
+    if (currency != null) {
+      $result.currency = currency;
+    }
+    if (price != null) {
+      $result.price = price;
+    }
+    if (priceWithVAT != null) {
+      $result.priceWithVAT = priceWithVAT;
+    }
+    return $result;
+  }
   ResourceSchet._() : super();
   factory ResourceSchet.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory ResourceSchet.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
@@ -1316,7 +1734,23 @@ class ResourceSchet extends $pb.GeneratedMessage {
 }
 
 class FilterPaymentScheduleSchet extends $pb.GeneratedMessage {
-  factory FilterPaymentScheduleSchet() => create();
+  factory FilterPaymentScheduleSchet({
+    $core.String? schetId,
+    $core.int? skip,
+    $core.int? take,
+  }) {
+    final $result = create();
+    if (schetId != null) {
+      $result.schetId = schetId;
+    }
+    if (skip != null) {
+      $result.skip = skip;
+    }
+    if (take != null) {
+      $result.take = take;
+    }
+    return $result;
+  }
   FilterPaymentScheduleSchet._() : super();
   factory FilterPaymentScheduleSchet.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory FilterPaymentScheduleSchet.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
@@ -1378,7 +1812,39 @@ class FilterPaymentScheduleSchet extends $pb.GeneratedMessage {
 }
 
 class PaymentScheduleSchetDTO extends $pb.GeneratedMessage {
-  factory PaymentScheduleSchetDTO() => create();
+  factory PaymentScheduleSchetDTO({
+    $core.String? date,
+    $core.String? description,
+    $core.double? sum,
+    $core.double? sumWithVAT,
+    $core.String? paymentOrderId,
+    $core.String? paymentOrderNumber,
+    $core.String? currency,
+  }) {
+    final $result = create();
+    if (date != null) {
+      $result.date = date;
+    }
+    if (description != null) {
+      $result.description = description;
+    }
+    if (sum != null) {
+      $result.sum = sum;
+    }
+    if (sumWithVAT != null) {
+      $result.sumWithVAT = sumWithVAT;
+    }
+    if (paymentOrderId != null) {
+      $result.paymentOrderId = paymentOrderId;
+    }
+    if (paymentOrderNumber != null) {
+      $result.paymentOrderNumber = paymentOrderNumber;
+    }
+    if (currency != null) {
+      $result.currency = currency;
+    }
+    return $result;
+  }
   PaymentScheduleSchetDTO._() : super();
   factory PaymentScheduleSchetDTO.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory PaymentScheduleSchetDTO.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);

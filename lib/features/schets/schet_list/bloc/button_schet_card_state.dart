@@ -11,3 +11,19 @@ class BSCDownlodFuile extends ButtonSchetCardState {
 
   BSCDownlodFuile({required this.errorMessage});
 }
+
+class BSCChangeStatusLoading extends ButtonSchetCardState {
+  BSCChangeStatusLoading();
+}
+
+class BSCChangeStatusInit extends ButtonSchetCardState {}
+
+class BSCChangeStatusSuccessed extends ButtonSchetCardState {
+  final StatusSchetDTO status;
+  BSCChangeStatusSuccessed({required this.status});
+}
+
+class BSCChangeStatusFuile extends ButtonSchetCardState {
+  final String errorMessage;
+  BSCChangeStatusFuile({required this.errorMessage});
+}

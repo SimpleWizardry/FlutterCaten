@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/features/schets/schet_list/widgets/schet_card_contract.dart';
 import 'package:myapp/features/schets/schet_list/widgets/schet_card_description.dart';
+import 'package:myapp/features/schets/schet_list/widgets/schet_row.dart';
 import 'package:myapp/features/schets/schet_list/widgets/schet_sum_space.dart';
 import 'package:myapp/models/account/account.dart';
 
@@ -9,8 +10,15 @@ import 'button_schet_card.dart';
 
 class SchetCard extends StatelessWidget {
   final SchetView schet;
-
-  const SchetCard({super.key, required this.schet});
+  final String userId;
+  final List<String> roles;
+  final VoidCallback onUpdate;
+  const SchetCard(
+      {super.key,
+      required this.schet,
+      required this.userId,
+      required this.roles,
+      required this.onUpdate});
 
   @override
   Widget build(BuildContext context) {
@@ -39,65 +47,55 @@ class SchetCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             const SizedBox(width: 8),
-                            RichText(
-                              text: TextSpan(
-                                  text: "Номер: ",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w900,
-                                      fontSize: 16,
-                                      color: Colors.black),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                        text:
-                                            schet.number.trimLeft().trimRight(),
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.normal))
-                                  ]),
-                            )
-                          ]),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            const SizedBox(width: 8),
-                            RichText(
-                              text: TextSpan(
-                                  text: "Дата: ",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w900,
-                                      fontSize: 16,
-                                      color: Colors.black),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                        text: schet.date,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.normal))
-                                  ]),
-                            )
-                          ]),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            const SizedBox(width: 8),
-                            RichText(
-                              text: TextSpan(
-                                  text: "Статус: ",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w900,
-                                      fontSize: 16,
-                                      color: Colors.black),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                        text: schet.status.name,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.normal))
-                                  ]),
+                            SchetRow(
+                              description: schet.number.trimLeft().trimRight(),
+                              name: 'Номер:',
                             ),
                           ]),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             const SizedBox(width: 8),
-                            SchetCardDescription(schet: schet)
+                            SchetRow(
+                              description: schet.date,
+                              name: 'Дата:',
+                            ),
+                          ]),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            const SizedBox(width: 8),
+                            SchetRow(
+                              description: schet.status.name,
+                              name: 'Статус:',
+                            ),
+                          ]),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            const SizedBox(width: 8),
+                            SchetRow(
+                              description: schet.counterpartyName,
+                              name: 'Контрагент:',
+                            ),
+                          ]),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            const SizedBox(width: 8),
+                            SchetRow(
+                              description: schet.payingOrganizationName,
+                              name: 'Опл. организация:',
+                            ),
+                          ]),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            const SizedBox(width: 8),
+                            SchetRow(
+                              description: schet.description,
+                              name: 'Описание:',
+                            ),
                           ]),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -135,7 +133,14 @@ class SchetCard extends StatelessWidget {
                 )
               ],
             ),
-            ButtonSchetCard(schet: schet),
+            ButtonSchetCard(
+              schet: schet,
+              roles: roles,
+              userId: userId,
+              onUpdate: () {
+                onUpdate();
+              },
+            ),
           ],
         ),
       ),
