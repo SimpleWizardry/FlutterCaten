@@ -45,6 +45,10 @@ class SchetGRPCServiceClient extends $grpc.Client {
       '/schet.SchetGRPCService/DownloadFile',
       ($0.FileDTO value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.ResultDownloadFile.fromBuffer(value));
+  static final _$rejectSchet = $grpc.ClientMethod<$0.RejectSchetDTO, $0.ResultService>(
+      '/schet.SchetGRPCService/RejectSchet',
+      ($0.RejectSchetDTO value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.ResultService.fromBuffer(value));
 
   SchetGRPCServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -74,6 +78,10 @@ class SchetGRPCServiceClient extends $grpc.Client {
 
   $grpc.ResponseFuture<$0.ResultDownloadFile> downloadFile($0.FileDTO request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$downloadFile, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.ResultService> rejectSchet($0.RejectSchetDTO request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$rejectSchet, request, options: options);
   }
 }
 
@@ -124,6 +132,13 @@ abstract class SchetGRPCServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.FileDTO.fromBuffer(value),
         ($0.ResultDownloadFile value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.RejectSchetDTO, $0.ResultService>(
+        'RejectSchet',
+        rejectSchet_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.RejectSchetDTO.fromBuffer(value),
+        ($0.ResultService value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.ResultSchetListView> getSchets_Pre($grpc.ServiceCall call, $async.Future<$0.FilterSchet> request) async {
@@ -150,10 +165,15 @@ abstract class SchetGRPCServiceBase extends $grpc.Service {
     return downloadFile(call, await request);
   }
 
+  $async.Future<$0.ResultService> rejectSchet_Pre($grpc.ServiceCall call, $async.Future<$0.RejectSchetDTO> request) async {
+    return rejectSchet(call, await request);
+  }
+
   $async.Future<$0.ResultSchetListView> getSchets($grpc.ServiceCall call, $0.FilterSchet request);
   $async.Future<$0.ResultSchetView> getSchet($grpc.ServiceCall call, $0.FilterSchet request);
   $async.Future<$0.ResultChangeStatusSchet> changeStatusSchet($grpc.ServiceCall call, $0.FilterChangeStatus request);
   $async.Future<$0.ResultResourceSchet> getResourcesSchet($grpc.ServiceCall call, $0.FilterResourceSchet request);
   $async.Future<$0.ResultPaymentScheduleSchet> getPaymentSchedulesSchet($grpc.ServiceCall call, $0.FilterPaymentScheduleSchet request);
   $async.Future<$0.ResultDownloadFile> downloadFile($grpc.ServiceCall call, $0.FileDTO request);
+  $async.Future<$0.ResultService> rejectSchet($grpc.ServiceCall call, $0.RejectSchetDTO request);
 }

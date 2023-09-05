@@ -59,7 +59,6 @@ class _PaymentScheduleSchetListState extends State<PaymentScheduleSchetList> {
           }
           return ListView.builder(
               controller: _scrollController,
-              padding: const EdgeInsets.all(10.0),
               itemBuilder: (context, i) {
                 if (state is PaymentScheduleSchetListSuccessed) {
                   if (i < list.length) {

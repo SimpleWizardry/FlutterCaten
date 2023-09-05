@@ -11,4 +11,5 @@ abstract class AbstractSchetRepository {
       FilterPaymentScheduleSchet req);
   Future<ResultDownloadFile> DownloadFile(FileDTO req);
   Future<ResultChangeStatusSchet> ChangeStatusSchet(FilterChangeStatus req);
+  Future<ResultService> RejectSchet(RejectSchetDTO req);
 }

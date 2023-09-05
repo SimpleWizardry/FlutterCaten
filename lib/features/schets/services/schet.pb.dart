@@ -1945,6 +1945,162 @@ class PaymentScheduleSchetDTO extends $pb.GeneratedMessage {
   void clearCurrency() => clearField(7);
 }
 
+class RejectSchetDTO extends $pb.GeneratedMessage {
+  factory RejectSchetDTO({
+    $core.String? comment,
+    $core.String? schetId,
+    $core.String? userId,
+    $core.int? statusHierarchy,
+  }) {
+    final $result = create();
+    if (comment != null) {
+      $result.comment = comment;
+    }
+    if (schetId != null) {
+      $result.schetId = schetId;
+    }
+    if (userId != null) {
+      $result.userId = userId;
+    }
+    if (statusHierarchy != null) {
+      $result.statusHierarchy = statusHierarchy;
+    }
+    return $result;
+  }
+  RejectSchetDTO._() : super();
+  factory RejectSchetDTO.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory RejectSchetDTO.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'RejectSchetDTO', package: const $pb.PackageName(_omitMessageNames ? '' : 'schet'), createEmptyInstance: create)
+    ..aOS(2, _omitFieldNames ? '' : 'Comment', protoName: 'Comment')
+    ..aOS(3, _omitFieldNames ? '' : 'SchetId', protoName: 'SchetId')
+    ..aOS(4, _omitFieldNames ? '' : 'UserId', protoName: 'UserId')
+    ..a<$core.int>(5, _omitFieldNames ? '' : 'StatusHierarchy', $pb.PbFieldType.O3, protoName: 'StatusHierarchy')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  RejectSchetDTO clone() => RejectSchetDTO()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  RejectSchetDTO copyWith(void Function(RejectSchetDTO) updates) => super.copyWith((message) => updates(message as RejectSchetDTO)) as RejectSchetDTO;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static RejectSchetDTO create() => RejectSchetDTO._();
+  RejectSchetDTO createEmptyInstance() => create();
+  static $pb.PbList<RejectSchetDTO> createRepeated() => $pb.PbList<RejectSchetDTO>();
+  @$core.pragma('dart2js:noInline')
+  static RejectSchetDTO getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<RejectSchetDTO>(create);
+  static RejectSchetDTO? _defaultInstance;
+
+  @$pb.TagNumber(2)
+  $core.String get comment => $_getSZ(0);
+  @$pb.TagNumber(2)
+  set comment($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasComment() => $_has(0);
+  @$pb.TagNumber(2)
+  void clearComment() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get schetId => $_getSZ(1);
+  @$pb.TagNumber(3)
+  set schetId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasSchetId() => $_has(1);
+  @$pb.TagNumber(3)
+  void clearSchetId() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get userId => $_getSZ(2);
+  @$pb.TagNumber(4)
+  set userId($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasUserId() => $_has(2);
+  @$pb.TagNumber(4)
+  void clearUserId() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.int get statusHierarchy => $_getIZ(3);
+  @$pb.TagNumber(5)
+  set statusHierarchy($core.int v) { $_setSignedInt32(3, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasStatusHierarchy() => $_has(3);
+  @$pb.TagNumber(5)
+  void clearStatusHierarchy() => clearField(5);
+}
+
+class ResultService extends $pb.GeneratedMessage {
+  factory ResultService({
+    $core.bool? succssed,
+    $core.String? message,
+  }) {
+    final $result = create();
+    if (succssed != null) {
+      $result.succssed = succssed;
+    }
+    if (message != null) {
+      $result.message = message;
+    }
+    return $result;
+  }
+  ResultService._() : super();
+  factory ResultService.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ResultService.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ResultService', package: const $pb.PackageName(_omitMessageNames ? '' : 'schet'), createEmptyInstance: create)
+    ..aOB(1, _omitFieldNames ? '' : 'Succssed', protoName: 'Succssed')
+    ..aOS(2, _omitFieldNames ? '' : 'Message', protoName: 'Message')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ResultService clone() => ResultService()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ResultService copyWith(void Function(ResultService) updates) => super.copyWith((message) => updates(message as ResultService)) as ResultService;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ResultService create() => ResultService._();
+  ResultService createEmptyInstance() => create();
+  static $pb.PbList<ResultService> createRepeated() => $pb.PbList<ResultService>();
+  @$core.pragma('dart2js:noInline')
+  static ResultService getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ResultService>(create);
+  static ResultService? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.bool get succssed => $_getBF(0);
+  @$pb.TagNumber(1)
+  set succssed($core.bool v) { $_setBool(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasSuccssed() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSuccssed() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get message => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set message($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasMessage() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearMessage() => clearField(2);
+}
+
 
 const _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
 const _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');

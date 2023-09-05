@@ -346,3 +346,34 @@ final $typed_data.Uint8List paymentScheduleSchetDTODescriptor = $convert.base64D
     'JJZBIuChJQYXltZW50T3JkZXJOdW1iZXIYBiABKAlSElBheW1lbnRPcmRlck51bWJlchIaCghD'
     'dXJyZW5jeRgHIAEoCVIIQ3VycmVuY3k=');
 
+@$core.Deprecated('Use rejectSchetDTODescriptor instead')
+const RejectSchetDTO$json = {
+  '1': 'RejectSchetDTO',
+  '2': [
+    {'1': 'Comment', '3': 2, '4': 1, '5': 9, '10': 'Comment'},
+    {'1': 'SchetId', '3': 3, '4': 1, '5': 9, '10': 'SchetId'},
+    {'1': 'UserId', '3': 4, '4': 1, '5': 9, '10': 'UserId'},
+    {'1': 'StatusHierarchy', '3': 5, '4': 1, '5': 5, '10': 'StatusHierarchy'},
+  ],
+};
+
+/// Descriptor for `RejectSchetDTO`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List rejectSchetDTODescriptor = $convert.base64Decode(
+    'Cg5SZWplY3RTY2hldERUTxIYCgdDb21tZW50GAIgASgJUgdDb21tZW50EhgKB1NjaGV0SWQYAy'
+    'ABKAlSB1NjaGV0SWQSFgoGVXNlcklkGAQgASgJUgZVc2VySWQSKAoPU3RhdHVzSGllcmFyY2h5'
+    'GAUgASgFUg9TdGF0dXNIaWVyYXJjaHk=');
+
+@$core.Deprecated('Use resultServiceDescriptor instead')
+const ResultService$json = {
+  '1': 'ResultService',
+  '2': [
+    {'1': 'Succssed', '3': 1, '4': 1, '5': 8, '10': 'Succssed'},
+    {'1': 'Message', '3': 2, '4': 1, '5': 9, '10': 'Message'},
+  ],
+};
+
+/// Descriptor for `ResultService`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List resultServiceDescriptor = $convert.base64Decode(
+    'Cg1SZXN1bHRTZXJ2aWNlEhoKCFN1Y2Nzc2VkGAEgASgIUghTdWNjc3NlZBIYCgdNZXNzYWdlGA'
+    'IgASgJUgdNZXNzYWdl');
+

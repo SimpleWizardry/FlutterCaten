@@ -11,7 +11,7 @@ class SchetRepository implements AbstractSchetRepository {
   SchetRepository() {
     channel = ClientChannel(
       '192.168.137.142',
-      port: 32771,
+      port: 32777,
       options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
       // options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
     );
@@ -78,6 +78,11 @@ class SchetRepository implements AbstractSchetRepository {
   Future<ResultChangeStatusSchet> ChangeStatusSchet(
       FilterChangeStatus req) async {
     final response = await stub.changeStatusSchet(req);
+    return response;
+  }
+
+  Future<ResultService> RejectSchet(RejectSchetDTO req) async {
+    final response = await stub.rejectSchet(req);
     return response;
   }
 }

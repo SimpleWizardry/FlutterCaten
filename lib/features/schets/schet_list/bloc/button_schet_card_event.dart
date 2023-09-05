@@ -13,3 +13,8 @@ class BSCChangeStatus extends ButtonSchetCardEvent {
   final FilterChangeStatus filter;
   BSCChangeStatus(this.filter);
 }
+
+class BSCRejectSchet extends ButtonSchetCardEvent {
+  final RejectSchetDTO reject;
+  BSCRejectSchet(this.reject);
+}

@@ -19,8 +19,7 @@ class BSCChangeStatusLoading extends ButtonSchetCardState {
 class BSCChangeStatusInit extends ButtonSchetCardState {}
 
 class BSCChangeStatusSuccessed extends ButtonSchetCardState {
-  final StatusSchetDTO status;
-  BSCChangeStatusSuccessed({required this.status});
+  BSCChangeStatusSuccessed();
 }
 
 class BSCChangeStatusFuile extends ButtonSchetCardState {

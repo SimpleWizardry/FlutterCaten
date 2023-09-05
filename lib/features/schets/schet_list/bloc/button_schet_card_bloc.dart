@@ -46,7 +46,23 @@ class ButtonSchetCardBloc
             .ChangeStatusSchet(event.filter);
         if (_result.succssed) {
           debugPrint('Status!: ${_result.status}');
-          emit(BSCChangeStatusSuccessed(status: _result.status));
+          emit(BSCChangeStatusSuccessed());
+        } else {
+          emit(
+              BSCChangeStatusFuile(errorMessage: 'Не удалось изменить статус'));
+        }
+      } catch (e) {
+        emit(BSCChangeStatusFuile(errorMessage: 'Не удалось изменить статус'));
+      }
+    });
+
+    on<BSCRejectSchet>((event, emit) async {
+      try {
+        emit(BSCChangeStatusLoading());
+        var _result =
+            await GetIt.I<AbstractSchetRepository>().RejectSchet(event.reject);
+        if (_result.succssed) {
+          emit(BSCChangeStatusSuccessed());
         } else {
           emit(
               BSCChangeStatusFuile(errorMessage: 'Не удалось изменить статус'));

@@ -13,6 +13,7 @@ class ButtonSchetCard extends StatefulWidget {
   final String userId;
   final List<String> roles;
   final VoidCallback onUpdate;
+
   const ButtonSchetCard(
       {Key? key,
       required this.schet,
@@ -28,7 +29,8 @@ class ButtonSchetCard extends StatefulWidget {
 class _ButtonSchetCardState extends State<ButtonSchetCard> {
   final _buttonSchetCardBloc =
       ButtonSchetCardBloc(GetIt.I<AbstractSchetRepository>());
-
+  String textReject = "";
+  String textButtonReject = "";
   @override
   void initState() {
     setInitStateChangeStatus();
@@ -36,6 +38,19 @@ class _ButtonSchetCardState extends State<ButtonSchetCard> {
 
   downloadSchetFile() {
     _buttonSchetCardBloc.add(DownloadSchetFile(widget.schet.file!));
+  }
+
+  setTextReject(String text) {
+    text = text ?? "";
+    this.textReject = text;
+
+    if (this.textReject.length < 5) {
+      textButtonReject = "Осталось ввести: " +
+          (5 - this.textReject.length).toString() +
+          " сим.";
+    } else {
+      textButtonReject = "Отклонить";
+    }
   }
 
   bool isAccountant() {
@@ -164,8 +179,69 @@ class _ButtonSchetCardState extends State<ButtonSchetCard> {
       var filter = new FilterChangeStatus();
       filter.schetId = widget.schet.id;
       filter.number = hierarchy;
-      _buttonSchetCardBloc.add(BSCChangeStatus(filter));
+      var reject = new RejectSchetDTO();
+      reject.schetId = widget.schet.id;
+      reject.comment = textReject;
+      reject.statusHierarchy = hierarchy;
+      reject.userId = widget.userId;
+      Navigator.pop(context);
+      _buttonSchetCardBloc.add(BSCRejectSchet(reject));
     }
+  }
+
+  rejectViewDialog() {
+    textButtonReject = "Осталось ввести: 5 сим.";
+    textReject = "";
+    showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog.fullscreen(
+            child: Column(
+              children: [
+                TextField(
+                  maxLines: 10,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText:
+                        'Введите причину отклонения счета (минимальная длина 5 символов)',
+                  ),
+                  onChanged: (value) {
+                    value = value ?? "";
+                    textReject = value;
+                  },
+                ),
+                Row(children: [
+                  InkWell(
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(color: Colors.red),
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        child: const Center(
+                            child: Text('Отклонить',
+                                style: TextStyle(fontSize: 18))),
+                      ),
+                      onTap: () {
+                        if (textReject.length > 5) {
+                          rejectSchet();
+                        }
+                      }),
+                  InkWell(
+                    child: Container(
+                      height: 50,
+                      decoration: BoxDecoration(color: Colors.grey[350]),
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      child: const Center(
+                          child: Text('Назад', style: TextStyle(fontSize: 18))),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ])
+              ],
+            ),
+          );
+        });
   }
 
   @override
@@ -226,7 +302,7 @@ class _ButtonSchetCardState extends State<ButtonSchetCard> {
                           )),
                 InkWell(
                     onTap: () {
-                      rejectSchet();
+                      rejectViewDialog();
                     },
                     child: !showButton("reject")
                         ? const SizedBox(width: 0)
