@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:intl/intl.dart';
+import 'package:myapp/features/login/bloc/login_bloc.dart';
 
 class Navigation extends StatefulWidget {
   const Navigation({super.key});
@@ -10,6 +13,10 @@ class Navigation extends StatefulWidget {
 
 class _NavigationState extends State<Navigation> {
   final _storage = const FlutterSecureStorage();
+  String _timeOfDay = '';
+  bool darkTheme = false;
+
+  var user;
 
   AndroidOptions _getAndroidOptions() => const AndroidOptions(
     encryptedSharedPreferences: true,
@@ -42,6 +49,33 @@ class _NavigationState extends State<Navigation> {
   @override
   void initState() {
     super.initState();
+    DateTime now = DateTime.now();
+    int hour = now.hour;
+
+    // _timeOfDay = hour.toString();
+    if (hour < 7) {
+      _timeOfDay = 'Доброй ночи';
+    }
+    else if (hour < 13) {
+      _timeOfDay = 'Доброе утро';
+    }
+    else if (hour < 19) {
+      _timeOfDay = 'Добрый день';
+    } 
+    else {
+      _timeOfDay = 'Добрый вечер';
+    }
+
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final state = BlocProvider.of<LoginBloc>(context).state;
+      if (state is LoginSuccessed) {
+        user = state.user;
+      }
+    });
+    // String formattedTime = DateFormat.Hm().format(now);
+    // if (formattedTime)
+    // debugPrint(hour.toString());
     _checkAuth();
     // bool loggedIn = _checkAuth();
     // if (!loggedIn) {
@@ -75,7 +109,56 @@ class _NavigationState extends State<Navigation> {
         separatorBuilder: (context, i) => const Divider(),
         itemCount: 1,
       ),
-      drawer: const Drawer()
+      drawer: Drawer(
+        child: ListView(
+    // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: const BoxDecoration(
+                color: Colors.blue,
+                // тут бэкграунд от времени суток
+              ),
+              child: Text('$_timeOfDay, пользователь'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Настройки'),
+              onTap: () {
+                // Update the state of the app.
+                // доделать страницу настроек
+                // ...
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('Выйти из профиля'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.dark_mode),
+              trailing: Switch(
+                value: darkTheme,
+                activeColor: Colors.blue[900],
+                onChanged: (bool value) {
+                  // This is called when the user toggles the switch.
+                  setState(() {
+                    darkTheme = value;
+                  });
+                },
+              ),
+              title: const Text('Темная тема'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+          ],
+        ),
+      )
     );
   }
 }

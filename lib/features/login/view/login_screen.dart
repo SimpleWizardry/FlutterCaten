@@ -1,5 +1,9 @@
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:myapp/features/login/bloc/login_bloc.dart';
 
 import '../../../generated/account.pb.dart';
 import '../../../repositories/auth/auth_repository.dart';
@@ -21,11 +25,51 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final clientApp = AccountTerminalClient();
 
+  final _loginBloc = LoginBloc();
+
+
+// сократить
   Future<void> _addToken(String token) async {
     const String key = "token";
     final String value = token;
 
     debugPrint(token);
+    try {
+      await _storage.write(
+        key: key,
+        value: value,
+        // iOptions: _getIOSOptions(),
+        aOptions: _getAndroidOptions(),
+      );
+    }
+    catch(e) {
+      debugPrint(e.toString());
+    }
+  }
+
+// ТАК НЕ СРАБОТАЕТ НУЖЕН КАСТ
+  // Future<void> _addUserData(User user) async {
+  //   const String key = "user";
+  //   final User value = user;
+
+  //   // debugPrint(user);
+  //   try {
+  //     await _storage.write(
+  //       key: key,
+  //       value: value,
+  //       // iOptions: _getIOSOptions(),
+  //       aOptions: _getAndroidOptions(),
+  //     );
+  //   }
+  //   catch(e) {
+  //     debugPrint(e.toString());
+  //   }
+  // }
+  Future<void> _addUserData(String user) async {
+    const String key = "user";
+    final String value = user;
+
+    debugPrint(user);
     try {
       await _storage.write(
         key: key,
@@ -86,7 +130,16 @@ class _LoginScreenState extends State<LoginScreen> {
     // _isLoading = false;
     setState(() => _isLoading = false);
     if (response.succsecced == true) {
+
+      // debugPrint(response.user.toString());
+      // debugPrint(response.id);
+      // final user = response.user as User;
+      
+      await _addUserData(jsonEncode(response.user));
       await _addToken(response.jwt);
+
+      _loginBloc.add(Login(true, response.user));
+
       Navigator.of(context).pushNamed('/');
       // Navigator.of(context).pushNamed('/schet-list');
     }
