@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../services/schet.pb.dart';
+import '../../../../generated/schet.pb.dart';
+
+// import '../../services/schet.pb.dart';
 
 class ButtonSchetCard extends StatelessWidget {
-  final SchetListView schet;
+  final SchetView schet;
+  // final SchetListView schet;
   const ButtonSchetCard({Key? key, required this.schet}) : super(key: key);
   @override
   Widget build(BuildContext context) {

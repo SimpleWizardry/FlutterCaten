@@ -34,15 +34,15 @@ const LoginReply$json = {
     {'1': 'succsecced', '3': 1, '4': 1, '5': 8, '10': 'succsecced'},
     {'1': 'messageServer', '3': 2, '4': 1, '5': 9, '10': 'messageServer'},
     {'1': 'jwt', '3': 3, '4': 1, '5': 9, '10': 'jwt'},
-    {'1': 'user', '3': 4, '4': 1, '5': 9, '10': 'user'},
+    {'1': 'user', '3': 4, '4': 1, '5': 11, '6': '.account.User', '10': 'user'},
   ],
 };
 
 /// Descriptor for `LoginReply`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List loginReplyDescriptor = $convert.base64Decode(
     'CgpMb2dpblJlcGx5Eh4KCnN1Y2NzZWNjZWQYASABKAhSCnN1Y2NzZWNjZWQSJAoNbWVzc2FnZV'
-    'NlcnZlchgCIAEoCVINbWVzc2FnZVNlcnZlchIQCgNqd3QYAyABKAlSA2p3dBISCgR1c2VyGAQg'
-    'ASgJUgR1c2Vy');
+    'NlcnZlchgCIAEoCVINbWVzc2FnZVNlcnZlchIQCgNqd3QYAyABKAlSA2p3dBIhCgR1c2VyGAQg'
+    'ASgLMg0uYWNjb3VudC5Vc2VyUgR1c2Vy');
 
 @$core.Deprecated('Use userDescriptor instead')
 const User$json = {
@@ -55,10 +55,9 @@ const User$json = {
     {'1': 'UserName', '3': 5, '4': 1, '5': 9, '10': 'UserName'},
     {'1': 'Email', '3': 6, '4': 1, '5': 9, '10': 'Email'},
     {'1': 'Roles', '3': 7, '4': 3, '5': 11, '6': '.account.Role', '10': 'Roles'},
-    {'1': 'Users1c', '3': 8, '4': 1, '5': 9, '10': 'Users1c'},
-    {'1': 'FIO', '3': 9, '4': 1, '5': 9, '10': 'FIO'},
-    {'1': 'FullName', '3': 10, '4': 1, '5': 9, '10': 'FullName'},
-    {'1': 'Fired', '3': 11, '4': 1, '5': 8, '10': 'Fired'},
+    {'1': 'User1CId', '3': 8, '4': 1, '5': 9, '10': 'User1CId'},
+    {'1': 'FullName', '3': 9, '4': 1, '5': 9, '10': 'FullName'},
+    {'1': 'Fired', '3': 10, '4': 1, '5': 8, '10': 'Fired'},
   ],
 };
 
@@ -67,9 +66,9 @@ final $typed_data.Uint8List userDescriptor = $convert.base64Decode(
     'CgRVc2VyEg4KAklkGAEgASgJUgJJZBIaCghMYXN0TmFtZRgCIAEoCVIITGFzdE5hbWUSHgoKTW'
     'lkZGxlTmFtZRgDIAEoCVIKTWlkZGxlTmFtZRIcCglGaXJzdE5hbWUYBCABKAlSCUZpcnN0TmFt'
     'ZRIaCghVc2VyTmFtZRgFIAEoCVIIVXNlck5hbWUSFAoFRW1haWwYBiABKAlSBUVtYWlsEiMKBV'
-    'JvbGVzGAcgAygLMg0uYWNjb3VudC5Sb2xlUgVSb2xlcxIYCgdVc2VyczFjGAggASgJUgdVc2Vy'
-    'czFjEhAKA0ZJTxgJIAEoCVIDRklPEhoKCEZ1bGxOYW1lGAogASgJUghGdWxsTmFtZRIUCgVGaX'
-    'JlZBgLIAEoCFIFRmlyZWQ=');
+    'JvbGVzGAcgAygLMg0uYWNjb3VudC5Sb2xlUgVSb2xlcxIaCghVc2VyMUNJZBgIIAEoCVIIVXNl'
+    'cjFDSWQSGgoIRnVsbE5hbWUYCSABKAlSCEZ1bGxOYW1lEhQKBUZpcmVkGAogASgIUgVGaXJlZA'
+    '==');
 
 @$core.Deprecated('Use roleDescriptor instead')
 const Role$json = {
@@ -78,12 +77,11 @@ const Role$json = {
     {'1': 'Id', '3': 1, '4': 1, '5': 9, '10': 'Id'},
     {'1': 'Info', '3': 2, '4': 1, '5': 9, '10': 'Info'},
     {'1': 'Name', '3': 3, '4': 1, '5': 9, '10': 'Name'},
-    {'1': 'Right', '3': 4, '4': 1, '5': 8, '10': 'Right'},
   ],
 };
 
 /// Descriptor for `Role`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List roleDescriptor = $convert.base64Decode(
     'CgRSb2xlEg4KAklkGAEgASgJUgJJZBISCgRJbmZvGAIgASgJUgRJbmZvEhIKBE5hbWUYAyABKA'
-    'lSBE5hbWUSFAoFUmlnaHQYBCABKAhSBVJpZ2h0');
+    'lSBE5hbWU=');
 

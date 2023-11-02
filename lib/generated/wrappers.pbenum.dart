@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: schet.proto
+//  source: wrappers.proto
 //
 // @dart = 2.12
 

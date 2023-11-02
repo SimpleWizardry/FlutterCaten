@@ -16,8 +16,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  String _username = "";
-  String _password = "";
+  // обнулить потом
+  String _username = "pomogalov";
+  String _password = "12345";
   bool _isLoading = false;
   final _storage = const FlutterSecureStorage();
   final _loginController = TextEditingController();
@@ -131,14 +132,22 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _isLoading = false);
     if (response.succsecced == true) {
 
-      // debugPrint(response.user.toString());
+      debugPrint(response.user.toString());
       // debugPrint(response.id);
       // final user = response.user as User;
       
-      await _addUserData(jsonEncode(response.user));
+      // проблемное место
+      // await _addUserData(jsonEncode(response.user));
+      // String userString = jsonEncode(response.user.toString());
+
+      //ФИКС
+      await _addUserData(jsonEncode(response.user.toString()));
+
+
       await _addToken(response.jwt);
 
-      _loginBloc.add(Login(true, response.user));
+      // утаревший вариант,не хранит данные долго
+      // _loginBloc.add(Login(true, response.user));
 
       Navigator.of(context).pushNamed('/');
       // Navigator.of(context).pushNamed('/schet-list');

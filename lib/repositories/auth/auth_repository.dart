@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart';
 
 import '../../generated/account.pbgrpc.dart';
+import '../../generated/schet.pbgrpc.dart';
 
 class AccountTerminalClient {
   late final ClientChannel channel;
   late final AccountGRPCServiceClient stub;
+  // late final SchetGRPCServiceClient stub;
+
 
 
   AccountTerminalClient() {
@@ -16,6 +19,7 @@ class AccountTerminalClient {
       options: ChannelOptions(credentials: ChannelCredentials.insecure()),
       // options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
     );
+    // stub = AccountGRPCServiceClient(channel);
     stub = AccountGRPCServiceClient(channel);
   }
   

@@ -1,5 +1,18 @@
 syntax = "proto3";
-import "Protos/schet.proto";
+import "protos/schet.proto";
+
+// protoc -I 
+// path/to/directory/containing/protofile 
+// path/to/filename.proto 
+// --dart_out=grpc:path/to/destination_folder 
+// google/protobuf/timestamp.proto 
+// google/protobuf/field_mask.proto
+
+// protoc \
+//     --dart_out=grpc:./some_output_folder \
+//     -I./third_party_folder \
+//     -I./folder_with_proto_files ./folder_with_proto_files/any.proto google/protobuf/timestamp.proto
+
 
 option csharp_namespace = "CalurMobileService";
 
@@ -19,8 +32,6 @@ message UserListRequest {
 message UserListReply {
   bool succsecced = 1;
   string messageServer = 2;
-
-  // string jwt = 3;
   repeated UserFilter users = 3;
 }
 
@@ -35,8 +46,20 @@ message UserFilter {
     //string User1CId = 8;
     string FullName = 2;
     //bool Fired = 10;
-
 }
+
+// message User {
+//   string Id = 1;
+//   string LastName = 2;
+//   string MiddleName = 3;
+//   string FirstName = 4;
+//   string UserName = 5;
+//   string Email = 6;
+//   repeated Role Roles = 7;
+//   string User1CId = 8;
+//   string FullName = 9;
+//   bool Fired = 10;
+// }
 
 message Role {
     string Id = 1;

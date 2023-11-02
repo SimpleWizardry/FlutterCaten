@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../services/schet.pb.dart';
+import '../../../../generated/schet.pb.dart';
+
+// import '../../services/schet.pb.dart';
 
 class SchetCardDescription extends StatelessWidget {
-  final SchetListView schet;
+  // final SchetListView schet;
+  final SchetView schet;
 
   const SchetCardDescription({super.key, required this.schet});
   @override

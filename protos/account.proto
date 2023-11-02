@@ -21,7 +21,7 @@ message LoginReply {
   bool succsecced = 1;
   string messageServer = 2;
   string jwt = 3;
-  string user = 4;
+  User user = 4;
 }
 
 message User {
@@ -32,15 +32,14 @@ message User {
     string UserName = 5;
     string Email = 6;
     repeated Role Roles = 7;
-    string Users1c = 8;
-    string FIO = 9;
-    string FullName = 10;
-    bool Fired = 11;
+    string User1CId = 8;
+    string FullName = 9;
+    bool Fired = 10;
+
 }
 
 message Role {
     string Id = 1;
     string Info = 2;
     string Name = 3;
-    bool Right = 4;
 }

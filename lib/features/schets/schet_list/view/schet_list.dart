@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -5,12 +6,21 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
-import 'package:myapp/features/schets/services/schet.pb.dart';
+import 'package:myapp/features/schets/schet_list/bloc/contract_bloc.dart';
+import 'package:myapp/features/schets/schet_list/bloc/userList_bloc.dart';
+// import 'package:myapp/features/schets/services/schet.pb.dart';
 
 import '../../../../generated/account.pb.dart';
+import '../../../../generated/schet.pb.dart';
+import '../../../../generated/wrappers.pb.dart';
 import '../../../login/bloc/login_bloc.dart';
 import '../../repository/abstractSchetRepository.dart';
+// import '../../services/schet.pb.dart';
+
+import '../bloc/counterparty_bloc.dart';
+import '../bloc/project_bloc.dart';
 import '../bloc/schet_list_bloc.dart';
+import '../bloc/user_list_bloc.dart';
 import '../widgets/schet_card.dart';
 
 class SchetList extends StatefulWidget {
@@ -23,15 +33,54 @@ class SchetList extends StatefulWidget {
 class _SchetListState extends State<SchetList> {
   
 
+  Timer? _debounce;
+
   final ScrollController _scrollController = ScrollController();
   var _filter = GetIt.I<AbstractSchetRepository>().InitFilterSchet();
   var _result = ResultSchetListView.create();
   final _schetListBloc = SchetListBloc(GetIt.I<AbstractSchetRepository>(),
       GetIt.I<AbstractSchetRepository>().InitFilterSchet());
   var _totalCount = 0;
-  List<SchetListView> list = [];
+  List<SchetView> list = [];
   final _storage = const FlutterSecureStorage();
 
+  bool dateFromSelected = false;
+  bool dateToSelected = false;
+  // responsibles
+  // FIX USERBLOC
+  // final _userListBloc = UserListBloc(GetIt.I<AbstractSchetRepository>(),
+  //     GetIt.I<AbstractSchetRepository>().InitFilterSchet());
+
+  // ВАРИАНТ СО СТРМОМ
+  final userBloc = ListUserBloc();
+  final contractBloc = ContractListBloc();
+  final counterpartyBloc = CounterpartyListBloc();
+
+  final projectBloc = ProjectListBloc();
+
+  var _usersResult = UserListReply.create();
+
+
+  // фикс автокомплита
+  // List<UserFilter> responsibles = [];
+
+  static List<UserFilter> responsibles = <UserFilter>[];
+
+  static List<UserFilter> creators = <UserFilter>[];
+
+  static List<ContractFilter> contracts = <ContractFilter>[];
+
+  static List<CounterpartyFilter> counterparties = <CounterpartyFilter>[];
+
+  static List<ProjectFilter> projects = <ProjectFilter>[];
+
+  late Iterable<UserFilter> _lastOptions = <UserFilter>[];
+
+  late Iterable<ContractFilter> _lastContractOptions = <ContractFilter>[];
+
+  late Iterable<CounterpartyFilter> _lastCounterpartyOptions = <CounterpartyFilter>[];
+
+  late Iterable<ProjectFilter> _lastProjectOptions = <ProjectFilter>[];
   // late User user;
   var user;
 
@@ -93,12 +142,39 @@ class _SchetListState extends State<SchetList> {
   void initState() {
   // void initState() async {
     // получаем юзера из стейта
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final state = BlocProvider.of<LoginBloc>(context).state;
-      if (state is LoginSuccessed) {
-        user = state.user;
-      }
-    });
+    try {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final state = BlocProvider.of<LoginBloc>(context).state;
+        if (state is LoginSuccessed) {
+          debugPrint('userState');
+          user = state.user;
+        }
+
+        // final userState = BlocProvider.of<UserListBloc>(context, listen: true).state;
+        // debugPrint(state.toString());
+        // if (userState is UserListSuccessed) {
+        //   debugPrint('state');
+        //   debugPrint(userState.toString());
+        //   responsibles = userState.users;
+        //   // setState(() {});
+        // }
+      });
+    }
+    catch(e) {
+      debugPrint(e.toString());
+    }
+
+
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   final state = BlocProvider.of<UserListBloc>(context).state;
+    //   debugPrint(state.toString());
+    //   if (state is UserListSuccessed) {
+    //     debugPrint('state');
+    //     debugPrint(state.toString());
+    //     responsibles = state.users;
+    //     // setState(() {});
+    //   }
+    // });
     
     // final user = await _getUserData();
 
@@ -107,11 +183,31 @@ class _SchetListState extends State<SchetList> {
     // User user = User.fromJson(userString);
 
     // debugPrint(user.toString());
-
+    debugPrint(_filter.contractId.toString());
     // if (user != null) {
     //   _filter.userId = user.id;
     // }
-    
+
+    // ФИКС ПЕРЕОТКРЫТИЯ  
+    debugPrint('contracts' + contracts.toString());
+    if (contracts.isNotEmpty) {
+      ContractFilter selectedContract = contracts.firstWhere((r) => r.id == _filter.contractId);
+      _contract = selectedContract.name;
+    }
+
+
+  // _project = _projectController.text);
+  // _minSum = _minSumController.text);
+  // _maxSum = _maxSumController.text);
+  // _creator = _creatorController.text);
+  // _responsible = _responsibleController.text);
+  // _counterparty = _counterpartyController.text);
+
+  // _schetNumber = _schetNumberController.text);
+
+  // _TNNumber = _TNNumberController.text);
+  // _TNDescription = _TNDescriptionController.text);
+
 
     _schetListBloc.add(LoadSchetList(true, _filter));
     setState(() => _filter = _filter);
@@ -137,7 +233,7 @@ class _SchetListState extends State<SchetList> {
     _creatorController.text = _creator;
     _creatorController.addListener(_changeCreator);
 
-    _responsibleController.text = _responsible;
+    _responsibleController.text = _responsible;_contract;
     _responsibleController.addListener(_changeResponsible);
 
     _minSumController.text = _minSum;
@@ -155,6 +251,11 @@ class _SchetListState extends State<SchetList> {
 
   void _changeContract() {
     setState(() => _contract = _contractController.text);
+    debugPrint(_contract);
+    if (_contract.trim() == "") {
+      _filter.documentId.clear();
+      _filter.contractId = "";
+    }
   }
 
   void _changeProject() {
@@ -163,6 +264,7 @@ class _SchetListState extends State<SchetList> {
 
   void _changeMinSum() {
     setState(() => _minSum = _minSumController.text);
+    // debugPrint(responsibles.toString());
   }
 
   void _changeMaxSum() {
@@ -179,6 +281,7 @@ class _SchetListState extends State<SchetList> {
 
   void _changeResponsible() {
     setState(() => _responsible = _responsibleController.text);
+    _getResponsibles();
   }
 
   void _changeOrganization() {
@@ -201,11 +304,142 @@ class _SchetListState extends State<SchetList> {
     setState(() => {});
   }
 
+  Future<Iterable<ProjectFilter>> _getProjects() async {
+
+    final event = ProjectListEvent();
+    event.type = ProjectListAction.GetAll;
+
+    var request = ProjectListRequest();
+    request.projectName = _project;
+    request.skip = 0;
+    request.take = 20;
+    request.filter = _filter;
+
+    debugPrint(request.toString());
+
+    event.payload = request;
+    projectBloc.eventSink.add(event);
+
+    return projects;
+  }
+
+  Future<Iterable<ContractFilter>> _getContracts() async {
+
+    final event = ContractListEvent();
+    event.type = ContractListAction.GetAll;
+
+    var request = new ContractListRequest();
+    request.contractName = _contract;
+    request.skip = 0;
+    request.take = 20;
+    request.filter = _filter;
+
+    event.payload = request;
+    contractBloc.eventSink.add(event);
+
+    return contracts;
+  }
+
+  Future<Iterable<CounterpartyFilter>> _getCounterparties(bool isPaying) async {
+
+    final event = CounterpartyListEvent();
+    event.type = CounterpartyListAction.GetAll;
+
+    var request = new CounterpartyListRequest();
+    request.counterpartyName = _counterparty;
+    request.isPaying = isPaying;
+    request.skip = 0;
+    request.take = 20;
+    request.filter = _filter;
+
+    debugPrint(request.toString());
+
+    event.payload = request;
+    counterpartyBloc.eventSink.add(event);
+
+    return counterparties;
+  }
+
+
+  Future<Iterable<UserFilter>> _getCreators() async {
+    _filter.creatorName = _creator;
+
+    // ВАРИАНТ С ОБЫЧНЫМ БЛОКОМ
+    // _userListBloc.add(LoadUsers(_responsible, 0, 20, true, _filter));
+
+    // ВАРИАНТ СО СТРМОМ
+    final event = UserListEvent();
+    event.type = UserListAction.GetCreators;
+
+    var request = new UserListRequest();
+    request.firstName = _creator;
+    request.skip = 20;
+    request.take = 0;
+    request.filter = _filter;
+
+    event.payload = request;
+    userBloc.eventSink.add(event);
+
+    return creators;
+  }
+
+  Future<Iterable<UserFilter>> _getResponsibles() async {
+    debugPrint('call');
+    _filter.setUserName = _responsible;
+
+    // ВАРИАНТ С ОБЫЧНЫМ БЛОКОМ
+    // _userListBloc.add(LoadUsers(_responsible, 0, 20, true, _filter));
+
+    // ВАРИАНТ СО СТРМОМ
+    final event = UserListEvent();
+    event.type = UserListAction.GetAll;
+
+    var request = new UserListRequest();
+    request.firstName = _responsible;
+    request.skip = 20;
+    request.take = 0;
+    request.filter = _filter;
+
+    event.payload = request;
+    userBloc.eventSink.add(event);
+
+    // responsibles = _usersResult.users;
+    // debugPrint('userResult' + responsibles.toString());
+
+    // НЕ РАБОТАЕТ
+    // debugPrint('resp');
+    // debugPrint(responsibles.toString());
+
+    // StreamBuilder(
+    //   stream: userBloc.userListStream,
+    //   builder: (context, snapshot) {
+    //     debugPrint(snapshot.toString());
+    //     return Text(_responsible);
+    //   }
+    // );
+
+    
+    return responsibles;
+  }
 
   _getSchets() {
     _filter.skip = 0;
     _filter.numberSchet = _schetNumber;
     _filter.numberTTNOrOrder = _TNNumber;
+
+    var stringDateFrom = StringValue();
+    if (dateFromSelected) {
+      stringDateFrom.value = _dateFrom.toLocal().toString();
+    }
+    else {
+      stringDateFrom.value = DateTime(2010,1,1).toLocal().toString();
+    }
+    
+    _filter.dateFrom = stringDateFrom;
+
+    var stringDateTo = StringValue();
+    stringDateTo.value = _dateTo.toLocal().toString();
+    _filter.dateTo = stringDateTo;
     // ????
     switch(dropdownvalue) {
       case 'Все':
@@ -250,11 +484,17 @@ class _SchetListState extends State<SchetList> {
 
     _filter.description = _TNDescription;
     if (_maxSum != "") {
-      _filter.summaMax = double.parse(_maxSum);
+      // _filter.summaMax = double.parse(_maxSum);
+      var doubleV = DoubleValue();
+      doubleV.value = double.parse(_maxSum);
+      _filter.summaMax = doubleV;
     }
     
     if (_minSum != "") {
-      _filter.summaMin = double.parse(_minSum);
+      var doubleV = DoubleValue();
+      doubleV.value = double.parse(_minSum);
+      _filter.summaMax = doubleV;
+      // _filter.summaMin = double.parse(_minSum);
     }
     
 
@@ -309,6 +549,48 @@ class _SchetListState extends State<SchetList> {
     encryptedSharedPreferences: true,
   );
 
+
+  void selectField(String selection, String type) {
+    debugPrint('1' + selection);
+    switch(type) {
+      case 'responsible':
+        UserFilter selected = responsibles.firstWhere((r) => r.fullName == selection);
+        _filter.setUserId = selected.id;
+        _filter.setUserName = selected.fullName;
+
+      case 'creator':
+        UserFilter selected = creators.firstWhere((r) => r.fullName == selection);
+        _filter.creatorId = selected.id;
+        _filter.creatorName = selected.fullName;
+
+      case 'contract':
+        ContractFilter selected = contracts.firstWhere((r) => r.name == selection);
+
+        // ЭТО ВРОДЕ ДЛЯ РАМОЧНЫХ
+        _filter.contractId = selected.id;
+
+        _filter.documentId.add(selected.id);
+
+        // _filter.creatorName = selected.name;
+        debugPrint(selected.id.toString());
+
+      case 'payingOrg':
+        CounterpartyFilter selected = counterparties.firstWhere((r) => r.name == selection);
+        _filter.payingOrganizationId = selected.id;
+        _filter.payingOrganizationName = selected.name;
+
+      case 'counterparty':
+        CounterpartyFilter selected = counterparties.firstWhere((r) => r.name == selection);
+        _filter.payingOrganizationId = selected.id;
+        _filter.payingOrganizationName = selected.name; 
+
+      case 'project':
+        ProjectFilter selected = projects.firstWhere((r) => r.name == selection);
+        _filter.projectId = selected.id;
+        _filter.projectName = selected.name; 
+    }
+  }
+
   // Future<void> GetSchets() async {
   //   _result = await clientApp.GetSchets(_filter);
   //   // debugPrint(_result.toString());
@@ -334,9 +616,17 @@ class _SchetListState extends State<SchetList> {
   }
 
 
-  Future<DateTime?> pickDate() => showDatePicker(
+  Future<DateTime?> pickDateFrom() => showDatePicker(
     context: context, 
     initialDate: _dateFrom, 
+    firstDate: DateTime(1900), 
+    lastDate: DateTime(2100),
+    locale: const Locale('ru')
+  );
+
+  Future<DateTime?> pickDateTo() => showDatePicker(
+    context: context, 
+    initialDate: _dateTo, 
     firstDate: DateTime(1900), 
     lastDate: DateTime(2100),
     locale: const Locale('ru')
@@ -360,6 +650,21 @@ class _SchetListState extends State<SchetList> {
                 //   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: <Widget>[
+
+                      //СТРИМ
+                        // StreamBuilder(
+                        //   stream: userBloc.userListStream,
+                        //   builder: (context, snapshot) {
+                        //     debugPrint('snap' + snapshot.data.toString());
+                        //     if (snapshot.data != null) {
+                        //       responsibles = snapshot.data as List<UserFilter>;
+                        //       setState(() => {});
+                        //     }
+                            
+                        //     return Text(_responsible);
+                        //   }
+                        // ),
+
                           // Padding(
                           //   padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                           //   child: TextField(
@@ -399,28 +704,129 @@ class _SchetListState extends State<SchetList> {
 
                           Padding(
                             padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, right: 20.0, left: 20.0),
-                            child: TextField(
-                              style: const TextStyle(fontSize: 18),
-                              controller: _organizationController,
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                                border: OutlineInputBorder(),
-                                labelText: 'Выберите оплачивающую организацию',
-                                hintText: 'Выберите оплачивающую организацию'),
+                            child: StreamBuilder(
+                              stream: counterpartyBloc.counterpartyListStream,
+                              builder: (context, snapshot) {
+                                // debugPrint('snap' + snapshot.data.toString());
+                                if (snapshot.data != null) {
+                                  counterparties = snapshot.data as List<CounterpartyFilter>;
+                                }
+
+                                return Autocomplete<String>(
+                                  initialValue: TextEditingValue(text: _counterparty),
+                                  optionsBuilder: (TextEditingValue textEditingValue) async {
+                                    _counterparty = textEditingValue.text;
+
+                                    // ФИКС ФИЛЬТРА
+                                    _filter.payingOrganizationId = "";
+                                    _filter.payingOrganizationName = "";
+
+                                    _getCounterparties(true);
+                                    final Iterable<CounterpartyFilter> options = counterparties;
+                                    if (_counterparty != textEditingValue.text) {
+                                      // return _lastOptions;
+                                      return _lastCounterpartyOptions.map((resp) => resp.name);
+                                    }
+                                    _lastCounterpartyOptions = options;
+                                    // debugPrint('opt' + options.toString());
+                                    // return options;
+                                    return options.map((resp) => resp.name);
+                                  },
+                                  fieldViewBuilder: ((context,
+                                      textEditingController,
+                                      focusNode,
+                                      onFieldSubmitted) {
+                                    return TextField(
+                                      style: const TextStyle(fontSize: 18),
+                                      controller: textEditingController,
+                                      focusNode: focusNode,
+                                      onEditingComplete: onFieldSubmitted,
+                                      decoration: const InputDecoration(
+                                        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                        border: OutlineInputBorder(),
+                                        labelText: 'Выберите оплачивающую организацию',
+                                        hintText: 'Выберите оплачивающую организацию'),
+                                    );
+                                  }),
+                                  onSelected: (String selection) {
+                                    selectField(selection, 'payingOrg');
+                                  },
+                                );
+                              }
                             ),
+                            // child: TextField(
+                            //   style: const TextStyle(fontSize: 18),
+                            //   controller: _organizationController,
+                            //   decoration: const InputDecoration(
+                            //     contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                            //     border: OutlineInputBorder(),
+                            //     labelText: 'Выберите оплачивающую организацию',
+                            //     hintText: 'Выберите оплачивающую организацию'),
+                            // ),
                           ),
 
                           Padding(
                             padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, right: 20.0, left: 20.0),
-                            child: TextField(
-                              style: const TextStyle(fontSize: 18),
-                              controller: _counterpartyController,
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                                border: OutlineInputBorder(),
-                                labelText: 'Выберите контрагента',
-                                hintText: 'Выберите контрагента'),
+                            child: StreamBuilder(
+                              stream: counterpartyBloc.counterpartyListStream,
+                              builder: (context, snapshot) {
+                                // debugPrint('snap' + snapshot.data.toString());
+                                if (snapshot.data != null) {
+                                  counterparties = snapshot.data as List<CounterpartyFilter>;
+                                }
+
+                                return Autocomplete<String>(
+                                  initialValue: TextEditingValue(text: _counterparty),
+                                  optionsBuilder: (TextEditingValue textEditingValue) async {
+
+                                    _counterparty = textEditingValue.text;
+
+                                    // ФИКС ФИЛЬТРА
+                                    _filter.directoryCounterpartiesId = "";
+                                    _filter.directoryCounterpartiesName = "";
+                                    _getCounterparties(false);
+
+                                    final Iterable<CounterpartyFilter> options = counterparties;
+                                    if (_counterparty != textEditingValue.text) {
+                                      // return _lastOptions;
+                                      return _lastCounterpartyOptions.map((resp) => resp.name);
+                                    }
+                                    _lastCounterpartyOptions = options;
+                                    // debugPrint('opt' + options.toString());
+                                    // return options;
+                                    return options.map((resp) => resp.name);
+                                  },
+                                  fieldViewBuilder: ((context,
+                                      textEditingController,
+                                      focusNode,
+                                      onFieldSubmitted) {
+                                    return TextField(
+                                      style: const TextStyle(fontSize: 18),
+                                      controller: textEditingController,
+                                      focusNode: focusNode,
+                                      onEditingComplete: onFieldSubmitted,
+                                      decoration: const InputDecoration(
+                                        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                        border: OutlineInputBorder(),
+                                        labelText: 'Выберите контрагента',
+                                        hintText: 'Выберите контрагента'),
+                                    );
+                                  }),
+                                  onSelected: (String selection) {
+                                    selectField(selection, 'counterparty');
+                                  },
+                                );
+                              }
                             ),
+                            // child: TextField(
+                            //   style: const TextStyle(fontSize: 18),
+                            //   controller: _counterpartyController,
+                            //   decoration: const InputDecoration(
+                            //     contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                            //     border: OutlineInputBorder(),
+                            //     labelText: 'Выберите контрагента',
+                            //     hintText: 'Выберите контрагента'),
+                            // ),
                           ),
                           
                           Row(
@@ -468,20 +874,22 @@ class _SchetListState extends State<SchetList> {
                                 child: Column(
                                   children: [
                                     const Text(
-                                      'Дата создание ОТ', 
+                                      'Дата создания ОТ', 
                                       style: TextStyle(fontSize: 16)
                                     ),
                                     OutlinedButton(
                                       onPressed: () async {
-                                        final date = await pickDate();
+                                        final date = await pickDateFrom();
                                         if (date == null) return;
                                         setState(() => _dateFrom = date);
+                                        setState(() => dateFromSelected = true);
                                       }, 
                                       style: ButtonStyle(
                                         shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0))),
                                       ),
                                       child: Text(
-                                        '${_dateFrom.year}/${_dateFrom.month}/${_dateFrom.day}',
+                                        // '${_dateFrom.year}/${_dateFrom.month}/${_dateFrom.day}',
+                                        '${_dateFrom.day}.${_dateFrom.month}.${_dateFrom.year}',
                                         style: const TextStyle(fontSize: 18)
                                         )
                                       )
@@ -494,16 +902,21 @@ class _SchetListState extends State<SchetList> {
                                 child: Column(
                                   children: [
                                     const Text(
-                                      'Дата создание ДО', 
+                                      'Дата создания ДО', 
                                       style: TextStyle(fontSize: 16)
                                     ),
                                     OutlinedButton(
-                                      onPressed: () async {}, 
+                                      onPressed: () async {
+                                        final date = await pickDateTo();
+                                        if (date == null) return;
+                                        setState(() => _dateTo = date);
+                                      }, 
                                       style: ButtonStyle(
                                         shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0))),
                                       ),
                                       child: Text(
-                                        '${_dateTo.year}/${_dateTo.month}/${_dateTo.day}',
+                                        // '${_dateTo.year}/${_dateTo.month}/${_dateTo.day}',
+                                        '${_dateTo.day}.${_dateTo.month}.${_dateTo.year}',
                                         style: const TextStyle(fontSize: 18)
                                         )
                                       )
@@ -515,28 +928,165 @@ class _SchetListState extends State<SchetList> {
 
                           Padding(
                             padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, right: 20.0, left: 20.0),
-                            child: TextField(
-                              style: const TextStyle(fontSize: 18),
-                              controller: _creatorController,
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                                border: OutlineInputBorder(),
-                                labelText: 'Создал',
-                                hintText: 'Создал'),
+                            child: StreamBuilder(
+                              stream: userBloc.userListStream,
+                              builder: (context, snapshot) {
+                                // debugPrint('snap' + snapshot.data.toString());
+                                if (snapshot.data != null) {
+                                  creators = snapshot.data as List<UserFilter>;
+                                  // debugPrint('stream' + responsibles.toString());
+                                  // setState(() => {});
+                                }
+                                
+                                // return Autocomplete<UserFilter>(
+                                return Autocomplete<String>(
+                                  initialValue: TextEditingValue(text: _creator),
+                                  optionsBuilder: (TextEditingValue textEditingValue) async {
+
+                                    _creator = textEditingValue.text;
+
+                                    // ФИКС ФИЛЬТРА
+                                    _filter.creatorId = "";
+
+                                    _getCreators();
+
+
+                                    final Iterable<UserFilter> options = creators;
+                                    if (_creator != textEditingValue.text) {
+                                      // return _lastOptions;
+                                      return _lastOptions.map((resp) => resp.fullName);
+                                    }
+                                    _lastOptions = options;
+                                    // debugPrint('opt' + options.toString());
+                                    // return options;
+                                    return options.map((resp) => resp.fullName);
+                                  },
+                                  fieldViewBuilder: ((context,
+                                      textEditingController,
+                                      focusNode,
+                                      onFieldSubmitted) {
+                                    return TextField(
+                                      style: const TextStyle(fontSize: 18),
+                                      controller: textEditingController,
+                                      focusNode: focusNode,
+                                      onEditingComplete: onFieldSubmitted,
+                                      decoration: const InputDecoration(
+                                        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                        border: OutlineInputBorder(),
+                                        labelText: 'Создал',
+                                        hintText: 'Создал'),
+                                    );
+                                  }),
+                                  onSelected: (String selection) {
+                                    selectField(selection, 'creator');
+                                  },
+                                );
+                              }
                             ),
+                            // child: TextField(
+                            //   style: const TextStyle(fontSize: 18),
+                            //   controller: _creatorController,
+                            //   decoration: const InputDecoration(
+                            //     contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                            //     border: OutlineInputBorder(),
+                            //     labelText: 'Создал',
+                            //     hintText: 'Создал'),
+                            // ),
+                            
                           ),
 
                           Padding(
                             padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, right: 20.0, left: 20.0),
-                            child: TextField(
-                              style: const TextStyle(fontSize: 18),
-                              controller: _responsibleController,
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                                border: OutlineInputBorder(),
-                                labelText: 'Ответственный',
-                                hintText: 'Ответственный'),
+                            // child: TextField(
+                            //   style: const TextStyle(fontSize: 18),
+                            //   controller: _responsibleController,
+                            //   decoration: const InputDecoration(
+                            //     contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                            //     border: OutlineInputBorder(),
+                            //     labelText: 'Ответственный',
+                            //     hintText: 'Ответственный'),
+                            // ),
+                            child: StreamBuilder(
+                              stream: userBloc.userListStream,
+                              builder: (context, snapshot) {
+                                // debugPrint('snap' + snapshot.data.toString());
+                                if (snapshot.data != null) {
+                                  responsibles = snapshot.data as List<UserFilter>;
+                                  // debugPrint('stream' + responsibles.toString());
+                                  // setState(() => {});
+                                }
+                                
+                                // return Autocomplete<UserFilter>(
+                                return Autocomplete<String>(
+                                  initialValue: TextEditingValue(text: _responsible),
+                                  optionsBuilder: (TextEditingValue textEditingValue) async {
+
+
+                                    _responsible = textEditingValue.text;
+
+                                    // ФИКС ФИЛЬТРА
+                                    _filter.setUserId = "";
+
+                                    _getResponsibles();
+
+
+                                    final Iterable<UserFilter> options = responsibles;
+                                    if (_responsible != textEditingValue.text) {
+                                      // return _lastOptions;
+                                      return _lastOptions.map((resp) => resp.fullName);
+                                    }
+                                    _lastOptions = options;
+                                    // debugPrint('opt' + options.toString());
+                                    // return options;
+                                    return options.map((resp) => resp.fullName);
+                                  },
+                                  fieldViewBuilder: ((context,
+                                      textEditingController,
+                                      focusNode,
+                                      onFieldSubmitted) {
+                                    return TextField(
+                                      style: const TextStyle(fontSize: 18),
+                                      controller: textEditingController,
+                                      focusNode: focusNode,
+                                      onEditingComplete: onFieldSubmitted,
+                                      decoration: const InputDecoration(
+                                        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                        border: OutlineInputBorder(),
+                                        labelText: 'Ответственный',
+                                        hintText: 'Ответственный'),
+                                    );
+                                  }),
+                                  onSelected: (String selection) {
+                                    selectField(selection, 'responsible');
+                                  },
+                                );
+                              }
                             ),
+                            // child: Autocomplete<UserFilter>(
+                            //   optionsBuilder: (TextEditingValue textEditingValue) async {
+                            //     _responsible = textEditingValue.text;
+                            //     final Iterable<UserFilter> options =
+                            //         await _getResponsibles();
+                            //     if (_responsible != textEditingValue.text) {
+                            //       return _lastOptions;
+                            //     }
+                            //     _lastOptions = options;
+                            //     return options;
+                            //   },
+                              
+                            //   // optionsBuilder: (TextEditingValue textEditingValue) {
+                            //   //   await _getResponsibles();
+                            //   //   if (textEditingValue.text == '') {
+                            //   //     return const Iterable<UserFilter>.empty();
+                            //   //   }
+                            //   //   return responsibles.where((UserFilter user) {
+                            //   //     return user.fullName.contains(textEditingValue.text.toLowerCase());
+                            //   //   });
+                            //   // },
+                            //   onSelected: (UserFilter selection) {
+                            //     debugPrint('You just selected $selection');
+                            //   },
+                            // )
                           ),
 
                           Row(
@@ -588,28 +1138,183 @@ class _SchetListState extends State<SchetList> {
 
                           Padding(
                             padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, right: 20.0, left: 20.0),
-                            child: TextField(
-                              style: const TextStyle(fontSize: 18),
-                              controller: _contractController,
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                                border: OutlineInputBorder(),
-                                labelText: 'Договор',
-                                hintText: 'Договор'),
+                            child: StreamBuilder(
+                              stream: contractBloc.contractListStream,
+                              builder: (context, snapshot) {
+                                // debugPrint('snap' + snapshot.data.toString());
+                                if (snapshot.data != null) {
+                                  contracts = snapshot.data as List<ContractFilter>;
+                                  // debugPrint('stream' + responsibles.toString());
+                                  // setState(() => {});
+                                }
+                                
+                                // return Autocomplete<ContractFilter>(
+                                return Autocomplete<String>(
+                                  initialValue: TextEditingValue(text: _contract),
+                                  optionsBuilder: (TextEditingValue textEditingValue) async {
+
+                                    
+                                    // ТЕСТ ДЕБАУНСА
+                                    // Добавлял я
+                                    Iterable<ContractFilter> options = contracts;
+
+                                    _contract = textEditingValue.text;
+
+                                    if (_debounce?.isActive ?? false) _debounce?.cancel();
+                                    _debounce = Timer(const Duration(milliseconds: 1500), () {
+                                      
+                                      
+                                      debugPrint('deb' + _contract);
+                                      _getContracts();
+
+                                      // Добавлял я
+                                      options = contracts;
+                                      _lastContractOptions = options;
+                                      setState(() {
+                                        
+                                      });
+
+
+
+                                      // if (_contract != textEditingValue.text) {
+                                      //   return _lastContractOptions.map((resp) => resp.name);
+                                      // }
+                                      // _lastContractOptions = options;
+
+                                      // return options.map((resp) => resp.name);
+
+                                    });
+
+                                    //РАБОЧИЙ ВАРИАНТ
+                                  //   _contract = textEditingValue.text;
+
+                                  //   debugPrint(_contract);
+
+                                  //   _filter.documentId.clear();
+                                  //   _filter.contractId = "";
+                                  //   _getContracts();
+                                  //  final Iterable<ContractFilter> options = contracts;
+
+                                    if (_contract != textEditingValue.text) {
+                                      // return _lastContractOptions;
+                                      return _lastContractOptions.map((resp) => resp.name);
+                                    }
+                                    _lastContractOptions = options;
+                                    // debugPrint('opt' + options.toString());
+                                    // return options;
+                                    return options.map((resp) => resp.name);
+                                  },
+                                  fieldViewBuilder: ((context,
+                                      textEditingController,
+                                      focusNode,
+                                      onFieldSubmitted) {
+                                    return TextField(
+                                      style: const TextStyle(fontSize: 18),
+                                      controller: textEditingController,
+                                      focusNode: focusNode,
+                                      onEditingComplete: onFieldSubmitted,
+                                      decoration: const InputDecoration(
+                                        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                        border: OutlineInputBorder(),
+                                        labelText: 'Договор',
+                                        hintText: 'Договор'),
+                                    );
+                                  }),
+                                  onSelected: (String selection) {
+                                    selectField(selection, 'contract');
+                                  },
+                                  // onSelected: (ContractFilter c) {
+                                  //   selectField(c.name, 'contract');
+                                  // },
+                                );
+                              }
                             ),
+                            // child: TextField(
+                            //   style: const TextStyle(fontSize: 18),
+                            //   controller: _contractController,
+                            //   decoration: const InputDecoration(
+                            //     contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                            //     border: OutlineInputBorder(),
+                            //     labelText: 'Договор',
+                            //     hintText: 'Договор'),
+                            // ),
                           ),
 
                           Padding(
                             padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, right: 20.0, left: 20.0),
-                            child: TextField(
-                              style: const TextStyle(fontSize: 18),
-                              controller: _projectController,
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                                border: OutlineInputBorder(),
-                                labelText: 'Проект',
-                                hintText: 'Проект'),
+                            child: StreamBuilder(
+                              stream: projectBloc.projectListStream,
+                              builder: (context, snapshot) {
+                                // debugPrint('snap' + snapshot.data.toString());
+                                if (snapshot.data != null) {
+                                  projects = snapshot.data as List<ProjectFilter>;
+                                }
+
+                                return Autocomplete<String>(
+                                  initialValue: TextEditingValue(text: _project),
+                                  optionsBuilder: (TextEditingValue textEditingValue) async {
+
+
+                                    _project = textEditingValue.text;
+
+                                    // ФИКС ФИЛЬТРА
+                                    _filter.projectId = "";
+                                    _filter.projectName = "";
+
+
+                                    debugPrint(_project);
+                                    _getProjects();
+
+                                    final Iterable<ProjectFilter> options = projects;
+                                    if (_project != textEditingValue.text) {
+                                      // return _lastOptions;
+                                      return _lastProjectOptions.map((resp) => resp.name);
+                                    }
+                                    _lastProjectOptions = options;
+                                    // debugPrint('opt' + options.toString());
+                                    // return options;
+                                    return options.map((resp) => resp.name);
+                                  },
+                                  fieldViewBuilder: ((context,
+                                      textEditingController,
+                                      focusNode,
+                                      onFieldSubmitted) {
+                                    return TextField(
+                                      style: const TextStyle(fontSize: 18),
+                                      controller: textEditingController,
+                                      focusNode: focusNode,
+                                      onEditingComplete: onFieldSubmitted,
+                                      // onChanged: (value) => {
+                                      //   debugPrint(value)
+                                      // }
+                                        
+                                        // if (value.trim() == "") {
+                                        //   _filter.documentId.clear()
+                                        //   // _filter.contractId = "";
+                                        // }
+                                      // ,
+                                      decoration: const InputDecoration(
+                                        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                        border: OutlineInputBorder(),
+                                        labelText: 'Проект',
+                                        hintText: 'Проект'),
+                                    );
+                                  }),
+                                  onSelected: (String selection) {
+                                    selectField(selection, 'project');
+                                  },
+                                );
+                              }
                             ),
+                            // child: TextField(
+                            //   style: const TextStyle(fontSize: 18),
+                            //   controller: _projectController,
+                            //   decoration: const InputDecoration(
+                            //     contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                            //     border: OutlineInputBorder(),
+                            //     labelText: 'Проект',
+                            //     hintText: 'Проект'),
+                            // ),
                           ),
 
                           Padding(
@@ -652,7 +1357,7 @@ class _SchetListState extends State<SchetList> {
                         onPressed: () {
                           _getSchets();
                         },
-                        child: Text(
+                        child: const Text(
                           'Сохранить',
                         ),
                       ),

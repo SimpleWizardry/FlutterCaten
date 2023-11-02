@@ -3,13 +3,14 @@ import 'package:myapp/features/schets/schet_list/widgets/schet_card_contract.dar
 import 'package:myapp/features/schets/schet_list/widgets/schet_card_description.dart';
 import 'package:myapp/features/schets/schet_list/widgets/schet_sum_space.dart';
 
-import '../../services/schet.pb.dart';
+// import '../../services/schet.pb.dart';
+import '../../../../generated/schet.pb.dart';
 import 'button_schet_card.dart';
 
 
 
 class SchetCard extends StatelessWidget {
-  final SchetListView schet;
+  final SchetView schet;
 
   
   

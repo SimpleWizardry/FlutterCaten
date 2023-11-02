@@ -1,0 +1,8 @@
+// {
+//   "protoc": {
+//     "path": "C:/flutter/bin",
+//     "options": [
+//         "--proto_path=C:/myapp/myapp/protos",
+//     ]
+//   }
+// }

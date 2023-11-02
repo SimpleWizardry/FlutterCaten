@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../services/schet.pb.dart';
+import '../../../../generated/schet.pb.dart';
+
+// import '../../services/schet.pb.dart';
 
 class SchetSumSpace extends StatelessWidget {
-  final SchetListView schet;
+  final SchetView schet;
+  // final SchetListView schet;
   final TextStyle? textStyle;
   const SchetSumSpace({super.key, required this.schet, this.textStyle});
 

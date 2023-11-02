@@ -75,7 +75,7 @@ class LoginReply extends $pb.GeneratedMessage {
     ..aOB(1, _omitFieldNames ? '' : 'succsecced')
     ..aOS(2, _omitFieldNames ? '' : 'messageServer', protoName: 'messageServer')
     ..aOS(3, _omitFieldNames ? '' : 'jwt')
-    ..aOS(4, _omitFieldNames ? '' : 'user')
+    ..aOM<User>(4, _omitFieldNames ? '' : 'user', subBuilder: User.create)
     ..hasRequiredFields = false
   ;
 
@@ -128,13 +128,15 @@ class LoginReply extends $pb.GeneratedMessage {
   void clearJwt() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.String get user => $_getSZ(3);
+  User get user => $_getN(3);
   @$pb.TagNumber(4)
-  set user($core.String v) { $_setString(3, v); }
+  set user(User v) { setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasUser() => $_has(3);
   @$pb.TagNumber(4)
   void clearUser() => clearField(4);
+  @$pb.TagNumber(4)
+  User ensureUser() => $_ensure(3);
 }
 
 class User extends $pb.GeneratedMessage {
@@ -151,10 +153,9 @@ class User extends $pb.GeneratedMessage {
     ..aOS(5, _omitFieldNames ? '' : 'UserName', protoName: 'UserName')
     ..aOS(6, _omitFieldNames ? '' : 'Email', protoName: 'Email')
     ..pc<Role>(7, _omitFieldNames ? '' : 'Roles', $pb.PbFieldType.PM, protoName: 'Roles', subBuilder: Role.create)
-    ..aOS(8, _omitFieldNames ? '' : 'Users1c', protoName: 'Users1c')
-    ..aOS(9, _omitFieldNames ? '' : 'FIO', protoName: 'FIO')
-    ..aOS(10, _omitFieldNames ? '' : 'FullName', protoName: 'FullName')
-    ..aOB(11, _omitFieldNames ? '' : 'Fired', protoName: 'Fired')
+    ..aOS(8, _omitFieldNames ? '' : 'User1CId', protoName: 'User1CId')
+    ..aOS(9, _omitFieldNames ? '' : 'FullName', protoName: 'FullName')
+    ..aOB(10, _omitFieldNames ? '' : 'Fired', protoName: 'Fired')
     ..hasRequiredFields = false
   ;
 
@@ -237,40 +238,31 @@ class User extends $pb.GeneratedMessage {
   $core.List<Role> get roles => $_getList(6);
 
   @$pb.TagNumber(8)
-  $core.String get users1c => $_getSZ(7);
+  $core.String get user1CId => $_getSZ(7);
   @$pb.TagNumber(8)
-  set users1c($core.String v) { $_setString(7, v); }
+  set user1CId($core.String v) { $_setString(7, v); }
   @$pb.TagNumber(8)
-  $core.bool hasUsers1c() => $_has(7);
+  $core.bool hasUser1CId() => $_has(7);
   @$pb.TagNumber(8)
-  void clearUsers1c() => clearField(8);
+  void clearUser1CId() => clearField(8);
 
   @$pb.TagNumber(9)
-  $core.String get fIO => $_getSZ(8);
+  $core.String get fullName => $_getSZ(8);
   @$pb.TagNumber(9)
-  set fIO($core.String v) { $_setString(8, v); }
+  set fullName($core.String v) { $_setString(8, v); }
   @$pb.TagNumber(9)
-  $core.bool hasFIO() => $_has(8);
+  $core.bool hasFullName() => $_has(8);
   @$pb.TagNumber(9)
-  void clearFIO() => clearField(9);
+  void clearFullName() => clearField(9);
 
   @$pb.TagNumber(10)
-  $core.String get fullName => $_getSZ(9);
+  $core.bool get fired => $_getBF(9);
   @$pb.TagNumber(10)
-  set fullName($core.String v) { $_setString(9, v); }
+  set fired($core.bool v) { $_setBool(9, v); }
   @$pb.TagNumber(10)
-  $core.bool hasFullName() => $_has(9);
+  $core.bool hasFired() => $_has(9);
   @$pb.TagNumber(10)
-  void clearFullName() => clearField(10);
-
-  @$pb.TagNumber(11)
-  $core.bool get fired => $_getBF(10);
-  @$pb.TagNumber(11)
-  set fired($core.bool v) { $_setBool(10, v); }
-  @$pb.TagNumber(11)
-  $core.bool hasFired() => $_has(10);
-  @$pb.TagNumber(11)
-  void clearFired() => clearField(11);
+  void clearFired() => clearField(10);
 }
 
 class Role extends $pb.GeneratedMessage {
@@ -283,7 +275,6 @@ class Role extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'Id', protoName: 'Id')
     ..aOS(2, _omitFieldNames ? '' : 'Info', protoName: 'Info')
     ..aOS(3, _omitFieldNames ? '' : 'Name', protoName: 'Name')
-    ..aOB(4, _omitFieldNames ? '' : 'Right', protoName: 'Right')
     ..hasRequiredFields = false
   ;
 
@@ -334,15 +325,6 @@ class Role extends $pb.GeneratedMessage {
   $core.bool hasName() => $_has(2);
   @$pb.TagNumber(3)
   void clearName() => clearField(3);
-
-  @$pb.TagNumber(4)
-  $core.bool get right => $_getBF(3);
-  @$pb.TagNumber(4)
-  set right($core.bool v) { $_setBool(3, v); }
-  @$pb.TagNumber(4)
-  $core.bool hasRight() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearRight() => clearField(4);
 }
 
 
