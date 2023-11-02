@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/generated/schet.pb.dart';
 
 import '../../../repositories/schet/schet_repository.dart';
+import '../../schets/services/schet.pb.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key, required this.title});
@@ -22,7 +22,7 @@ class _HomeState extends State<Home> {
 
   Future<void> _getSchets() async {
     final filter = FilterSchet();
-    final response = await  clientApp.getSchets(filter);
+    final response = await clientApp.getSchets(filter);
     debugPrint(response.toString());
   }
 
@@ -47,15 +47,13 @@ class _HomeState extends State<Home> {
         title: Text(
           widget.title,
           style: theme.textTheme.titleMedium,
-          ),
-      ),
-      body: ListView.builder(itemBuilder: (context, i) => 
-        ListTile(
-          title: Text('schet')
         ),
-      ), 
+      ),
+      body: ListView.builder(
+        itemBuilder: (context, i) => ListTile(title: Text('schet')),
+      ),
       // body: Center(
-      //   child: Column(          
+      //   child: Column(
       //     mainAxisAlignment: MainAxisAlignment.center,
       //     children: <Widget>[
       //       const Text(

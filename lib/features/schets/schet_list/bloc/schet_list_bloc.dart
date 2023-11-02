@@ -11,25 +11,28 @@ part 'schet_list_event.dart';
 class SchetListBloc extends Bloc<SchetListEvent, SchetListState> {
   SchetListBloc(this.schetRepository, this.filterSchet)
       : super(SchetListInitial()) {
-    
     on<LoadSchetList>((event, emit) async {
-      if (event.init) {
-        emit(SchetListInitial());
-      } else {
-        emit(SchetListLoading());
-      }
-      
-      filterSchet = event.filterSchet;
-      debugPrint(event.toString() + filterSchet.toString());
-      var _result =
-          await GetIt.I<AbstractSchetRepository>().GetSchets(filterSchet);
-      if (_result.succssed) {
-        debugPrint('dddd');
-        filterSchet.skip += 20;
-        emit(SchetListSuccessed(
-            listSchets: _result.list ,
-            totalCount: _result.count));
-      } else {
+      try {
+        if (event.init) {
+          emit(SchetListInitial());
+        } else {
+          emit(SchetListLoading());
+        }
+
+        filterSchet = event.filterSchet;
+        debugPrint(event.toString() + filterSchet.toString());
+        var _result =
+            await GetIt.I<AbstractSchetRepository>().GetSchets(filterSchet);
+        if (_result.succssed) {
+          debugPrint('dddd');
+          filterSchet.skip += 20;
+          emit(SchetListSuccessed(
+              listSchets: _result.list, totalCount: _result.count));
+        } else {
+          emit(SchetListFailure(
+              errorMessage: 'Не удалось получить данные с сервера'));
+        }
+      } catch (e) {
         emit(SchetListFailure(
             errorMessage: 'Не удалось получить данные с сервера'));
       }

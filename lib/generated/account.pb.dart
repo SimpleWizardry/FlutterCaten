@@ -4,7 +4,7 @@
 //
 // @dart = 2.12
 
-// ignore_for_file: annotate_overrides, camel_case_types
+// ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
 // ignore_for_file: non_constant_identifier_names, prefer_final_fields
 // ignore_for_file: unnecessary_import, unnecessary_this, unused_import
@@ -13,8 +13,21 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+/// The request message containing the user's name.
 class LoginRequest extends $pb.GeneratedMessage {
-  factory LoginRequest() => create();
+  factory LoginRequest({
+    $core.String? login,
+    $core.String? password,
+  }) {
+    final $result = create();
+    if (login != null) {
+      $result.login = login;
+    }
+    if (password != null) {
+      $result.password = password;
+    }
+    return $result;
+  }
   LoginRequest._() : super();
   factory LoginRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory LoginRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
@@ -65,8 +78,29 @@ class LoginRequest extends $pb.GeneratedMessage {
   void clearPassword() => clearField(2);
 }
 
+/// The response message containing the greetings.
 class LoginReply extends $pb.GeneratedMessage {
-  factory LoginReply() => create();
+  factory LoginReply({
+    $core.bool? succsecced,
+    $core.String? messageServer,
+    $core.String? jwt,
+    User? user,
+  }) {
+    final $result = create();
+    if (succsecced != null) {
+      $result.succsecced = succsecced;
+    }
+    if (messageServer != null) {
+      $result.messageServer = messageServer;
+    }
+    if (jwt != null) {
+      $result.jwt = jwt;
+    }
+    if (user != null) {
+      $result.user = user;
+    }
+    return $result;
+  }
   LoginReply._() : super();
   factory LoginReply.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory LoginReply.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
@@ -75,7 +109,7 @@ class LoginReply extends $pb.GeneratedMessage {
     ..aOB(1, _omitFieldNames ? '' : 'succsecced')
     ..aOS(2, _omitFieldNames ? '' : 'messageServer', protoName: 'messageServer')
     ..aOS(3, _omitFieldNames ? '' : 'jwt')
-    ..aOS(4, _omitFieldNames ? '' : 'user')
+    ..aOM<User>(4, _omitFieldNames ? '' : 'user', subBuilder: User.create)
     ..hasRequiredFields = false
   ;
 
@@ -128,17 +162,63 @@ class LoginReply extends $pb.GeneratedMessage {
   void clearJwt() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.String get user => $_getSZ(3);
+  User get user => $_getN(3);
   @$pb.TagNumber(4)
-  set user($core.String v) { $_setString(3, v); }
+  set user(User v) { setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasUser() => $_has(3);
   @$pb.TagNumber(4)
   void clearUser() => clearField(4);
+  @$pb.TagNumber(4)
+  User ensureUser() => $_ensure(3);
 }
 
 class User extends $pb.GeneratedMessage {
-  factory User() => create();
+  factory User({
+    $core.String? id,
+    $core.String? lastName,
+    $core.String? middleName,
+    $core.String? firstName,
+    $core.String? userName,
+    $core.String? email,
+    $core.Iterable<Role>? roles,
+    $core.String? user1CId,
+    $core.String? fullName,
+    $core.bool? fired,
+  }) {
+    final $result = create();
+    if (id != null) {
+      $result.id = id;
+    }
+    if (lastName != null) {
+      $result.lastName = lastName;
+    }
+    if (middleName != null) {
+      $result.middleName = middleName;
+    }
+    if (firstName != null) {
+      $result.firstName = firstName;
+    }
+    if (userName != null) {
+      $result.userName = userName;
+    }
+    if (email != null) {
+      $result.email = email;
+    }
+    if (roles != null) {
+      $result.roles.addAll(roles);
+    }
+    if (user1CId != null) {
+      $result.user1CId = user1CId;
+    }
+    if (fullName != null) {
+      $result.fullName = fullName;
+    }
+    if (fired != null) {
+      $result.fired = fired;
+    }
+    return $result;
+  }
   User._() : super();
   factory User.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory User.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
@@ -151,10 +231,9 @@ class User extends $pb.GeneratedMessage {
     ..aOS(5, _omitFieldNames ? '' : 'UserName', protoName: 'UserName')
     ..aOS(6, _omitFieldNames ? '' : 'Email', protoName: 'Email')
     ..pc<Role>(7, _omitFieldNames ? '' : 'Roles', $pb.PbFieldType.PM, protoName: 'Roles', subBuilder: Role.create)
-    ..aOS(8, _omitFieldNames ? '' : 'Users1c', protoName: 'Users1c')
-    ..aOS(9, _omitFieldNames ? '' : 'FIO', protoName: 'FIO')
-    ..aOS(10, _omitFieldNames ? '' : 'FullName', protoName: 'FullName')
-    ..aOB(11, _omitFieldNames ? '' : 'Fired', protoName: 'Fired')
+    ..aOS(8, _omitFieldNames ? '' : 'User1CId', protoName: 'User1CId')
+    ..aOS(9, _omitFieldNames ? '' : 'FullName', protoName: 'FullName')
+    ..aOB(10, _omitFieldNames ? '' : 'Fired', protoName: 'Fired')
     ..hasRequiredFields = false
   ;
 
@@ -237,44 +316,51 @@ class User extends $pb.GeneratedMessage {
   $core.List<Role> get roles => $_getList(6);
 
   @$pb.TagNumber(8)
-  $core.String get users1c => $_getSZ(7);
+  $core.String get user1CId => $_getSZ(7);
   @$pb.TagNumber(8)
-  set users1c($core.String v) { $_setString(7, v); }
+  set user1CId($core.String v) { $_setString(7, v); }
   @$pb.TagNumber(8)
-  $core.bool hasUsers1c() => $_has(7);
+  $core.bool hasUser1CId() => $_has(7);
   @$pb.TagNumber(8)
-  void clearUsers1c() => clearField(8);
+  void clearUser1CId() => clearField(8);
 
   @$pb.TagNumber(9)
-  $core.String get fIO => $_getSZ(8);
+  $core.String get fullName => $_getSZ(8);
   @$pb.TagNumber(9)
-  set fIO($core.String v) { $_setString(8, v); }
+  set fullName($core.String v) { $_setString(8, v); }
   @$pb.TagNumber(9)
-  $core.bool hasFIO() => $_has(8);
+  $core.bool hasFullName() => $_has(8);
   @$pb.TagNumber(9)
-  void clearFIO() => clearField(9);
+  void clearFullName() => clearField(9);
 
   @$pb.TagNumber(10)
-  $core.String get fullName => $_getSZ(9);
+  $core.bool get fired => $_getBF(9);
   @$pb.TagNumber(10)
-  set fullName($core.String v) { $_setString(9, v); }
+  set fired($core.bool v) { $_setBool(9, v); }
   @$pb.TagNumber(10)
-  $core.bool hasFullName() => $_has(9);
+  $core.bool hasFired() => $_has(9);
   @$pb.TagNumber(10)
-  void clearFullName() => clearField(10);
-
-  @$pb.TagNumber(11)
-  $core.bool get fired => $_getBF(10);
-  @$pb.TagNumber(11)
-  set fired($core.bool v) { $_setBool(10, v); }
-  @$pb.TagNumber(11)
-  $core.bool hasFired() => $_has(10);
-  @$pb.TagNumber(11)
-  void clearFired() => clearField(11);
+  void clearFired() => clearField(10);
 }
 
 class Role extends $pb.GeneratedMessage {
-  factory Role() => create();
+  factory Role({
+    $core.String? id,
+    $core.String? info,
+    $core.String? name,
+  }) {
+    final $result = create();
+    if (id != null) {
+      $result.id = id;
+    }
+    if (info != null) {
+      $result.info = info;
+    }
+    if (name != null) {
+      $result.name = name;
+    }
+    return $result;
+  }
   Role._() : super();
   factory Role.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory Role.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
@@ -283,7 +369,6 @@ class Role extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'Id', protoName: 'Id')
     ..aOS(2, _omitFieldNames ? '' : 'Info', protoName: 'Info')
     ..aOS(3, _omitFieldNames ? '' : 'Name', protoName: 'Name')
-    ..aOB(4, _omitFieldNames ? '' : 'Right', protoName: 'Right')
     ..hasRequiredFields = false
   ;
 
@@ -334,15 +419,6 @@ class Role extends $pb.GeneratedMessage {
   $core.bool hasName() => $_has(2);
   @$pb.TagNumber(3)
   void clearName() => clearField(3);
-
-  @$pb.TagNumber(4)
-  $core.bool get right => $_getBF(3);
-  @$pb.TagNumber(4)
-  set right($core.bool v) { $_setBool(3, v); }
-  @$pb.TagNumber(4)
-  $core.bool hasRight() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearRight() => clearField(4);
 }
 
 

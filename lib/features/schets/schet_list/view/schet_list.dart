@@ -8,7 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:myapp/features/schets/services/schet.pb.dart';
 
 import '../../../../generated/account.pb.dart';
-import '../../../login/bloc/login_bloc.dart';
+import '../../../../repositories/auth/user_repository.dart';
 import '../../repository/abstractSchetRepository.dart';
 import '../bloc/schet_list_bloc.dart';
 import '../widgets/schet_card.dart';
@@ -26,10 +26,12 @@ class _SchetListState extends State<SchetList> {
   final ScrollController _scrollController = ScrollController();
   var _filter = GetIt.I<AbstractSchetRepository>().InitFilterSchet();
   var _result = ResultSchetListView.create();
+  List<String> _roles = [];
+  String _userId = "";
   final _schetListBloc = SchetListBloc(GetIt.I<AbstractSchetRepository>(),
       GetIt.I<AbstractSchetRepository>().InitFilterSchet());
   var _totalCount = 0;
-  List<SchetListView> list = [];
+  List<SchetView> list = [];
   final _storage = const FlutterSecureStorage();
 
   // late User user;
@@ -70,6 +72,25 @@ class _SchetListState extends State<SchetList> {
 
   DateTime _dateFrom = DateTime.now();
   DateTime _dateTo = DateTime.now();
+  setRoles() async {
+    final String? userString = await _storage.read(
+      key: "roles",
+      aOptions: _getAndroidOptions(),
+    );
+
+    _roles = List<String>.from(json.decode(userString as String));
+    debugPrint('$_roles');
+  }
+
+  setUserId() async {
+    final String? userString = await _storage.read(
+      key: "userId",
+      aOptions: _getAndroidOptions(),
+    );
+
+    _userId = userString as String;
+    debugPrint('$_userId');
+  }
 
   String dropdownvalue = 'Все';
 
@@ -91,28 +112,9 @@ class _SchetListState extends State<SchetList> {
 
   @override
   void initState() {
-  // void initState() async {
-    // получаем юзера из стейта
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final state = BlocProvider.of<LoginBloc>(context).state;
-      if (state is LoginSuccessed) {
-        user = state.user;
-      }
-    });
-    
-    // final user = await _getUserData();
-
-    // Не работает
-    // user = userString as User;
-    // User user = User.fromJson(userString);
-
-    // debugPrint(user.toString());
-
-    // if (user != null) {
-    //   _filter.userId = user.id;
-    // }
-    
-
+    setUserId();
+    setRoles();
+    _filter.userId = _userId;
     _schetListBloc.add(LoadSchetList(true, _filter));
     setState(() => _filter = _filter);
     setState(() => _result = _result);
@@ -267,16 +269,14 @@ class _SchetListState extends State<SchetList> {
     list = [];
     _schetListBloc.add(LoadSchetList(true, _filter));
     Navigator.pop(context);
-    setState(() {
-      
-    });
+    setState(() {});
   }
   // _changeField(String type){
   //   switch(type) {
   //     case 'number':
   //       setState(() => _schetNumber = _schetNumberController.text);
   //       break;
-  //     default: 
+  //     default:
   //       break;
   //   }
   // }
@@ -303,11 +303,11 @@ class _SchetListState extends State<SchetList> {
         _result.list.length != _totalCount) {
       _schetListBloc.add(LoadSchetList(false, _filter));
     }
-  }  
+  }
 
   AndroidOptions _getAndroidOptions() => const AndroidOptions(
-    encryptedSharedPreferences: true,
-  );
+        encryptedSharedPreferences: true,
+      );
 
   // Future<void> GetSchets() async {
   //   _result = await clientApp.GetSchets(_filter);
@@ -333,14 +333,12 @@ class _SchetListState extends State<SchetList> {
     Navigator.of(context).pushNamed('/login');
   }
 
-
   Future<DateTime?> pickDate() => showDatePicker(
-    context: context, 
-    initialDate: _dateFrom, 
-    firstDate: DateTime(1900), 
-    lastDate: DateTime(2100),
-    locale: const Locale('ru')
-  );
+      context: context,
+      initialDate: _dateFrom,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+      locale: const Locale('ru'));
 
   Future<void> _dialogBuilder(BuildContext context) {
 
@@ -982,59 +980,70 @@ class _SchetListState extends State<SchetList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Список счетов'),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.logout),
-              tooltip: 'Выйти',
-              onPressed: () {
-                _logout();
-              },
-            ),
-          ]
+      appBar: AppBar(title: const Text('Список счетов'), actions: <Widget>[
+        IconButton(
+          icon: const Icon(Icons.logout),
+          tooltip: 'Выйти',
+          onPressed: () {
+            _logout();
+          },
         ),
-        body: BlocBuilder<SchetListBloc, SchetListState>(
-          bloc: _schetListBloc,
-          builder: (context, state) {
-            if (state is SchetListInitial) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              if (state is SchetListSuccessed) {
-                list = [...list, ...state.listSchets];
-                _totalCount = state.totalCount;
-              }
-              return ListView.builder(
+      ]),
+      body: BlocBuilder<SchetListBloc, SchetListState>(
+        bloc: _schetListBloc,
+        builder: (context, state) {
+          if (state is SchetListInitial) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            if (state is SchetListSuccessed) {
+              list = [...list, ...state.listSchets];
+              _totalCount = state.totalCount;
+            }
+            return ListView.builder(
                 controller: _scrollController,
                 padding: const EdgeInsets.all(10.0),
                 itemBuilder: (context, i) {
                   if (state is SchetListSuccessed) {
                     if (i < list.length) {
-                      return SchetCard(schet: list[i]);
+                      return SchetCard(
+                        schet: list[i],
+                        roles: _roles,
+                        userId: _userId,
+                        onUpdate: () {
+                          if (i == 0) {
+                            _filter.skip = 0;
+                            list = [];
+                            _schetListBloc.add(LoadSchetList(true, _filter));
+                          } else {
+                            list = list.skip(0).take(i).toList();
+                            _filter.skip = i;
+                            _schetListBloc.add(LoadSchetList(false, _filter));
+                          }
+                        },
+                      );
                     }
                   }
-                    if (state is SchetListLoading) {
-                      return const Card(
-                        child: Center(
-                          child: CircularProgressIndicator(),
+                  if (state is SchetListLoading) {
+                    return const Card(
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
+                  if (state is SchetListFailure) {
+                    return Card(
+                      child: Center(
+                        child: Text(
+                          state.errorMessage,
+                          style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w900),
                         ),
-                      );
-                    }
-                    if (state is SchetListFailure) {
-                      return Card(
-                        child: Center(
-                          child: Text(
-                            state.errorMessage,
-                            style: const TextStyle(
-                                color: Colors.red,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w900),
-                          ),
-                        ),
-                      );
-
+                      ),
+                    );
                   }
                   return const Center(
                     child: Text('Произошла ошибка',
@@ -1044,17 +1053,21 @@ class _SchetListState extends State<SchetList> {
                             fontWeight: FontWeight.w900)),
                   );
                 },
-                itemCount:  list.length < _totalCount ?  list.length + 1 : list.length
-              );
-            }
-          },
+                itemCount: state is SchetListSuccessed
+                    ? list.length + 1
+                    : list.length);
+          }
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _dialogBuilder(context),
+        shape: const CircleBorder(),
+        backgroundColor: Colors.blue[900],
+        child: const Icon(
+          Icons.filter_alt_sharp,
+          color: Colors.white,
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => _dialogBuilder(context),
-          shape: const CircleBorder(),
-          backgroundColor: Colors.blue[900],
-          child: const Icon(Icons.filter_alt_sharp , color: Colors.white,),
-        ),
-        );
+      ),
+    );
   }
 }

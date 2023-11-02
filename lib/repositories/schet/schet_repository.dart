@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart';
 
-import '../../generated/schet.pbgrpc.dart';
+import '../../features/schets/services/schet.pbgrpc.dart';
 
 class SchetTerminalClient {
   late final ClientChannel channel;
   late final SchetGRPCServiceClient stub;
-
 
   SchetTerminalClient() {
     channel = ClientChannel(
@@ -17,7 +16,7 @@ class SchetTerminalClient {
     );
     stub = SchetGRPCServiceClient(channel);
   }
-  
+
   Future<ResultSchetListView> getSchets(FilterSchet req) async {
     debugPrint('Sending request: $req');
     final response = await stub.getSchets(req);

@@ -19,11 +19,10 @@ class _NavigationState extends State<Navigation> {
   var user;
 
   AndroidOptions _getAndroidOptions() => const AndroidOptions(
-    encryptedSharedPreferences: true,
-  );
+        encryptedSharedPreferences: true,
+      );
 
   Future<void> _checkAuth() async {
-
     final token = await _storage.read(
       key: "token",
       aOptions: _getAndroidOptions(),
@@ -79,7 +78,7 @@ class _NavigationState extends State<Navigation> {
     _checkAuth();
     // bool loggedIn = _checkAuth();
     // if (!loggedIn) {
-      
+
     // }
   }
 
@@ -87,78 +86,27 @@ class _NavigationState extends State<Navigation> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Навигация"),
-        actions: <Widget>[
+        appBar: AppBar(title: const Text("Навигация"), actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.logout),
             tooltip: 'Выйти',
             onPressed: () {
               _logout();
             },
-          ),]
-      ),
-      body: ListView.separated(
-        itemBuilder: (context, i) => ListTile(
-          trailing: const Icon(Icons.arrow_forward_ios),
-          title: Text('Утверждение счетов', style: theme.textTheme.bodyMedium),
-          onTap: () {
-            Navigator.of(context).pushNamed('/schet-list');
-          },
+          ),
+        ]),
+        body: ListView.separated(
+          itemBuilder: (context, i) => ListTile(
+            trailing: const Icon(Icons.arrow_forward_ios),
+            title:
+                Text('Утверждение счетов', style: theme.textTheme.bodyMedium),
+            onTap: () {
+              Navigator.of(context).pushNamed('/schet-list');
+            },
+          ),
+          separatorBuilder: (context, i) => const Divider(),
+          itemCount: 1,
         ),
-        separatorBuilder: (context, i) => const Divider(),
-        itemCount: 1,
-      ),
-      drawer: Drawer(
-        child: ListView(
-    // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(
-                color: Colors.blue,
-                // тут бэкграунд от времени суток
-              ),
-              child: Text('$_timeOfDay, пользователь'),
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Настройки'),
-              onTap: () {
-                // Update the state of the app.
-                // доделать страницу настроек
-                // ...
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('Выйти из профиля'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.dark_mode),
-              trailing: Switch(
-                value: darkTheme,
-                activeColor: Colors.blue[900],
-                onChanged: (bool value) {
-                  // This is called when the user toggles the switch.
-                  setState(() {
-                    darkTheme = value;
-                  });
-                },
-              ),
-              title: const Text('Темная тема'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
-            ),
-          ],
-        ),
-      )
-    );
+        drawer: const Drawer());
   }
 }
