@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:myapp/features/schets/services/schet.pb.dart';
+// import 'package:myapp/features/schets/services/schet.pb.dart';
 import 'package:path_provider/path_provider.dart';
+
+import 'package:myapp/generated/schet.pb.dart';
 
 import '../../repository/abstractSchetRepository.dart';
 part 'button_schet_card_event.dart';

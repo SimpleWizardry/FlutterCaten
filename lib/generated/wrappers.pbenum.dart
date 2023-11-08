@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: account.proto
+//  source: wrappers.proto
 //
 // @dart = 2.12
 

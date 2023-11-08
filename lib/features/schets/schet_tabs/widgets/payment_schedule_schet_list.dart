@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:myapp/features/schets/schet_tabs/widgets/payment_schedule_schet_card.dart';
-import 'package:myapp/features/schets/services/schet.pb.dart';
+// import 'package:myapp/features/schets/services/schet.pb.dart';
 
+import '../../../../generated/schet.pb.dart';
 import '../../repository/abstractSchetRepository.dart';
 import '../bloc/payment_schedule_schet_bloc.dart';
 

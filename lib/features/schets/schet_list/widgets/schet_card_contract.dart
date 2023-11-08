@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../services/schet.pb.dart';
+import '../../../../generated/schet.pb.dart';
+
+// import '../../services/schet.pb.dart';
 
 class SchetCardContract extends StatelessWidget {
   final List<ObjectAccountSchet> objectAccountSchets;

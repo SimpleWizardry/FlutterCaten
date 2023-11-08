@@ -170,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
       // debugPrint(response.id);
       // final user = response.user as User;
       
-      await _addUserData(jsonEncode(response.user));
+      await _addUserData(jsonEncode(response.user.toString()));
       await _addToken(response.jwt);
 
       _loginBloc.add(Login(true, response.user));
@@ -191,6 +191,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         centerTitle: true,
         backgroundColor: theme.primaryColor,
         title: Text(

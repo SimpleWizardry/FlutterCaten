@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../../../generated/schet.pb.dart';
 import '../../schet_list/widgets/schet_row.dart';
 import '../../schet_list/widgets/schet_sum_space.dart';
-import '../../services/schet.pb.dart';
+// import '../../services/schet.pb.dart';
 
 class SchetResourceCard extends StatelessWidget {
   final ResourceSchet resource;

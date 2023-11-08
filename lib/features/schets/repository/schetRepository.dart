@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:grpc/grpc.dart';
 
-import '../services/schet.pbgrpc.dart';
+// import '../services/schet.pbgrpc.dart';
+import '../../../generated/schet.pb.dart';
+import '../../../generated/schet.pbgrpc.dart';
 import 'abstractSchetRepository.dart';
 
 class SchetRepository implements AbstractSchetRepository {
@@ -10,8 +12,14 @@ class SchetRepository implements AbstractSchetRepository {
 
   SchetRepository() {
     channel = ClientChannel(
-      '192.168.137.142',
-      port: 32777,
+      // '192.168.137.142',
+      // '192.168.1.12',
+      '5.34.125.182',
+      // port: 32777,
+      // port: 43942,
+      // port: 55020,
+      
+      port: 32769,
       options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
       // options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
     );
@@ -21,12 +29,8 @@ class SchetRepository implements AbstractSchetRepository {
 
   FilterSchet InitFilterSchet([Object? filterSchet]) {
     var filter = FilterSchet.create();
-    filter.allOrders = true;
     filter.skip = 0;
     filter.take = 20;
-    filter.showAll = true;
-    filter.schet = true;
-    filter.withChildDocs = false;
     return filter;
   }
 
@@ -83,6 +87,31 @@ class SchetRepository implements AbstractSchetRepository {
 
   Future<ResultService> RejectSchet(RejectSchetDTO req) async {
     final response = await stub.rejectSchet(req);
+    return response;
+  }
+
+  Future<UserListReply> GetUsers(UserListRequest req) async {
+    final response = await stub.getUsers(req);
+    return response;
+  }
+
+  Future<UserListReply> GetCreators(UserListRequest req) async {
+    final response = await stub.getCreators(req);
+    return response;
+  }
+
+  Future<ContractListReply> GetContracts(ContractListRequest req) async {
+    final response = await stub.getContracts(req);
+    return response;
+  }
+
+  Future<CounterpartyListReply> GetCounterparties(CounterpartyListRequest req) async {
+    final response = await stub.getCounterparties(req);
+    return response;
+  }
+
+  Future<ProjectListReply> GetProjects(ProjectListRequest req) async {
+    final response = await stub.getProjects(req);
     return response;
   }
 }

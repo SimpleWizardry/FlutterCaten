@@ -3,9 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:myapp/features/schets/schet_tabs/widgets/schet_resource_card.dart';
 
+import '../../../../generated/schet.pb.dart';
 import '../../repository/abstractSchetRepository.dart';
 import '../../schet_list/bloc/schet_list_bloc.dart';
-import '../../services/schet.pb.dart';
+// import '../../services/schet.pb.dart';
 import '../bloc/schet_resource_list_bloc.dart';
 
 class SchetResourceList extends StatefulWidget {

@@ -2,16 +2,26 @@ syntax = "proto3";
 
 option csharp_namespace = "CalurMobileService";
 import "google/protobuf/duration.proto"; 
+import "google/protobuf/wrappers.proto";
 package schet;
 
 service SchetGRPCService {
   rpc GetSchets (FilterSchet) returns (ResultSchetListView);
   rpc GetSchet (FilterSchet) returns (ResultSchetView);
   rpc ChangeStatusSchet (FilterChangeStatus) returns (ResultChangeStatusSchet);
+  rpc GetResourcesSchet(FilterResourceSchet) returns (ResultResourceSchet);
+  rpc GetPaymentSchedulesSchet(FilterPaymentScheduleSchet) returns (ResultPaymentScheduleSchet);
+  rpc DownloadFile(FileDTO) returns (ResultDownloadFile);
+  rpc RejectSchet(RejectSchetDTO) returns (ResultService);
+  rpc GetUsers (UserListRequest) returns (UserListReply);
+  rpc GetCreators (UserListRequest) returns (UserListReply);
+  rpc GetContracts (ContractListRequest) returns (ContractListReply);
+  rpc GetCounterparties (CounterpartyListRequest) returns (CounterpartyListReply);
+  rpc GetProjects (ProjectListRequest) returns (ProjectListReply);
 }
 
 message ResultSchetListView {
-	repeated SchetListView List = 1;
+	repeated SchetView List = 1;
 	int32 Count = 2;
 	bool Succssed = 3;
 	string Message = 4;
@@ -24,52 +34,66 @@ message ResultSchetView {
 	string Message = 3;
 }
 
-
-message FilterSchet {
-	bool AllOrders = 1;
-	repeated string BudgetIds = 2;
-	repeated string DocumentId = 3;
-	string MatchingStatus = 4;
-	repeated string Messages = 5;
-	bool Schet = 6;
-	repeated string SchetStatus = 7;
-	bool ShowAll = 8;
-	bool ShowFromContract = 9;
-	int32 Skip = 10;
-	int32 Take = 11;
-	string UserId = 12;
-	bool WithChildDocs = 13;
-	string Id = 14;
-	string NomenclatureName = 15;
-	string ContractId = 16;
-	string DateFrom = 17;
-	string DateTo = 18;
-	string PayingOrganizationId = 19;
-	string ApplicationUserId = 20;
-	string DirectoryCounterpartiesId = 21;
-	string NumberSchet = 22;
-	string Description = 23;
-	string NumberTTNOrOrder = 24;
-	double SummaMin = 25;
-	double SummaMax = 26;
-	string NumberPayment = 27;
-	int32 PaymentCheck = 28;
-	string WarehouseId = 29;
-	string SetUserId = 30;
-	string ResourceId = 31;
-	
+message ResultResourceSchet
+{
+	repeated ResourceSchet Resources = 1;
+	bool Succssed = 2;
+	string Message = 3;
+	int32 Count = 4;
 }
 
-message SchetListView {
+
+message ResultPaymentScheduleSchet
+{
+	repeated PaymentScheduleSchetDTO PaymentSchedules = 1;
+	bool Succssed = 2;
+	string Message = 3;
+	int32 Count = 4;
+}
+
+
+message ResultDownloadFile
+{
+	FileDTO File  = 1;
+	bool Succssed = 2;
+	string Message = 3;
+}
+
+   message FilterSchet {
 	string Id = 1;
-	string CounterpartyName = 2;
-	repeated ObjectAccountSchet ObjectsAccountSchets = 3;
-	double Summa = 4;
-	string Date = 5;
-	string Number = 6;
-	string Description = 7;
-	StatusSchetDTO Status = 8;
+	string NomenclatureName  = 2;
+	string ContractId  = 3;
+	string NumberPayment  = 4;
+	string DirectoryCounterpartiesId = 5;
+	string PayingOrganizationId = 6;
+	string DirectoryCounterpartiesName = 7;
+	string PayingOrganizationName = 8;
+	string CreatorId  = 9;
+	string CreatorName  = 10;
+	string SetUserId  = 11;
+	string SetUserName  = 12;
+	repeated string BudgetIds = 13;
+	repeated string SchetStatus = 14;
+	google.protobuf.StringValue DateFrom  = 15;
+	google.protobuf.StringValue DateTo  = 16;
+	google.protobuf.DoubleValue SummaMin  = 17;
+	google.protobuf.DoubleValue SummaMax  = 18;
+	string NumberSchet  = 19;
+	int32 Skip  = 20;
+	int32 Take  = 21;
+	string ProjectId  = 22;
+	string ProjectName  = 23;
+	string Description  = 24;
+	string NumberTTNOrOrder  = 25;
+	string WarehouseId  = 26;
+	int32 PaymentCheck  = 27; //1 - все, 2 - без платежек(payment == null), 3 - с неоплаченными платежками(payment != null && !payment.pay),
+											//4 - с оплаченными платежками(payment != null && payment.pay), 5 - с платежками (payment != null)
+	string ResourceId  = 28;
+	string ResourceName  = 29;
+	repeated string DocumentId  = 30;
+	string MatchingStatus  = 31;
 }
+
 
 message ObjectAccountSchet {
 	string Id = 1;
@@ -89,15 +113,20 @@ message SchetView {
 	string PayingOrganizationName = 7;
 	string CreaterName = 8;
 	string Description = 9;
-	File File = 10;
+	FileDTO File = 10;
 	StatusSchetDTO Status = 11;
+	string Currency = 12;
+	string CreaterId = 13;
+}
+message FilterFile{
+	string Path = 1;
 }
 
-
-message File {
+message FileDTO {
 	string Id = 1;
 	string Path = 2;
 	string Name = 3;
+	bytes Body = 4;
 }
 
 message StatusSchetDTO {
@@ -115,3 +144,139 @@ message ResultChangeStatusSchet{
 	StatusSchetDTO Status = 2;
 	string messageServer = 3;
 }
+
+message FilterResourceSchet{
+	string SchetId = 1;
+	int32 Skip = 2;
+	int32 Take = 3;
+}
+
+message ResourceSchet{
+	string Name = 1;
+	string Unit = 2;
+	double Count = 3;
+	string Currency = 4;
+	double Price = 5;
+	double PriceWithVAT = 6;
+}
+
+message FilterPaymentScheduleSchet{
+	string SchetId = 1;
+	int32 Skip = 2;
+	int32 Take = 3;
+}
+
+message PaymentScheduleSchetDTO{
+	string Date = 1;
+	string Description = 2;
+	double Sum = 3;
+	double SumWithVAT = 4;
+	string PaymentOrderId = 5;
+	string PaymentOrderNumber = 6;
+	string Currency = 7;
+}
+
+message RejectSchetDTO{
+    string Comment = 2;
+    string SchetId = 3;
+	string UserId = 4;
+	int32 StatusHierarchy = 5;
+}
+
+message ResultService{
+	bool Succssed = 1;
+	string Message = 2;
+}
+message UserListRequest {
+  string firstName = 1;
+  int32 skip = 2;
+  int32 take = 3;
+  schet.FilterSchet filter = 4;
+}
+
+message UserListReply {
+  bool succsecced = 1;
+  string messageServer = 2;
+
+  // string jwt = 3;
+  repeated UserFilter users = 3;
+}
+
+message UserFilter {
+    string Id = 1;
+    //string LastName = 2;
+    //string MiddleName = 3;
+    //string FirstName = 4;
+    //string UserName = 5;
+    //string Email = 6;
+    //repeated Role Roles = 7;
+    //string User1CId = 8;
+    string FullName = 2;
+    //bool Fired = 10;
+
+}
+
+message ContractFilter {
+    string Id = 1;
+    string Name = 2;
+}
+
+message ContractListReply {
+  bool succsecced = 1;
+  string messageServer = 2;
+  repeated ContractFilter contracts = 3;
+}
+
+message ContractListRequest {
+  string contractName = 1;
+  int32 skip = 2;
+  int32 take = 3;
+  schet.FilterSchet filter = 4;
+}
+
+message CounterpartyFilter {
+    string Id = 1;
+    string Name = 2;
+}
+
+message CounterpartyListReply {
+  bool succsecced = 1;
+  string messageServer = 2;
+  repeated CounterpartyFilter counterparties = 3;
+}
+
+message CounterpartyListRequest {
+	// еще скорее всего инн и кпп
+	string counterpartyName = 1;
+	int32 skip = 2;
+	int32 take = 3;
+	schet.FilterSchet filter = 4;
+	bool isPaying = 5;
+}
+
+message ProjectFilter {
+    string Id = 1;
+    string Name = 2;
+}
+
+message ProjectListReply {
+  bool succsecced = 1;
+  string messageServer = 2;
+  repeated ProjectFilter projects = 3;
+}
+
+message ProjectListRequest {
+	// еще скорее всего инн и кпп
+	string projectName = 1;
+	int32 skip = 2;
+	int32 take = 3;
+	schet.FilterSchet filter = 4;
+}
+
+// message Role {
+//    string Id = 1;
+//    string Info = 2;
+//     string Name = 3;
+// }
+
+// обнова

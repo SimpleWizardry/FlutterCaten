@@ -1,4 +1,5 @@
-import '../services/schet.pb.dart';
+import '../../../generated/schet.pb.dart';
+// import '../services/schet.pb.dart';
 
 abstract class AbstractSchetRepository {
   Future<ResultSchetListView> GetSchets(FilterSchet req);
@@ -12,4 +13,10 @@ abstract class AbstractSchetRepository {
   Future<ResultDownloadFile> DownloadFile(FileDTO req);
   Future<ResultChangeStatusSchet> ChangeStatusSchet(FilterChangeStatus req);
   Future<ResultService> RejectSchet(RejectSchetDTO req);
+
+  Future<UserListReply> GetUsers(UserListRequest req);
+  Future<UserListReply> GetCreators(UserListRequest req);
+  Future<ContractListReply> GetContracts(ContractListRequest req);
+  Future<CounterpartyListReply> GetCounterparties(CounterpartyListRequest req);
+  Future<ProjectListReply> GetProjects(ProjectListRequest req);
 }

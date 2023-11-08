@@ -1,0 +1,74 @@
+// syntax = "proto3";
+
+// option csharp_namespace = "CalurMobileService";
+
+// package counterparty;
+
+// // The greeting service definition.
+// service CounterpartyGRPCService {
+//   // Sends a greeting
+//   rpc GetCounterparties (CounterpartyListRequest) returns (CounterpartyListReply);
+// }
+
+// message CounterpartyListRequest {
+//   string FirstName = 1;
+//   // NoUsers: []
+//   int32 Skip = 2;
+//   int32 Take = 3;
+// }
+
+// // The response message containing the greetings.
+// message CounterpartyListReply {
+//   bool succsecced = 1;
+//   string messageServer = 2;
+//   repeated User users = 3;
+// }
+
+// message Counterpary {
+//   string id = 1;
+//   string name = 2;
+//   string legalAddress = 3;
+//   string INN = 4;
+//   string KPP = 5;
+//   string OGRN = 6;
+//   string BIK = 7;
+//   string nameBank = 8;
+//   string corporateAccount = 9;
+//   string checkingAccount = 10;
+//   string position = 11;
+//   string nameSignatory = 12;
+//   string comment = 13;
+//   bool IP = 14; // Индивидуальный пред.
+//   bool toFolder = 15;
+//   bool customer = 16;
+//   bool contractor = 17;
+//   bool supplierOfEquipment = 18;
+//   string mailingAddress = 19;
+//   string specialization = 20;
+//   string contacts = 21;
+//   string counterpartyOneC = 22; // Id контрагента в 1С 
+//   string typeOrganization = 23;
+//   bool isProduction = 28;
+
+//   // переписать под repeated
+//   repeated PhonesCounterparties phones = 24;
+//   List<DepartmentContract> Departments = 25;
+//   List<OrganizationTaxationSystem> OrganizationTaxationSystem = 26;
+//   List<CheckingAccount> CheckingAccounts = 27;
+  
+
+// }
+
+// message Role {
+//     string Id = 1;
+//     string Info = 2;
+//     string Name = 3;
+// }
+
+// message PhonesCounterparties {
+//   string id = 1;
+//   string phone = 2;
+//   string type = 3;
+//   string directoryNewCounterpartiesId = 4;
+//   DirectoryCounterparties Organization = 5;
+// }

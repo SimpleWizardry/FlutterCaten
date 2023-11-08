@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../../../generated/schet.pb.dart';
 import '../../../../models/account/account.dart';
 import '../../repository/abstractSchetRepository.dart';
-import '../../services/schet.pb.dart';
+// import '../../services/schet.pb.dart';
 import '../bloc/button_schet_card_bloc.dart';
 
 class ButtonSchetCard extends StatefulWidget {
@@ -65,16 +66,106 @@ class _ButtonSchetCardState extends State<ButtonSchetCard> {
     var result = false;
     var hierarchy = [];
 
-    if (widget.userId == widget.schet.createrId) {
+    if (widget.userId  == widget.schet.createrId) {
       if (type == "approve") {
         hierarchy.add(1);
         hierarchy.add(4);
         hierarchy.add(6);
+        hierarchy.add(8);
+        hierarchy.add(15);
       }
       if (type == "reject") {
         hierarchy = [];
       }
     }
+
+    // if (widget.schet.isMatchingResourcesSchets) {
+    //   if (type == "approve") {
+    //     hierarchy = [];
+    //     hierarchy.add(1);
+    //     hierarchy.add(2);
+    //     hierarchy.add(15);
+    //   }
+    //   if (type == "reject") {
+    //     hierarchy = [];
+    //     hierarchy.add(1);
+    //     hierarchy.add(2);
+    //   }
+    // }
+
+    // if (this.contract != null && this.contract != undefined) {
+      // if (this.user.Id == this.contract.SetUserId) {
+      //   if (this.contract.SetUserId == this.schet.CreatorId) {
+      //     if (type == "approve") {
+      //       hierarchy = [];
+      //       hierarchy.add(1);
+      //       hierarchy.add(4);
+      //       hierarchy.add(6);
+      //       hierarchy.add(8);
+      //       hierarchy.add(15);
+      //       // this.approval.Approval = true;
+      //     }
+      //     if (type == "reject") {
+      //       hierarchy = [];
+      //     }
+      //   } else {
+      //     if (type == "approve") {
+      //       hierarchy = [];
+      //       hierarchy.add(2);
+      //       hierarchy.add(3);
+      //       hierarchy.add(15);
+      //       // this.approval.Approval = true;
+      //     }
+      //     if (type == "reject") {
+      //       hierarchy = [];
+      //       // this.approval.Approval = false;
+      //       hierarchy.add(2);
+      //       hierarchy.add(3);
+      //     }
+      //   }
+      // }
+    // }
+    // else if (this.contractList != null && this.contractList != undefined) {
+    //   for (let contract of this.contractList) {
+    //     if (this.user.Id == contract.SetUserId) {
+    //       if (contract.SetUserId == this.schet.CreatorId) {
+    //         if (type == "approve") {
+    //           hierarchy.push(1);
+    //           hierarchy.push(4);
+    //           hierarchy.push(6);
+    //           hierarchy.push(8);
+    //           this.approval.Approval = true;
+    //         }
+    //         if (type == "reject") {
+    //           hierarchy = [];
+    //         }
+    //       } else {
+    //         if (type == "approve") {
+    //           hierarchy.push(2);
+    //           hierarchy.push(3);
+    //           this.approval.Approval = true;
+    //         }
+    //         if (type == "reject") {
+    //           this.approval.Approval = false;
+    //           hierarchy.push(2);
+    //           hierarchy.push(3);
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
+
+
+    // if (widget.userId == widget.schet.createrId) {
+    //   if (type == "approve") {
+    //     hierarchy.add(1);
+    //     hierarchy.add(4);
+    //     hierarchy.add(6);
+    //   }
+    //   if (type == "reject") {
+    //     hierarchy = [];
+    //   }
+    // }
 
     for (var i = 0; i < widget.schet.objectsAccountSchets.length; i++) {
       var item = widget.schet.objectsAccountSchets[i];
@@ -99,20 +190,81 @@ class _ButtonSchetCardState extends State<ButtonSchetCard> {
       }
     }
 
-    if (widget.roles.contains("Director")) {
+    // if (this.isDirector()) {
+    //   if (type == "approve") {
+    //     hierarchy = [];
+    //     hierarchy.add(1);
+    //     hierarchy.add(2);
+    //     hierarchy.add(3);
+    //     hierarchy.add(4);
+    //     hierarchy.add(5)
+    //     hierarchy.add(6);
+    //     hierarchy.add(15);
+    //     hierarchy.add(14);
+    //   }
+    //   if (type == "reject") {
+    //     hierarchy = [];
+    //     hierarchy.add(1);
+    //     hierarchy.add(2);
+    //     hierarchy.add(3);
+    //     hierarchy.add(4);
+    //     hierarchy.add(5)
+    //     hierarchy.add(6);
+    //     hierarchy.add(14);
+    //   }
+    // }
+
+    // for (let item of hierarchy) {
+    //   if (item == this.schet.Status.Hierarchy) {
+    //     result = true;
+    //   }
+    // }
+
+
+    if (widget.roles.contains("Economist")) {
       if (type == "approve") {
         hierarchy = [];
-        hierarchy.add(1);
-        hierarchy.add(2);
-        hierarchy.add(3);
-        hierarchy.add(4);
+        hierarchy.add(5);
       }
       if (type == "reject") {
         hierarchy = [];
+        hierarchy.add(5);
+      }
+    }
+
+    if (widget.roles.contains("Director")) {
+      if (type == "approve") {
+        // hierarchy = [];
+        // hierarchy.add(1);
+        // hierarchy.add(2);
+        // hierarchy.add(3);
+        // hierarchy.add(4);
+
+        hierarchy = [];
         hierarchy.add(1);
         hierarchy.add(2);
         hierarchy.add(3);
         hierarchy.add(4);
+        hierarchy.add(5);
+        hierarchy.add(6);
+        hierarchy.add(15);
+        hierarchy.add(14);
+      }
+      if (type == "reject") {
+        // hierarchy = [];
+        // hierarchy.add(1);
+        // hierarchy.add(2);
+        // hierarchy.add(3);
+        // hierarchy.add(4);
+
+        hierarchy = [];
+        hierarchy.add(1);
+        hierarchy.add(2);
+        hierarchy.add(3);
+        hierarchy.add(4);
+        hierarchy.add(5);
+        hierarchy.add(6);
+        hierarchy.add(14);
       }
     }
 

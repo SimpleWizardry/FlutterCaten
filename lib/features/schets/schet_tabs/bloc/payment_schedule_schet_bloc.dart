@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../../../generated/schet.pb.dart';
 import '../../repository/abstractSchetRepository.dart';
-import '../../services/schet.pb.dart';
+// import '../../services/schet.pb.dart';
 
 part 'payment_schedule_schet_event.dart';
 part 'payment_schedule_schet_state.dart';

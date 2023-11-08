@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: account.proto
+//  source: schet.proto
 //
 // @dart = 2.12
 

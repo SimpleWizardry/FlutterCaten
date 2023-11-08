@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:myapp/features/schets/repository/abstractSchetRepository.dart';
 
-import '../../services/schet.pb.dart';
+import 'package:myapp/generated/schet.pb.dart';
+
+// import '../../services/schet.pb.dart';
 
 part 'schet_list_state.dart';
 part 'schet_list_event.dart';

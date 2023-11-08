@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
-import '../../services/schet.pb.dart';
+// import '../../services/schet.pb.dart';
 
+import '../../../../generated/schet.pb.dart';
 import '../../repository/abstractSchetRepository.dart';
 
 part 'schet_full_card_state.dart';
