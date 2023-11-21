@@ -13,6 +13,7 @@ class SchetTabs extends StatefulWidget {
 
 class _SchetTabsState extends State<SchetTabs> {
   String? schetId;
+
   @override
   void didChangeDependencies() {
     final args = ModalRoute.of(context)?.settings.arguments;
@@ -23,6 +24,7 @@ class _SchetTabsState extends State<SchetTabs> {
       return;
     }
     schetId = args as String;
+    debugPrint('schetId!: ${schetId}');
     super.didChangeDependencies();
   }
 

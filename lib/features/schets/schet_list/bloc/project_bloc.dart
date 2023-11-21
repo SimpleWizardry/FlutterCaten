@@ -12,8 +12,7 @@ class ProjectListEvent {
   ProjectListRequest payload = ProjectListRequest();
 }
 
-enum ProjectListAction
-{
+enum ProjectListAction {
   GetAll,
 }
 
@@ -22,8 +21,10 @@ class ProjectListBloc {
 
   final _stateStreamContorller = BehaviorSubject<List<ProjectFilter>>();
 
-  StreamSink<List<ProjectFilter>> get projectListSink => _stateStreamContorller.sink;
-  Stream<List<ProjectFilter>> get projectListStream => _stateStreamContorller.stream;
+  StreamSink<List<ProjectFilter>> get projectListSink =>
+      _stateStreamContorller.sink;
+  Stream<List<ProjectFilter>> get projectListStream =>
+      _stateStreamContorller.stream;
 
   // final _eventStreamContorller = StreamController<UserListAction>();
 
@@ -39,10 +40,9 @@ class ProjectListBloc {
   Stream<ProjectListEvent> get eventStream => _eventStreamContorller.stream;
 
   Future<void> getProjects(ProjectListRequest payload) async {
-  // var getProjects = () async => {
+    // var getProjects = () async => {
     var _result = await GetIt.I<AbstractSchetRepository>().GetProjects(payload);
     if (_result.succsecced) {
-      debugPrint('projects');
       payload.take += 20;
       projects = _result.projects;
       projectListSink.add(projects);
@@ -51,9 +51,8 @@ class ProjectListBloc {
 
   ProjectListBloc() {
     projects = [];
-    eventStream.listen((event) async { 
+    eventStream.listen((event) async {
       if (event.type == ProjectListAction.GetAll) {
-        debugPrint(event.toString());
         await getProjects(event.payload);
       }
     });

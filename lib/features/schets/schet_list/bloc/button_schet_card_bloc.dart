@@ -47,7 +47,6 @@ class ButtonSchetCardBloc
         var _result = await GetIt.I<AbstractSchetRepository>()
             .ChangeStatusSchet(event.filter);
         if (_result.succssed) {
-          debugPrint('Status!: ${_result.status}');
           emit(BSCChangeStatusSuccessed());
         } else {
           emit(

@@ -11,16 +11,9 @@ void main() {
   GetIt.I
       .registerLazySingleton<AbstractSchetRepository>(() => SchetRepository());
   // runApp(const MyApp());
-  runApp(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider<LoginBloc>(
-          create: (context) =>
-            LoginBloc(),
-        ),
-
-      ],
-      child: const MyApp()
-    )
-  );
+  runApp(MultiBlocProvider(providers: [
+    BlocProvider<LoginBloc>(
+      create: (context) => LoginBloc(),
+    ),
+  ], child: const MyApp()));
 }

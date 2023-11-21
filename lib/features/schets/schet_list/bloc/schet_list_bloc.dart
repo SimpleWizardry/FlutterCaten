@@ -26,7 +26,6 @@ class SchetListBloc extends Bloc<SchetListEvent, SchetListState> {
         var _result =
             await GetIt.I<AbstractSchetRepository>().GetSchets(filterSchet);
         if (_result.succssed) {
-          debugPrint('dddd');
           filterSchet.skip += 20;
           emit(SchetListSuccessed(
               listSchets: _result.list, totalCount: _result.count));

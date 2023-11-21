@@ -12,8 +12,7 @@ class CounterpartyListEvent {
   CounterpartyListRequest payload = CounterpartyListRequest();
 }
 
-enum CounterpartyListAction
-{
+enum CounterpartyListAction {
   GetAll,
 }
 
@@ -22,8 +21,10 @@ class CounterpartyListBloc {
 
   final _stateStreamContorller = BehaviorSubject<List<CounterpartyFilter>>();
 
-  StreamSink<List<CounterpartyFilter>> get counterpartyListSink => _stateStreamContorller.sink;
-  Stream<List<CounterpartyFilter>> get counterpartyListStream => _stateStreamContorller.stream;
+  StreamSink<List<CounterpartyFilter>> get counterpartyListSink =>
+      _stateStreamContorller.sink;
+  Stream<List<CounterpartyFilter>> get counterpartyListStream =>
+      _stateStreamContorller.stream;
 
   // final _eventStreamContorller = StreamController<UserListAction>();
 
@@ -35,14 +36,16 @@ class CounterpartyListBloc {
     _stateStreamContorller.close();
   }
 
-  StreamSink<CounterpartyListEvent> get eventSink => _eventStreamContorller.sink;
-  Stream<CounterpartyListEvent> get eventStream => _eventStreamContorller.stream;
+  StreamSink<CounterpartyListEvent> get eventSink =>
+      _eventStreamContorller.sink;
+  Stream<CounterpartyListEvent> get eventStream =>
+      _eventStreamContorller.stream;
 
   Future<void> getCounterparties(CounterpartyListRequest payload) async {
-  // var getAllUsers = () async => {
-    var _result = await GetIt.I<AbstractSchetRepository>().GetCounterparties(payload);
+    // var getAllUsers = () async => {
+    var _result =
+        await GetIt.I<AbstractSchetRepository>().GetCounterparties(payload);
     if (_result.succsecced) {
-      debugPrint('cntrprts');
       payload.take += 20;
       counterparties = _result.counterparties;
       counterpartyListSink.add(counterparties);
@@ -51,7 +54,7 @@ class CounterpartyListBloc {
 
   CounterpartyListBloc() {
     counterparties = [];
-    eventStream.listen((event) async { 
+    eventStream.listen((event) async {
       if (event.type == CounterpartyListAction.GetAll) {
         debugPrint(event.toString());
         await getCounterparties(event.payload);

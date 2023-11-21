@@ -62,11 +62,19 @@ class _ButtonSchetCardState extends State<ButtonSchetCard> {
     return widget.roles.contains("Director");
   }
 
+  bool isEconomist() {
+    return widget.roles.contains("Economist");
+  }
+
+  bool isMatchingResourcesSchets() {
+    return widget.roles.contains("MatchingResourcesSchets");
+  }
+
   bool showButton(String type) {
     var result = false;
     var hierarchy = [];
 
-    if (widget.userId  == widget.schet.createrId) {
+    if (widget.userId == widget.schet.createrId) {
       if (type == "approve") {
         hierarchy.add(1);
         hierarchy.add(4);
@@ -79,93 +87,19 @@ class _ButtonSchetCardState extends State<ButtonSchetCard> {
       }
     }
 
-    // if (widget.schet.isMatchingResourcesSchets) {
-    //   if (type == "approve") {
-    //     hierarchy = [];
-    //     hierarchy.add(1);
-    //     hierarchy.add(2);
-    //     hierarchy.add(15);
-    //   }
-    //   if (type == "reject") {
-    //     hierarchy = [];
-    //     hierarchy.add(1);
-    //     hierarchy.add(2);
-    //   }
-    // }
-
-    // if (this.contract != null && this.contract != undefined) {
-      // if (this.user.Id == this.contract.SetUserId) {
-      //   if (this.contract.SetUserId == this.schet.CreatorId) {
-      //     if (type == "approve") {
-      //       hierarchy = [];
-      //       hierarchy.add(1);
-      //       hierarchy.add(4);
-      //       hierarchy.add(6);
-      //       hierarchy.add(8);
-      //       hierarchy.add(15);
-      //       // this.approval.Approval = true;
-      //     }
-      //     if (type == "reject") {
-      //       hierarchy = [];
-      //     }
-      //   } else {
-      //     if (type == "approve") {
-      //       hierarchy = [];
-      //       hierarchy.add(2);
-      //       hierarchy.add(3);
-      //       hierarchy.add(15);
-      //       // this.approval.Approval = true;
-      //     }
-      //     if (type == "reject") {
-      //       hierarchy = [];
-      //       // this.approval.Approval = false;
-      //       hierarchy.add(2);
-      //       hierarchy.add(3);
-      //     }
-      //   }
-      // }
-    // }
-    // else if (this.contractList != null && this.contractList != undefined) {
-    //   for (let contract of this.contractList) {
-    //     if (this.user.Id == contract.SetUserId) {
-    //       if (contract.SetUserId == this.schet.CreatorId) {
-    //         if (type == "approve") {
-    //           hierarchy.push(1);
-    //           hierarchy.push(4);
-    //           hierarchy.push(6);
-    //           hierarchy.push(8);
-    //           this.approval.Approval = true;
-    //         }
-    //         if (type == "reject") {
-    //           hierarchy = [];
-    //         }
-    //       } else {
-    //         if (type == "approve") {
-    //           hierarchy.push(2);
-    //           hierarchy.push(3);
-    //           this.approval.Approval = true;
-    //         }
-    //         if (type == "reject") {
-    //           this.approval.Approval = false;
-    //           hierarchy.push(2);
-    //           hierarchy.push(3);
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-
-
-    // if (widget.userId == widget.schet.createrId) {
-    //   if (type == "approve") {
-    //     hierarchy.add(1);
-    //     hierarchy.add(4);
-    //     hierarchy.add(6);
-    //   }
-    //   if (type == "reject") {
-    //     hierarchy = [];
-    //   }
-    // }
+    if (widget.roles.contains("MatchingResourcesSchets")) {
+      if (type == "approve") {
+        hierarchy = [];
+        hierarchy.add(1);
+        hierarchy.add(2);
+        hierarchy.add(15);
+      }
+      if (type == "reject") {
+        hierarchy = [];
+        hierarchy.add(1);
+        hierarchy.add(2);
+      }
+    }
 
     for (var i = 0; i < widget.schet.objectsAccountSchets.length; i++) {
       var item = widget.schet.objectsAccountSchets[i];
@@ -190,37 +124,6 @@ class _ButtonSchetCardState extends State<ButtonSchetCard> {
       }
     }
 
-    // if (this.isDirector()) {
-    //   if (type == "approve") {
-    //     hierarchy = [];
-    //     hierarchy.add(1);
-    //     hierarchy.add(2);
-    //     hierarchy.add(3);
-    //     hierarchy.add(4);
-    //     hierarchy.add(5)
-    //     hierarchy.add(6);
-    //     hierarchy.add(15);
-    //     hierarchy.add(14);
-    //   }
-    //   if (type == "reject") {
-    //     hierarchy = [];
-    //     hierarchy.add(1);
-    //     hierarchy.add(2);
-    //     hierarchy.add(3);
-    //     hierarchy.add(4);
-    //     hierarchy.add(5)
-    //     hierarchy.add(6);
-    //     hierarchy.add(14);
-    //   }
-    // }
-
-    // for (let item of hierarchy) {
-    //   if (item == this.schet.Status.Hierarchy) {
-    //     result = true;
-    //   }
-    // }
-
-
     if (widget.roles.contains("Economist")) {
       if (type == "approve") {
         hierarchy = [];
@@ -234,12 +137,6 @@ class _ButtonSchetCardState extends State<ButtonSchetCard> {
 
     if (widget.roles.contains("Director")) {
       if (type == "approve") {
-        // hierarchy = [];
-        // hierarchy.add(1);
-        // hierarchy.add(2);
-        // hierarchy.add(3);
-        // hierarchy.add(4);
-
         hierarchy = [];
         hierarchy.add(1);
         hierarchy.add(2);
@@ -251,12 +148,6 @@ class _ButtonSchetCardState extends State<ButtonSchetCard> {
         hierarchy.add(14);
       }
       if (type == "reject") {
-        // hierarchy = [];
-        // hierarchy.add(1);
-        // hierarchy.add(2);
-        // hierarchy.add(3);
-        // hierarchy.add(4);
-
         hierarchy = [];
         hierarchy.add(1);
         hierarchy.add(2);
@@ -291,53 +182,77 @@ class _ButtonSchetCardState extends State<ButtonSchetCard> {
   }
 
   approveSchet() {
-    var hierarchy = 0;
-    if (widget.userId == widget.schet.createrId) {
-      hierarchy = 2;
+    var filter = new FilterChangeStatus();
+    filter.schetId = widget.schet.id;
+    if (isDirector()) {
+      filter.number = 7;
+      _buttonSchetCardBloc.add(BSCChangeStatus(filter));
+      return false;
     }
+    if (this.isEconomist()) {
+      filter.number = 14;
+      _buttonSchetCardBloc.add(BSCChangeStatus(filter));
+      return false;
+    }
+
     if (widget.schet.objectsAccountSchets
         .map((e) => e.userId)
         .contains(widget.userId)) {
-      hierarchy = 3;
-    }
-    if (isAccountant()) {
-      hierarchy = 5;
-    }
-    if (isDirector()) {
-      hierarchy = 5;
-    }
-    if (hierarchy != 0) {
-      var filter = new FilterChangeStatus();
-      filter.schetId = widget.schet.id;
-      filter.number = hierarchy;
+      filter.number = 5;
       _buttonSchetCardBloc.add(BSCChangeStatus(filter));
+      return false;
+    }
+
+    if (isMatchingResourcesSchets()) {
+      filter.number = 3;
+      _buttonSchetCardBloc.add(BSCChangeStatus(filter));
+      return false;
+    }
+
+    if (widget.userId == widget.schet.createrId) {
+      filter.number = 2;
+      _buttonSchetCardBloc.add(BSCChangeStatus(filter));
+      return false;
     }
   }
 
   rejectSchet() {
-    var hierarchy = 0;
+    var filter = new FilterChangeStatus();
+    filter.schetId = widget.schet.id;
+    var reject = new RejectSchetDTO();
+    reject.schetId = widget.schet.id;
+    reject.comment = textReject;
+    reject.userId = widget.userId;
+    if (isDirector()) {
+      filter.number = 8;
+      reject.statusHierarchy = 8;
+      Navigator.pop(context);
+      _buttonSchetCardBloc.add(BSCRejectSchet(reject));
+      return false;
+    }
+    if (isEconomist()) {
+      filter.number = 15;
+      reject.statusHierarchy = 15;
+      Navigator.pop(context);
+      _buttonSchetCardBloc.add(BSCRejectSchet(reject));
+      return false;
+    }
+
     if (widget.schet.objectsAccountSchets
         .map((e) => e.userId)
         .contains(widget.userId)) {
-      hierarchy = 4;
-    }
-    if (isAccountant()) {
-      hierarchy = 6;
-    }
-    if (isDirector()) {
-      hierarchy = 6;
-    }
-    if (hierarchy != 0) {
-      var filter = new FilterChangeStatus();
-      filter.schetId = widget.schet.id;
-      filter.number = hierarchy;
-      var reject = new RejectSchetDTO();
-      reject.schetId = widget.schet.id;
-      reject.comment = textReject;
-      reject.statusHierarchy = hierarchy;
-      reject.userId = widget.userId;
+      filter.number = 6;
+      reject.statusHierarchy = 6;
       Navigator.pop(context);
       _buttonSchetCardBloc.add(BSCRejectSchet(reject));
+      return false;
+    }
+    if (isMatchingResourcesSchets()) {
+      filter.number = 4;
+      reject.statusHierarchy = 4;
+      Navigator.pop(context);
+      _buttonSchetCardBloc.add(BSCRejectSchet(reject));
+      return false;
     }
   }
 

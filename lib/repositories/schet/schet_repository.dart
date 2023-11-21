@@ -9,8 +9,8 @@ class SchetTerminalClient {
 
   SchetTerminalClient() {
     channel = ClientChannel(
-      '192.168.1.12',
-      port: 32769,
+      '95.181.48.150',
+      port: 8080,
       options: ChannelOptions(credentials: ChannelCredentials.insecure()),
       // options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
     );

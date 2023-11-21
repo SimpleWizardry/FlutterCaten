@@ -12,11 +12,7 @@ class UserListEvent {
   UserListRequest payload = new UserListRequest();
 }
 
-enum UserListAction
-{
-  GetAll,
-  GetCreators
-}
+enum UserListAction { GetAll, GetCreators }
 
 class ListUserBloc {
   late List<UserFilter> users;
@@ -41,19 +37,17 @@ class ListUserBloc {
   Stream<UserListEvent> get eventStream => _eventStreamContorller.stream;
 
   Future<void> getAllUsers(UserListRequest payload, bool creators) async {
-  // var getAllUsers = () async => {
+    // var getAllUsers = () async => {
 
     var _result = new UserListReply();
     if (creators) {
       _result = await GetIt.I<AbstractSchetRepository>().GetCreators(payload);
-    }
-    else {
+    } else {
       _result = await GetIt.I<AbstractSchetRepository>().GetUsers(payload);
     }
-    
+
     // debugPrint(_result.toString());
     if (_result.succsecced) {
-      debugPrint('users2' + _result.toString());
       // debugPrint(_result.toString());
       // filterSchet.skip += 20;
       payload.skip += 20;
@@ -64,11 +58,10 @@ class ListUserBloc {
 
   ListUserBloc() {
     users = [];
-    eventStream.listen((event) async { 
+    eventStream.listen((event) async {
       if (event.type == UserListAction.GetAll) {
         await getAllUsers(event.payload, false);
-      }
-      else if (event.type == UserListAction.GetCreators) {
+      } else if (event.type == UserListAction.GetCreators) {
         await getAllUsers(event.payload, true);
       }
     });

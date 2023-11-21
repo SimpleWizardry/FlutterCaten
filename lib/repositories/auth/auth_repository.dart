@@ -9,11 +9,11 @@ class AccountTerminalClient {
 
   AccountTerminalClient() {
     channel = ClientChannel(
-      // '192.168.1.12',
-      '5.34.125.182',
+      '95.181.48.150',
+      //'5.34.125.182',
       // port: 43942,
       // port: 55020,
-      port: 32769,
+      port: 8080,
       // port: 32785,
       options: ChannelOptions(credentials: ChannelCredentials.insecure()),
       // options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
