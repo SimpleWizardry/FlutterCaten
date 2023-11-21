@@ -12,7 +12,7 @@ class SchetRepository implements AbstractSchetRepository {
 
   SchetRepository() {
     channel = ClientChannel(
-      '95.181.48.150',
+      'http://mmwork.caten-company.ru',
       // '192.168.1.12',
       //'5.34.125.182',
       port: 8080,
