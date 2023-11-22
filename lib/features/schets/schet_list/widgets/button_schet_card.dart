@@ -74,6 +74,8 @@ class _ButtonSchetCardState extends State<ButtonSchetCard> {
     var result = false;
     var hierarchy = [];
 
+    debugPrint(widget.roles.toString());
+
     if (widget.userId == widget.schet.createrId) {
       if (type == "approve") {
         hierarchy.add(1);
@@ -158,6 +160,8 @@ class _ButtonSchetCardState extends State<ButtonSchetCard> {
         hierarchy.add(14);
       }
     }
+
+    debugPrint(hierarchy.toString());
 
     if (hierarchy.contains(widget.schet.status.number)) {
       result = true;

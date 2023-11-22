@@ -22,7 +22,7 @@ class SchetListBloc extends Bloc<SchetListEvent, SchetListState> {
         }
 
         filterSchet = event.filterSchet;
-        debugPrint(event.toString() + filterSchet.toString());
+        // debugPrint(event.toString() + filterSchet.toString());
         var _result =
             await GetIt.I<AbstractSchetRepository>().GetSchets(filterSchet);
         if (_result.succssed) {

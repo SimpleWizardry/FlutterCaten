@@ -13,6 +13,7 @@ class SchetRepository implements AbstractSchetRepository {
   SchetRepository() {
     channel = ClientChannel(
       'mmwork.caten-company.ru',
+      // '95.181.48.150',
       // '192.168.1.12',
       //'5.34.125.182',
       port: 8080,
@@ -23,7 +24,7 @@ class SchetRepository implements AbstractSchetRepository {
       options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
       // options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
     );
-    debugPrint('channel $channel');
+    // debugPrint('channel $channel');
     stub = SchetGRPCServiceClient(channel);
   }
 
@@ -50,13 +51,13 @@ class SchetRepository implements AbstractSchetRepository {
 
   Future<ResultSchetListView> GetSchets(FilterSchet req) async {
     final response = await stub.getSchets(req);
-    debugPrint('File: ${response}');
+    // debugPrint('File: ${response}');
     return response;
   }
 
   Future<ResultSchetView> GetSchet(FilterSchet req) async {
     final response = await stub.getSchet(req);
-    debugPrint('res ${response}');
+    // debugPrint('res ${response}');
     return response;
   }
 
@@ -73,8 +74,8 @@ class SchetRepository implements AbstractSchetRepository {
 
   Future<ResultDownloadFile> DownloadFile(FileDTO req) async {
     final response = await stub.downloadFile(req);
-    debugPrint('File: ${req}');
-    debugPrint('File: ${response}');
+    // debugPrint('File: ${req}');
+    // debugPrint('File: ${response}');
 
     return response;
   }

@@ -9,7 +9,7 @@ class SchetTerminalClient {
 
   SchetTerminalClient() {
     channel = ClientChannel(
-      '95.181.48.150',
+      'http://mmwork.caten-company.ru',
       port: 8080,
       options: ChannelOptions(credentials: ChannelCredentials.insecure()),
       // options: const ChannelOptions(credentials: ChannelCredentials.insecure()),

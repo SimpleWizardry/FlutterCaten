@@ -1,0 +1,3 @@
+<domain-config cleartextTrafficPermitted="true">
+  <domain includeSubdomains="true">http://mmwork.caten-company.ru</domain>
+</domain-config>

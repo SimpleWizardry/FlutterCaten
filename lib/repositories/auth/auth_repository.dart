@@ -10,6 +10,8 @@ class AccountTerminalClient {
   AccountTerminalClient() {
     channel = ClientChannel(
       'mmwork.caten-company.ru',
+      // '95.181.48.150',
+      // 'http://mmwork.caten-company.ru',
       //'5.34.125.182',
       // port: 43942,
       // port: 55020,

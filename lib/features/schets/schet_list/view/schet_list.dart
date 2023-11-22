@@ -172,19 +172,23 @@ class _SchetListState extends State<SchetList> {
     // setRoles();
     // _filter.userId = _userId;
 
+    _getUserData();
+    // final user = await _getUserData();
+    // debugPrint(user.toString());
+
     // ВРОДЕ НЕ РАБОТАЕТ
-    try {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        final state = BlocProvider.of<LoginBloc>(context).state;
-        if (state is LoginSuccessed) {
-          debugPrint('userState');
-          user = state.user;
-        }
-      });
-    }
-    catch(e) {
-      debugPrint(e.toString());
-    }
+    // try {
+    //   WidgetsBinding.instance.addPostFrameCallback((_) {
+    //     final state = BlocProvider.of<LoginBloc>(context).state;
+    //     if (state is LoginSuccessed) {
+    //       debugPrint('userState');
+    //       user = state.user;
+    //     }
+    //   });
+    // }
+    // catch(e) {
+    //   debugPrint(e.toString());
+    // }
 
     _schetListBloc.add(LoadSchetList(true, _filter));
     setState(() => _filter = _filter);
@@ -300,7 +304,7 @@ class _SchetListState extends State<SchetList> {
     request.take = 20;
     request.filter = _filter;
 
-    debugPrint(request.toString());
+    // debugPrint(request.toString());
 
     event.payload = request;
     projectBloc.eventSink.add(event);
@@ -337,7 +341,7 @@ class _SchetListState extends State<SchetList> {
     request.take = 20;
     request.filter = _filter;
 
-    debugPrint(request.toString());
+    // debugPrint(request.toString());
 
     event.payload = request;
     counterpartyBloc.eventSink.add(event);
@@ -452,18 +456,40 @@ class _SchetListState extends State<SchetList> {
   // }
 
   Future<User?> _getUserData() async {
-    final user = await _storage.read(
+    final userStr = await _storage.read(
       key: "user",
       aOptions: _getAndroidOptions(),
     );
-    debugPrint(user);
-    var result = null;
-    if (user != null) {
-      result = User.fromJson(user);
-      // Map<String, dynamic> valueMap = json.decode(user);
+    // debugPrint('RESULTIWE'+ userStr.toString());
+    User result = User();
+    if (userStr != null) {
+      // result = User.fromJson(userStr);
+      // Map<String, dynamic> valueMap = json.decode(userStr);
       // нужно переписать fromJson или нормально воспользоваться существующим
       // result = User.fromJson(valueMap);
+      
+      final jsonUser = jsonDecode(userStr);
+      // result = User.fromJson(jsonUser.toString());
+       
+      result = User.fromJson(jsonUser);
+
+      // Map<String, dynamic> jsonUser = json.decode(userStr);
+      debugPrint(result.toString());
+      // _userId = jsonUser.Id;
+      // _roles = jsonUser['Roles'];
     }
+
+    user = result;
+    // _roles = user.roles.map((item) => debugPrint(item));
+
+  for (var value in user.roles) {
+    debugPrint(value.toString());
+    _roles.add(value.name);
+  }
+
+
+    _userId = user.id;
+
     return result;
   }
 
@@ -480,7 +506,7 @@ class _SchetListState extends State<SchetList> {
   );
 
   void selectField(String selection, String type) {
-    debugPrint('1' + selection);
+    // debugPrint('1' + selection);
     switch(type) {
       case 'responsible':
         UserFilter selected = responsibles.firstWhere((r) => r.fullName == selection);
@@ -501,7 +527,7 @@ class _SchetListState extends State<SchetList> {
         _filter.documentId.add(selected.id);
 
         // _filter.creatorName = selected.name;
-        debugPrint(selected.id.toString());
+        // debugPrint(selected.id.toString());
 
       case 'payingOrg':
         CounterpartyFilter selected = counterparties.firstWhere((r) => r.name == selection);
@@ -997,7 +1023,7 @@ class _SchetListState extends State<SchetList> {
                               _debounce = Timer(const Duration(milliseconds: 1500), () {
                                 
                                 
-                                debugPrint('deb' + _contract);
+                                // debugPrint('deb' + _contract);
                                 _getContracts();
 
                                 // Добавлял я
@@ -1086,7 +1112,7 @@ class _SchetListState extends State<SchetList> {
                               _filter.projectName = "";
 
 
-                              debugPrint(_project);
+                              // debugPrint(_project);
                               _getProjects();
 
                               final Iterable<ProjectFilter> options = projects;
@@ -1151,10 +1177,10 @@ class _SchetListState extends State<SchetList> {
                             setState(() {
                               if (newValue != null) {
                                 debugPrint(newValue);
-                                debugPrint('est');
+                                // debugPrint('est');
                               }
                               else {
-                                debugPrint('net');
+                                // debugPrint('net');
                               }
                               _changePaymentCheck();
                               dropdownvalue = newValue!.toString();

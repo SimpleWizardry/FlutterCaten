@@ -102,6 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
   // }
   Future<void> _addUserData(String user) async {
     const String key = "user";
+    // final String value = user;
     final String value = user;
 
     debugPrint(user);
@@ -170,7 +171,9 @@ class _LoginScreenState extends State<LoginScreen> {
       // debugPrint(response.id);
       // final user = response.user as User;
       
-      await _addUserData(jsonEncode(response.user.toString()));
+      await _addUserData(jsonEncode(response.user.writeToJson()));
+      // await _addUserData(jsonEncode(response.user.toString())); 
+
       await _addToken(response.jwt);
 
       _loginBloc.add(Login(true, response.user));
